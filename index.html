@@ -58,6 +58,37 @@
             pointer-events: none;
         }
 
+        /* NOTIFICACIÓN TOAST NO INTRUSIVA (REEMPLAZA A LOS ALERTS MOLESTOS) */
+        .toast-notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: linear-gradient(135deg, #1e1b4b, #2e0854);
+            border: 1.5px solid var(--accent-color);
+            color: #ffffff;
+            padding: 12px 22px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.7);
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+
+        .toast-notification.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast-notification.success i { color: #10b981; }
+        .toast-notification.error i { color: #ef4444; }
+
         /* ================= VISTA CLIENTE ================= */
         .client-view { display: block; }
 
@@ -731,6 +762,23 @@
         }
         .image-uploader-box input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
 
+        /* VISTA PREVIA DEL LOGO EN "MI NEGOCIO" */
+        .logo-preview-container {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 10px;
+        }
+
+        .logo-preview-img {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent-color);
+            background-color: #1a1a21;
+        }
+
         /* PERSONALIZAR */
         .customizer-box {
             background-color: #121215;
@@ -976,11 +1024,17 @@
 
     <div class="bg-overlay"></div>
 
+    <!-- NOTIFICACIÓN FLOTANTE TOAST -->
+    <div id="toast" class="toast-notification">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toast-text">Cambios guardados</span>
+    </div>
+
     <!-- ==================== PANTALLA CLIENTE ==================== -->
     <div id="screen-client" class="client-view">
         <header class="client-header">
             <div class="header-brand">
-                <img id="client-header-logo" class="header-logo" src="https://via.placeholder.com/100" alt="Avatar MICHELLE777">
+                <img id="client-header-logo" class="header-logo" src="https://via.placeholder.com/100" alt="Logo MICHELLE777">
                 <h1 id="client-brand-name" class="header-title">MICHELLE777</h1>
             </div>
             <a href="#" id="client-top-whatsapp" target="_blank" class="ws-link-btn">
@@ -1118,11 +1172,50 @@
                 <section id="sec-dashboard" class="admin-section">
                     <div style="background: linear-gradient(135deg, #1e1b4b, #111015); padding:20px; border-radius:14px; margin-bottom:20px;">
                         <h4 style="margin:0 0 6px 0; color:#fff;">👋 ¡Bienvenida Administradora!</h4>
-                        <p style="margin:0; font-size:0.85rem; color:var(--text-muted);">Desde aquí puedes personalizar la apariencia de tu catálogo, gestionar productos, categorías, promociones y combos.</p>
+                        <p style="margin:0; font-size:0.85rem; color:var(--text-muted);">Gestiona tus cuentas, edita el logotipo de tu marca, promociones y categorías de forma silenciosa e inmediata.</p>
                     </div>
                 </section>
 
-                <!-- SECCIÓN PRODUCTOS (CON EDICIÓN COMPLETA) -->
+                <!-- SECCIÓN MI NEGOCIO (CON SUBIDA DIRECTA DE LOGOTIPO) -->
+                <section id="sec-business" class="admin-section">
+                    <div class="admin-section-header">
+                        <div>
+                            <h3 style="margin:0 0 4px 0;">Perfil del Negocio y Logotipo</h3>
+                            <span style="font-size:0.75rem; color:var(--text-muted);">Sube el logotipo de tu tienda, edita tu nombre y tu número de WhatsApp.</span>
+                        </div>
+                    </div>
+                    <div class="admin-form-box">
+                        <!-- CARGADOR DE LOGO -->
+                        <div class="admin-form-group" style="margin-bottom:18px;">
+                            <label><i class="fa-solid fa-image"></i> Logotipo de la Tienda</label>
+                            <div class="image-uploader-box">
+                                <i class="fa-solid fa-cloud-arrow-up" style="color:var(--accent-color); font-size:1.8rem; margin-bottom:6px;"></i>
+                                <span style="font-weight:700; color:#fff; display:block;">Toca aquí para elegir una foto de tu celular</span>
+                                <span style="font-size:0.75rem; color:var(--text-muted);">JPG, PNG o WebP recomendados</span>
+                                <input type="file" id="biz-logo-file" accept="image/*" onchange="handleBizLogoUpload(this)">
+                            </div>
+                            <input type="text" id="biz-logo-url" placeholder="O pega el enlace web de tu logotipo" style="margin-top:8px;" oninput="previewBizLogoUrl(this.value)">
+                            
+                            <div class="logo-preview-container">
+                                <img id="biz-logo-preview" class="logo-preview-img" src="https://via.placeholder.com/100" alt="Previsualización">
+                                <span style="font-size:0.8rem; color:var(--secondary-text-color);">Vista previa de cómo se verá el logo en tu cabecera.</span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="admin-form-group"><label>Nombre del Negocio</label><input type="text" id="biz-name"></div>
+                            <div class="admin-form-group"><label>WhatsApp (código de país sin signos)</label><input type="text" id="biz-whatsapp"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="admin-form-group"><label>Hora de Apertura</label><input type="time" id="biz-schedule-open" value="09:00"></div>
+                            <div class="admin-form-group"><label>Hora de Cierre</label><input type="time" id="biz-schedule-close" value="23:00"></div>
+                            <div class="admin-form-group"><label>Días de Atención</label><input type="text" id="biz-schedule-days" value="Lunes a Domingo"></div>
+                        </div>
+                        <button class="admin-btn" onclick="saveBusinessConfig()"><i class="fa-solid fa-floppy-disk"></i> Guardar Logotipo y Perfil</button>
+                    </div>
+                </section>
+
+                <!-- SECCIÓN PRODUCTOS -->
                 <section id="sec-products" class="admin-section active">
                     <div class="admin-section-header">
                         <div>
@@ -1152,7 +1245,7 @@
                     </div>
                 </section>
 
-                <!-- SECCIÓN CATEGORÍAS (CON GENERADOR DE NUEVAS CATEGORÍAS) -->
+                <!-- SECCIÓN CATEGORÍAS -->
                 <section id="sec-categories" class="admin-section">
                     <div class="admin-section-header">
                         <div>
@@ -1432,32 +1525,13 @@
                         </button>
                     </div>
                 </section>
-
-                <!-- SECCIÓN MI NEGOCIO -->
-                <section id="sec-business" class="admin-section">
-                    <div class="admin-section-header">
-                        <h3>Perfil del Negocio</h3>
-                    </div>
-                    <div class="admin-form-box">
-                        <div class="form-row">
-                            <div class="admin-form-group"><label>Nombre del Negocio</label><input type="text" id="biz-name"></div>
-                            <div class="admin-form-group"><label>WhatsApp</label><input type="text" id="biz-whatsapp"></div>
-                        </div>
-                        <div class="form-row">
-                            <div class="admin-form-group"><label>Hora de Apertura</label><input type="time" id="biz-schedule-open" value="09:00"></div>
-                            <div class="admin-form-group"><label>Hora de Cierre</label><input type="time" id="biz-schedule-close" value="23:00"></div>
-                            <div class="admin-form-group"><label>Días de Atención</label><input type="text" id="biz-schedule-days" value="Lunes a Domingo"></div>
-                        </div>
-                        <button class="admin-btn" onclick="saveBusinessConfig()">Guardar Perfil</button>
-                    </div>
-                </section>
             </main>
         </div>
     </div>
 
     <!-- ==================== MODALES ==================== -->
 
-    <!-- MODAL PRODUCTO (CREAR / EDITAR) -->
+    <!-- MODAL PRODUCTO -->
     <div id="modal-product" class="modal-bg">
         <div class="modal-wrap">
             <h3 id="modal-product-title">Nueva Cuenta</h3>
@@ -1513,7 +1587,7 @@
         </div>
     </div>
 
-    <!-- MODAL CATEGORÍA (CREAR / EDITAR) -->
+    <!-- MODAL CATEGORÍA -->
     <div id="modal-category" class="modal-bg">
         <div class="modal-wrap">
             <h3 id="modal-category-title">Nueva Categoría</h3>
@@ -1542,7 +1616,7 @@
         </div>
     </div>
 
-    <!-- MODAL POPUP (CREAR / EDITAR) -->
+    <!-- MODAL POPUP -->
     <div id="modal-popup-form" class="modal-bg">
         <div class="modal-wrap">
             <h3 id="modal-popup-title">Crear Popup Promocional</h3>
@@ -1579,7 +1653,7 @@
         </div>
     </div>
 
-    <!-- MODAL COMBO (CREAR / EDITAR) -->
+    <!-- MODAL COMBO -->
     <div id="modal-combo-form" class="modal-bg">
         <div class="modal-wrap">
             <h3 id="modal-combo-title">Crear Combo</h3>
@@ -1691,16 +1765,39 @@
 
         let cart = [];
         let activeClientCat = "todos";
+        let tempBizLogoBuffer = "";
         let tempProdImgBuffer = "";
         let tempPopupImgBuffer = "";
         let tempComboImgBuffer = "";
         let tempUploadBgBuffer = "";
         let popupCountdownTimer = null;
+        let toastTimeout = null;
 
         window.onload = function() {
             applyLoadedDesign();
             checkAndRunViews();
         };
+
+        /* FUNCIÓN DE NOTIFICACIÓN ELEGANTE (SIN VENTANAS MOLESTAS) */
+        function showNotification(text, type = "success") {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toast-text');
+            const icon = toast.querySelector('i');
+
+            toastText.innerText = text;
+            toast.className = `toast-notification show ${type}`;
+
+            if (type === "success") {
+                icon.className = "fa-solid fa-circle-check";
+            } else {
+                icon.className = "fa-solid fa-triangle-exclamation";
+            }
+
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2300);
+        }
 
         function checkAndRunViews() {
             const params = new URLSearchParams(window.location.search);
@@ -1737,8 +1834,9 @@
                 sessionStorage.setItem('is_admin_active', 'true');
                 closeFormModal('modal-admin-login');
                 checkAndRunViews();
+                showNotification("¡Bienvenida al Panel de Control!");
             } else {
-                alert("Contraseña incorrecta.");
+                showNotification("Contraseña incorrecta", "error");
                 document.getElementById('admin-login-pass').value = "";
             }
         }
@@ -1885,7 +1983,7 @@
             if (!combo) return;
             cart.push({ id: combo.id, name: `[COMBO] ${combo.title}`, price: combo.price });
             updateCartSummary();
-            alert(`Añadido: ${combo.title}`);
+            showNotification(`Añadido: ${combo.title}`);
         }
 
         function renderCategoriesPills() {
@@ -1945,7 +2043,7 @@
             if (!p || p.stock === 'agotado') return;
             cart.push(p);
             updateCartSummary();
-            alert(`Añadido: ${p.name}`);
+            showNotification(`Añadido: ${p.name}`);
         }
 
         function removeOneItemFromCart(idx) {
@@ -2038,7 +2136,70 @@
             });
         }
 
-        /* 1. CRUD PRODUCTOS (CREAR, EDITAR TODOS LOS CAMPOS Y BORRAR) */
+        /* 1. GESTIÓN DE NEGOCIO Y LOGOTIPO PROPIO */
+        function loadBusinessAdminForm() {
+            document.getElementById('biz-name').value = business.name || "MICHELLE777";
+            document.getElementById('biz-whatsapp').value = business.whatsapp || "525523676793";
+            document.getElementById('biz-schedule-open').value = business.scheduleOpen || "09:00";
+            document.getElementById('biz-schedule-close').value = business.scheduleClose || "23:00";
+            document.getElementById('biz-schedule-days').value = business.scheduleDays || "Lunes a Domingo";
+            document.getElementById('biz-logo-url').value = business.logo && !business.logo.startsWith('data:') ? business.logo : "";
+            
+            const preview = document.getElementById('biz-logo-preview');
+            preview.src = business.logo || "https://via.placeholder.com/100";
+            tempBizLogoBuffer = business.logo && business.logo.startsWith('data:') ? business.logo : "";
+        }
+
+        function handleBizLogoUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    tempBizLogoBuffer = e.target.result;
+                    document.getElementById('biz-logo-preview').src = tempBizLogoBuffer;
+                    document.getElementById('biz-logo-url').value = "";
+                    showNotification("Imagen de logo cargada en vista previa");
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function previewBizLogoUrl(val) {
+            if (val.trim()) {
+                tempBizLogoBuffer = "";
+                document.getElementById('biz-logo-preview').src = val.trim();
+            }
+        }
+
+        function saveBusinessConfig() {
+            const name = document.getElementById('biz-name').value.trim();
+            const wh = document.getElementById('biz-whatsapp').value.trim();
+            const urlInput = document.getElementById('biz-logo-url').value.trim();
+
+            if (!name || !wh) {
+                showNotification("Completa el nombre y WhatsApp", "error");
+                return;
+            }
+
+            business.name = name;
+            business.whatsapp = wh;
+            business.scheduleOpen = document.getElementById('biz-schedule-open').value;
+            business.scheduleClose = document.getElementById('biz-schedule-close').value;
+            business.scheduleDays = document.getElementById('biz-schedule-days').value;
+
+            if (tempBizLogoBuffer) {
+                business.logo = tempBizLogoBuffer;
+            } else if (urlInput) {
+                business.logo = urlInput;
+            }
+
+            localStorage.setItem('streaming_biz', JSON.stringify(business));
+            document.getElementById('client-brand-name').innerText = business.name;
+            document.getElementById('client-header-logo').src = business.logo || "https://via.placeholder.com/100";
+            document.getElementById('admin-sidebar-name').innerText = business.name;
+            showNotification("¡Perfil y logotipo guardados!");
+        }
+
+        /* 2. CRUD PRODUCTOS */
         function renderAdminProductsTable() {
             const tbody = document.getElementById('admin-products-tbody');
             tbody.innerHTML = '';
@@ -2116,7 +2277,6 @@
 
             populateCategorySelects();
             document.getElementById('form-p-cat').value = p.catId;
-
             document.getElementById('modal-product').style.display = 'flex';
         }
 
@@ -2140,7 +2300,7 @@
             const finalImg = tempProdImgBuffer || urlImg || "https://via.placeholder.com/150";
 
             if (!name || isNaN(price)) {
-                alert("Completa el nombre y precio del producto.");
+                showNotification("Completa el nombre y precio", "error");
                 return;
             }
 
@@ -2167,7 +2327,7 @@
             closeFormModal('modal-product');
             renderAdminProductsTable();
             renderCatalogItems();
-            alert("¡Producto guardado exitosamente!");
+            showNotification("Producto guardado correctamente");
         }
 
         function deleteProductAdmin(id) {
@@ -2176,10 +2336,11 @@
                 localStorage.setItem('streaming_prods', JSON.stringify(products));
                 renderAdminProductsTable();
                 renderCatalogItems();
+                showNotification("Producto eliminado");
             }
         }
 
-        /* 2. CRUD CATEGORÍAS (GENERAR NUEVAS, EDITAR Y BORRAR) */
+        /* 3. CRUD CATEGORÍAS */
         function renderAdminCategoriesTable() {
             const tbody = document.getElementById('admin-categories-tbody');
             tbody.innerHTML = '';
@@ -2239,7 +2400,7 @@
             const status = document.getElementById('form-c-status').value;
 
             if (!name) {
-                alert("Indica el nombre de la categoría.");
+                showNotification("Indica el nombre de la categoría", "error");
                 return;
             }
 
@@ -2251,12 +2412,7 @@
                     c.status = status;
                 }
             } else {
-                categories.push({
-                    id: Date.now(),
-                    name,
-                    icon,
-                    status
-                });
+                categories.push({ id: Date.now(), name, icon, status });
             }
 
             localStorage.setItem('streaming_cats', JSON.stringify(categories));
@@ -2264,20 +2420,21 @@
             renderAdminCategoriesTable();
             renderCategoriesPills();
             populateCategorySelects();
-            alert("¡Categoría guardada exitosamente!");
+            showNotification("Categoría guardada exitosamente");
         }
 
         function deleteCategoryAdmin(id) {
-            if (confirm("¿Eliminar esta categoría? Los productos asociados se mantendrán pero quedarán sin categoría.")) {
+            if (confirm("¿Eliminar esta categoría?")) {
                 categories = categories.filter(c => c.id !== id);
                 localStorage.setItem('streaming_cats', JSON.stringify(categories));
                 renderAdminCategoriesTable();
                 renderCategoriesPills();
                 populateCategorySelects();
+                showNotification("Categoría eliminada");
             }
         }
 
-        /* 3. CRUD PROMOCIONES Y COMBOS (EDITAR Y CREAR) */
+        /* 4. CRUD PROMOCIONES Y COMBOS */
         function renderAdminPromotionsTable() {
             const tbody = document.getElementById('admin-promos-tbody');
             tbody.innerHTML = '';
@@ -2381,7 +2538,7 @@
             const url = document.getElementById('form-pop-url').value.trim();
             const img = tempPopupImgBuffer || url || "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800";
 
-            if (!title) { alert("Completa el título."); return; }
+            if (!title) { showNotification("Completa el título", "error"); return; }
 
             if (id) {
                 const p = promotions.find(x => x.id == id);
@@ -2396,7 +2553,7 @@
             localStorage.setItem('streaming_promos_table', JSON.stringify(promotions));
             closeFormModal('modal-popup-form');
             renderAdminPromotionsTable();
-            alert("¡Popup guardado!");
+            showNotification("Popup guardado exitosamente");
         }
 
         function saveComboItem() {
@@ -2409,7 +2566,7 @@
             const url = document.getElementById('form-combo-url').value.trim();
             const img = tempComboImgBuffer || url || "https://via.placeholder.com/300";
 
-            if (!title || price <= 0) { alert("Indica el nombre y precio del combo."); return; }
+            if (!title || price <= 0) { showNotification("Indica el nombre y precio", "error"); return; }
 
             if (id) {
                 const c = promotions.find(x => x.id == id);
@@ -2425,7 +2582,7 @@
             closeFormModal('modal-combo-form');
             renderAdminPromotionsTable();
             renderCombosDrawerItems();
-            alert("¡Combo guardado!");
+            showNotification("Combo guardado exitosamente");
         }
 
         function deletePromoItem(id) {
@@ -2434,10 +2591,11 @@
                 localStorage.setItem('streaming_promos_table', JSON.stringify(promotions));
                 renderAdminPromotionsTable();
                 renderCombosDrawerItems();
+                showNotification("Promoción eliminada");
             }
         }
 
-        /* PERSONALIZADOR & ESTILOS */
+        /* 5. PERSONALIZADOR */
         function applyLoadedDesign() {
             const root = document.documentElement;
             const c = themeSettings.colors;
@@ -2599,6 +2757,7 @@
                     document.getElementById('bg-image-url').value = "Imagen subida lista";
                     document.body.style.backgroundImage = `url('${tempUploadBgBuffer}')`;
                     document.querySelector('.bg-overlay').style.display = 'block';
+                    showNotification("Fondo aplicado en vista previa");
                 };
                 reader.readAsDataURL(input.files[0]);
             }
@@ -2610,7 +2769,7 @@
             document.getElementById('bg-image-url').value = "";
             document.body.style.backgroundImage = 'none';
             document.querySelector('.bg-overlay').style.display = 'none';
-            alert("Fondo removido. Presiona Guardar Cambios para confirmar.");
+            showNotification("Fondo removido");
         }
 
         function saveAllCustomizationSettings() {
@@ -2636,28 +2795,10 @@
 
             localStorage.setItem('streaming_design_config', JSON.stringify(themeSettings));
             applyLoadedDesign();
-            alert("¡Diseño, colores, fuentes y recuadros guardados con éxito!");
-        }
-
-        function loadBusinessAdminForm() {
-            document.getElementById('biz-name').value = business.name || "MICHELLE777";
-            document.getElementById('biz-whatsapp').value = business.whatsapp || "525523676793";
-            document.getElementById('biz-schedule-open').value = business.scheduleOpen || "09:00";
-            document.getElementById('biz-schedule-close').value = business.scheduleClose || "23:00";
-            document.getElementById('biz-schedule-days').value = business.scheduleDays || "Lunes a Domingo";
-        }
-
-        function saveBusinessConfig() {
-            business.name = document.getElementById('biz-name').value;
-            business.whatsapp = document.getElementById('biz-whatsapp').value;
-            business.scheduleOpen = document.getElementById('biz-schedule-open').value;
-            business.scheduleClose = document.getElementById('biz-schedule-close').value;
-            business.scheduleDays = document.getElementById('biz-schedule-days').value;
-            localStorage.setItem('streaming_biz', JSON.stringify(business));
-            alert("Perfil de negocio guardado.");
+            showNotification("¡Diseño y colores guardados!");
         }
 
         function closeFormModal(id) { document.getElementById(id).style.display = 'none'; }
     </script>
 </body>
-                    </html>
+    </html>
