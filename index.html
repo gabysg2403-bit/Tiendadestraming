@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streaming Store - Mi Catálogo</title>
+    <style>
+        :root {
+            /* Colores por defecto, ahora modificables vía JS */
+            --bg-color: #0c0c0e;
+            --card-bg: #16161a;
+            --primary-color: #a855f7; /* Morado */
+            --text-color: #ffffff;
+            --text-muted: #9ca3af;
+            --success-color: #22c55e;
+            --danger-color: #ef4444;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            padding-bottom: 90px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 20px 20px;
+            background: linear-gradient(180deg, rgba(30, 17, 53, 0.5) 0%, var(--bg-color) 100%);
+        }
+
+        header h1 {
+            margin: 0;
+            color: var(--primary-color);
+            font-size: 2.3rem;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            margin-top: 8px;
+            margin-bottom: 15px;
+        }
+
+        .admin-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .admin-btn {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .admin-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* FILTROS / CATEGORÍAS */
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px 20px 20px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .category-btn {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid #2e2e38;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.25s ease;
+        }
+
+        .category-btn.active, .category-btn:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 0 12px rgba(0,0,0, 0.3);
+        }
+
+        /* CATÁLOGO */
+        .catalog {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            padding: 0 20px 20px;
+        }
+
+        .product-card {
+            background-color: var(--card-bg);
+            border-radius: 14px;
+            padding: 24px 20px;
+            text-align: center;
+            border: 1px solid #22222a;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-color);
+        }
+
+        .product-card img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            margin: 0 auto 15px auto;
+            border-radius: 8px;
+        }
+
+        .product-card h3 {
+            margin: 8px 0;
+            font-size: 1.15rem;
+        }
+
+        .product-card .warranty {
+            color: var(--success-color);
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .product-card .price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 16px;
+        }
+
+        .add-to-cart-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, background-color 0.2s;
+        }
+
+        .add-to-cart-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .delete-product-btn {
+            background: none;
+            border: none;
+            color: var(--danger-color);
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 0.8rem;
+            text-decoration: underline;
+        }
+
+        /* BARRA FLOTANTE */
+        .cart-bar-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--card-bg);
+            border-top: 2px solid var(--primary-color);
+            box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+        }
+
+        .cart-bar {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-info {
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .action-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .text-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            text-decoration: underline;
+            padding: 0;
+        }
+
+        .text-btn.view { color: var(--primary-color); }
+        .text-btn.clear { color: var(--danger-color); }
+
+        .checkout-btn {
+            background-color: #25d366;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background-color 0.2s;
+        }
+
+        /* MODALES */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            width: 90%;
+            max-width: 400px;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--primary-color);
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--text-color);
+        }
+
+        .modal-content h2 { margin-top: 0; color: var(--primary-color); text-align: center; }
+
+        /* Formularios */
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-size: 0.9rem; }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #3b3b48;
+            background-color: #1a1a21;
+            color: white;
+            box-sizing: border-box;
+        }
+        
+        .form-group input[type="color"] {
+            padding: 2px 5px;
+            height: 40px;
+            cursor: pointer;
+        }
+
+        .modal-items { overflow-y: auto; flex-grow: 1; margin-bottom: 20px; }
+        
+        /* Lista carrito en modal */
+        .cart-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(0,0,0,0.2);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #2e2e38;
+        }
+        .cart-item-info strong { display: block; font-size: 1rem; margin-bottom: 4px; }
+        .cart-item-info span { color: var(--text-muted); font-size: 0.9rem; }
+        .remove-btn {
+            background-color: var(--danger-color); color: white;
+            border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer;
+        }
+
+        .btn-full {
+            background-color: var(--primary-color); color: white;
+            border: none; padding: 12px; border-radius: 8px;
+            font-weight: 600; cursor: pointer; width: 100%; margin-top: 10px;
+        }
+        .btn-full.cancel { background-color: #3b3b48; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <!-- Contenedor del Logo -->
+        <img id="store-logo" src="" alt="Logo de la Tienda" style="display: none; max-width: 160px; max-height: 160px; margin: 0 auto 15px auto; object-fit: contain;">
+        
+        <h1>STREAMING STORE</h1>
+        <p>Cuentas premium, perfiles y suscripciones inmediatas</p>
+        
+        <!-- Botones de administración -->
+        <div class="admin-controls">
+            <button class="admin-btn" onclick="openProductModal()">➕ Agregar Servicio</button>
+            <button class="admin-btn" onclick="openThemeModal()">🎨 Personalizar Diseño</button>
+        </div>
+    </header>
+
+    <div class="categories" id="categories-container">
+        <!-- Las categorías se generarán dinámicamente aquí -->
+    </div>
+
+    <main class="catalog" id="catalog-container">
+        <!-- Los productos se cargarán aquí con JS -->
+    </main>
+
+    <div class="cart-bar-container">
+        <div class="cart-bar">
+            <div class="cart-info">
+                <span>Items: <strong id="cart-count">0</strong> | Total: <strong id="cart-total">$0.00</strong></span>
+                <div class="action-links">
+                    <button class="text-btn view" onclick="openCartModal()">Ver detalles</button>
+                    <button class="text-btn clear" onclick="clearCart()">Vaciar todo</button>
+                </div>
+            </div>
+            <button class="checkout-btn" onclick="sendOrder()">
+                Pedir por WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL: VER/EDITAR CARRITO -->
+    <div id="cart-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Tu Pedido</h2>
+            <div id="modal-cart-items" class="modal-items"></div>
+            <button class="btn-full cancel" onclick="closeModal('cart-modal')">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- MODAL: AGREGAR PRODUCTO -->
+    <div id="add-product-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Agregar Nuevo Servicio</h2>
+            <div class="modal-items">
+                <div class="form-group">
+                    <label>Nombre del servicio (Ej: HBO Max)</label>
+                    <input type="text" id="new-name" placeholder="HBO Max 1 Mes">
+                </div>
+                <div class="form-group">
+                    <label>Precio (MXN)</label>
+                    <input type="number" id="new-price" placeholder="40">
+                </div>
+                <div class="form-group">
+                    <label>Descripción / Garantía</label>
+                    <input type="text" id="new-desc" placeholder="✓ 30 días de garantía">
+                </div>
+                <div class="form-group">
+                    <label>Categoría (minúsculas, sin espacios)</label>
+                    <input type="text" id="new-cat" placeholder="hbo">
+                </div>
+                <div class="form-group">
+                    <label>Subir Imagen</label>
+                    <input type="file" id="new-img" accept="image/*">
+                </div>
+            </div>
+            <button class="btn-full" onclick="saveNewProduct()">Guardar Servicio</button>
+            <button class="btn-full cancel" onclick="closeModal('add-product-modal')">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- MODAL: PERSONALIZAR COLORES Y LOGO -->
+    <div id="theme-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Personalizar Diseño</h2>
+            <div class="modal-items">
+                <div class="form-group">
+                    <label>Color de Acento (Botones y Títulos)</label>
+                    <input type="color" id="color-primary" value="#a855f7">
+                </div>
+                <div class="form-group">
+                    <label>Color de Fondo de la Página</label>
+                    <input type="color" id="color-bg" value="#0c0c0e">
+                </div>
+                <div class="form-group">
+                    <label>Color de Fondo de Tarjetas</label>
+                    <input type="color" id="color-card" value="#16161a">
+                </div>
+                <div class="form-group">
+                    <label>Color de Texto Principal</label>
+                    <input type="color" id="color-text" value="#ffffff">
+                </div>
+                <div class="form-group">
+                    <label>Subir Logotipo</label>
+                    <input type="file" id="new-logo" accept="image/*">
+                </div>
+            </div>
+            <button class="btn-full" onclick="saveTheme()">Aplicar y Guardar</button>
+            <button class="btn-full cancel" onclick="resetTheme()">Volver al Original</button>
+            <button class="btn-full cancel" style="margin-top: 10px;" onclick="closeModal('theme-modal')">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        const MY_PHONE_NUMBER = "525523676793"; 
+        
+        /* ================= ESTADO Y DATOS ================= */
+        let cart = JSON.parse(localStorage.getItem('streaming_cart')) || [];
+        
+        // Productos por defecto si es la primera vez que entra
+        const defaultProducts = [
+            { id: 1, name: 'Netflix Perfil 1 Mes', desc: '✓ 25 días de garantía', price: 50, cat: 'netflix', img: 'https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg' },
+            { id: 2, name: 'Disney Premium Perfil', desc: '✓ 30 días de garantía', price: 30, cat: 'disney', img: 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg' },
+            { id: 3, name: 'Spotify Premium 1 Mes', desc: '✓ 25 días de garantía', price: 50, cat: 'spotify', img: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg' }
+        ];
+
+        let products = JSON.parse(localStorage.getItem('streaming_products')) || defaultProducts;
+
+        // Iniciar la app
+        loadTheme();
+        loadLogo(); // Cargar el logo al iniciar
+        renderCategories();
+        renderProducts('todos');
+        updateCartUI();
+
+        /* ================= LOGO ================= */
+        function loadLogo() {
+            const savedLogo = localStorage.getItem('streaming_logo');
+            const logoImg = document.getElementById('store-logo');
+            if(savedLogo) {
+                logoImg.src = savedLogo;
+                logoImg.style.display = 'block'; // Mostrar si existe
+            } else {
+                logoImg.style.display = 'none'; // Ocultar si no hay logo
+            }
+        }
+
+        /* ================= PERSONALIZACIÓN DE COLORES Y LOGO ================= */
+        function openThemeModal() {
+            document.getElementById('theme-modal').style.display = 'flex';
+            
+            // Llenar inputs con los valores actuales del CSS
+            const root = getComputedStyle(document.documentElement);
+            document.getElementById('color-primary').value = root.getPropertyValue('--primary-color').trim();
+            document.getElementById('color-bg').value = root.getPropertyValue('--bg-color').trim();
+            document.getElementById('color-card').value = root.getPropertyValue('--card-bg').trim();
+            document.getElementById('color-text').value = root.getPropertyValue('--text-color').trim();
+            
+            // Limpiar el input del logo cada vez que se abre
+            document.getElementById('new-logo').value = '';
+        }
+
+        function saveTheme() {
+            // 1. Guardar Colores
+            const theme = {
+                primary: document.getElementById('color-primary').value,
+                bg: document.getElementById('color-bg').value,
+                card: document.getElementById('color-card').value,
+                text: document.getElementById('color-text').value
+            };
+            localStorage.setItem('streaming_theme', JSON.stringify(theme));
+            applyTheme(theme);
+
+            // 2. Procesar y guardar el Logo (si se subió uno)
+            const logoInput = document.getElementById('new-logo');
+            if (logoInput.files && logoInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    localStorage.setItem('streaming_logo', e.target.result); // Guardar en Base64
+                    loadLogo(); // Refrescar logo en pantalla
+                    closeModal('theme-modal');
+                };
+                reader.readAsDataURL(logoInput.files[0]);
+            } else {
+                // Si no subió foto nueva, simplemente cerramos el modal
+                closeModal('theme-modal');
+            }
+        }
+
+        function loadTheme() {
+            const savedTheme = JSON.parse(localStorage.getItem('streaming_theme'));
+            if(savedTheme) applyTheme(savedTheme);
+        }
+
+        function applyTheme(theme) {
+            document.documentElement.style.setProperty('--primary-color', theme.primary);
+            document.documentElement.style.setProperty('--bg-color', theme.bg);
+            document.documentElement.style.setProperty('--card-bg', theme.card);
+            document.documentElement.style.setProperty('--text-color', theme.text);
+        }
+
+        function resetTheme() {
+            localStorage.removeItem('streaming_theme');
+            localStorage.removeItem('streaming_logo'); // Borrar también el logo
+            // Recargar para aplicar defaults
+            location.reload(); 
+        }
+
+        /* ================= SISTEMA DE PRODUCTOS ================= */
+        function renderCategories() {
+            const container = document.getElementById('categories-container');
+            const uniqueCats = ['todos', ...new Set(products.map(p => p.cat))];
+            
+            let html = '';
+            uniqueCats.forEach(cat => {
+                const displayName = cat.charAt(0).toUpperCase() + cat.slice(1);
+                html += `<button class="category-btn ${cat === 'todos' ? 'active' : ''}" onclick="filterCategory('${cat}', event)">${displayName}</button>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function renderProducts(filterCat) {
+            const container = document.getElementById('catalog-container');
+            container.innerHTML = '';
+
+            products.forEach(p => {
+                if (filterCat !== 'todos' && p.cat !== filterCat) return;
+
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div>
+                        <img src="${p.img}" alt="${p.name}">
+                        <h3>${p.name.toUpperCase()}</h3>
+                        <div class="warranty">${p.desc}</div>
+                        <div class="price">$${parseFloat(p.price).toFixed(2)} MXN</div>
+                    </div>
+                    <div>
+                        <button class="add-to-cart-btn" onclick="addToCart('${p.name}', ${p.price}, this)">Agregar al carrito</button>
+                        <button class="delete-product-btn" onclick="deleteProduct(${p.id})">Eliminar Producto</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterCategory(category, event) {
+            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderProducts(category);
+        }
+
+        function openProductModal() {
+            document.getElementById('add-product-modal').style.display = 'flex';
+        }
+
+        function saveNewProduct() {
+            const name = document.getElementById('new-name').value;
+            const price = parseFloat(document.getElementById('new-price').value);
+            const desc = document.getElementById('new-desc').value;
+            let cat = document.getElementById('new-cat').value.toLowerCase().trim();
+            const fileInput = document.getElementById('new-img');
+
+            if(!name || !price || !cat) {
+                alert("Por favor llena Nombre, Precio y Categoría.");
+                return;
+            }
+
+            // Procesar imagen a Base64 para guardarla en LocalStorage
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    addProductToArray(name, price, desc, cat, e.target.result);
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                // Imagen por defecto si no suben nada
+                const defaultImg = "https://cdn-icons-png.flaticon.com/512/1038/1038100.png";
+                addProductToArray(name, price, desc, cat, defaultImg);
+            }
+        }
+
+        function addProductToArray(name, price, desc, cat, imgBase64) {
+            const newProduct = {
+                id: Date.now(), // ID único
+                name: name,
+                price: price,
+                desc: desc || '✓ Entrega inmediata',
+                cat: cat,
+                img: imgBase64
+            };
+            
+            products.push(newProduct);
+            localStorage.setItem('streaming_products', JSON.stringify(products));
+            
+            // Limpiar formulario y cerrar
+            document.getElementById('new-name').value = '';
+            document.getElementById('new-price').value = '';
+            document.getElementById('new-desc').value = '';
+            document.getElementById('new-cat').value = '';
+            document.getElementById('new-img').value = '';
+            
+            closeModal('add-product-modal');
+            renderCategories();
+            renderProducts('todos');
+        }
+
+        function deleteProduct(id) {
+            if(confirm("¿Seguro que deseas eliminar este producto de la tienda?")) {
+                products = products.filter(p => p.id !== id);
+                localStorage.setItem('streaming_products', JSON.stringify(products));
+                renderCategories();
+                renderProducts('todos');
+            }
+        }
+
+        /* ================= SISTEMA DE CARRITO ================= */
+        function addToCart(name, price, btnElement) {
+            cart.push({ name, price });
+            updateCartUI();
+
+            const originalText = btnElement.innerText;
+            btnElement.innerText = "¡Agregado!";
+            btnElement.style.backgroundColor = "var(--primary-color)"; 
+            
+            setTimeout(() => {
+                btnElement.innerText = originalText;
+                btnElement.style.backgroundColor = ""; 
+            }, 1200);
+        }
+
+        function clearCart() {
+            if(confirm("¿Seguro que deseas vaciar todo el carrito?")) {
+                cart = [];
+                updateCartUI();
+                closeModal('cart-modal');
+            }
+        }
+
+        function removeOneItem(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            localStorage.setItem('streaming_cart', JSON.stringify(cart));
+            document.getElementById('cart-count').innerText = cart.length;
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById('cart-total').innerText = `$${total.toFixed(2)}`;
+            
+            if (document.getElementById('cart-modal').style.display === 'flex') {
+                renderModalItems();
+            }
+        }
+
+        function openCartModal() {
+            document.getElementById('cart-modal').style.display = 'flex';
+            renderModalItems();
+        }
+
+        function renderModalItems() {
+            const container = document.getElementById('modal-cart-items');
+            if (cart.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:#9ca3af;">Tu carrito está vacío.</p>';
+                return;
+            }
+
+            const summary = {};
+            cart.forEach((item, index) => {
+                if (!summary[item.name]) summary[item.name] = { price: item.price, qty: 0, lastIndex: index };
+                summary[item.name].qty++;
+                summary[item.name].lastIndex = index;
+            });
+
+            let html = '';
+            for (const [name, data] of Object.entries(summary)) {
+                html += `
+                <div class="cart-item-row">
+                    <div class="cart-item-info">
+                        <strong>${name}</strong>
+                        <span>Cant: ${data.qty} | Subtotal: $${(data.price * data.qty).toFixed(2)}</span>
+                    </div>
+                    <button class="remove-btn" onclick="removeOneItem(${data.lastIndex})">- Quitar 1</button>
+                </div>
+                `;
+            }
+            container.innerHTML = html;
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        /* ================= WHATSAPP ================= */
+        function sendOrder() {
+            if (cart.length === 0) {
+                alert("Tu carrito está vacío. Agrega al menos un servicio antes de ordenar.");
+                return;
+            }
+
+            const summary = {};
+            cart.forEach(item => { summary[item.name] = (summary[item.name] || 0) + 1; });
+
+            let message = "🤖 *NUEVO PEDIDO DE STREAMING*\n\n";
+            let total = 0;
+
+            for (const [name, qty] of Object.entries(summary)) {
+                const priceEach = cart.find(i => i.name === name).price;
+                const subtotal = priceEach * qty;
+                total += subtotal;
+                message += `• ${qty}x *${name}* - ($${subtotal.toFixed(2)})\n`;
+            }
+
+            message += `\n💵 *Total a pagar:* $${total.toFixed(2)}\n`;
+            message += `⚡ _Hola, me gustaría concretar el pago de estos servicios._`;
+
+            const whatsappURL = `https://wa.me/${MY_PHONE_NUMBER}?text=${encodeURIComponent(message)}`;
+            window.location.href = whatsappURL;
+        }
+    </script>
+</body>
+</html>
+
