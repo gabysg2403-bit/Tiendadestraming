@@ -172,6 +172,9 @@
             font-weight: 600;
             transition: all 0.25s ease;
             flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .category-pill.active {
@@ -289,13 +292,6 @@
             color: white;
             flex-grow: 2;
             gap: 4px;
-        }
-
-        .card-action-btn.details-view {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            flex-grow: 1;
-            width: 38px;
         }
 
         /* BOTÓN LATERAL IZQUIERDO COMBOS */
@@ -662,6 +658,79 @@
         .admin-btn.popup { background: linear-gradient(135deg, #a855f7, #6366f1); }
         .admin-btn.combo { background: linear-gradient(135deg, #10b981, #059669); }
 
+        /* TABLAS Y FORMULARIOS */
+        .admin-table-container {
+            background-color: #121215;
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            overflow-x: auto;
+        }
+
+        .admin-search-row {
+            padding: 14px 18px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .admin-search-input {
+            background-color: #16161a;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            color: #ffffff;
+            width: 220px;
+        }
+
+        .admin-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        .admin-table th { background-color: rgba(255,255,255,0.01); padding: 12px 16px; text-align: left; color: var(--secondary-text-color); border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: 700; }
+        .admin-table td { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.04); color: #ffffff; vertical-align: middle; }
+
+        .admin-table-badge { padding: 4px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; display: inline-block; }
+        .admin-table-badge.active { background-color: rgba(16, 185, 129, 0.15); color: #10b981; }
+        .admin-table-badge.inactive { background-color: rgba(239, 68, 68, 0.15); color: #ef4444; }
+        .admin-table-badge.popup-badge { background-color: rgba(168, 85, 247, 0.15); color: #c084fc; }
+        .admin-table-badge.combo-badge { background-color: rgba(16, 185, 129, 0.15); color: #34d399; }
+        .admin-table-badge.stock-ok { background-color: rgba(16, 185, 129, 0.15); color: #10b981; }
+        .admin-table-badge.stock-low { background-color: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+        .admin-table-badge.stock-none { background-color: rgba(239, 68, 68, 0.15); color: #ef4444; }
+
+        .table-action-row { display: flex; align-items: center; gap: 8px; }
+        .table-action-btn { background: none; border: none; font-size: 0.85rem; cursor: pointer; padding: 4px; }
+        .table-action-btn.edit { color: var(--accent-color); }
+        .table-action-btn.del { color: var(--danger-color); }
+
+        .admin-form-box { background-color: #121215; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 24px; margin-bottom: 24px; }
+        .admin-form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+        .admin-form-group label { font-size: 0.8rem; font-weight: 600; color: var(--secondary-text-color); }
+        .admin-form-group input, .admin-form-group textarea, .admin-form-group select {
+            background-color: #16161a;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: #ffffff;
+            font-size: 0.88rem;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+
+        .image-uploader-box {
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 18px;
+            text-align: center;
+            cursor: pointer;
+            background-color: rgba(255, 255, 255, 0.01);
+            position: relative;
+        }
+        .image-uploader-box input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+
         /* PERSONALIZAR */
         .customizer-box {
             background-color: #121215;
@@ -848,42 +917,6 @@
             gap: 8px;
         }
 
-        .admin-table-container {
-            background-color: #121215;
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 12px;
-            overflow-x: auto;
-        }
-
-        .admin-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
-        .admin-table th { background-color: rgba(255,255,255,0.01); padding: 12px 16px; text-align: left; color: var(--secondary-text-color); border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: 700; }
-        .admin-table td { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.04); color: #ffffff; vertical-align: middle; }
-
-        .admin-table-badge { padding: 4px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; display: inline-block; }
-        .admin-table-badge.active { background-color: rgba(16, 185, 129, 0.15); color: #10b981; }
-        .admin-table-badge.inactive { background-color: rgba(239, 68, 68, 0.15); color: #ef4444; }
-        .admin-table-badge.popup-badge { background-color: rgba(168, 85, 247, 0.15); color: #c084fc; }
-        .admin-table-badge.combo-badge { background-color: rgba(16, 185, 129, 0.15); color: #34d399; }
-
-        .table-action-btn { background: none; border: none; font-size: 0.85rem; cursor: pointer; padding: 4px; }
-        .table-action-btn.del { color: var(--danger-color); }
-
-        .admin-form-box { background-color: #121215; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 24px; margin-bottom: 24px; }
-        .admin-form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
-        .admin-form-group label { font-size: 0.8rem; font-weight: 600; color: var(--secondary-text-color); }
-        .admin-form-group input, .admin-form-group textarea, .admin-form-group select {
-            background-color: #16161a;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 8px;
-            padding: 10px 12px;
-            color: #ffffff;
-            font-size: 0.88rem;
-            box-sizing: border-box;
-            width: 100%;
-        }
-
-        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
-
         /* MODALES */
         .modal-bg {
             position: fixed;
@@ -1056,7 +1089,7 @@
                         <li class="admin-menu-item" onclick="switchAdminSection('business', this)">
                             <i class="fa-solid fa-building"></i> Mi Negocio
                         </li>
-                        <li class="admin-menu-item" onclick="switchAdminSection('products', this)">
+                        <li class="admin-menu-item active" onclick="switchAdminSection('products', this)">
                             <i class="fa-solid fa-box-open"></i> Productos
                         </li>
                         <li class="admin-menu-item" onclick="switchAdminSection('promotions', this)">
@@ -1065,7 +1098,7 @@
                         <li class="admin-menu-item" onclick="switchAdminSection('categories', this)">
                             <i class="fa-solid fa-tags"></i> Categorías
                         </li>
-                        <li class="admin-menu-item active" onclick="switchAdminSection('design', this)">
+                        <li class="admin-menu-item" onclick="switchAdminSection('design', this)">
                             <i class="fa-solid fa-palette"></i> Personalizar
                         </li>
                         <li class="admin-menu-item" style="color: #c084fc;" onclick="exitAdminToClient()">
@@ -1085,16 +1118,103 @@
                 <section id="sec-dashboard" class="admin-section">
                     <div style="background: linear-gradient(135deg, #1e1b4b, #111015); padding:20px; border-radius:14px; margin-bottom:20px;">
                         <h4 style="margin:0 0 6px 0; color:#fff;">👋 ¡Bienvenida Administradora!</h4>
-                        <p style="margin:0; font-size:0.85rem; color:var(--text-muted);">Desde aquí puedes personalizar la apariencia de tu catálogo, gestionar productos, promociones y combos.</p>
+                        <p style="margin:0; font-size:0.85rem; color:var(--text-muted);">Desde aquí puedes personalizar la apariencia de tu catálogo, gestionar productos, categorías, promociones y combos.</p>
+                    </div>
+                </section>
+
+                <!-- SECCIÓN PRODUCTOS (CON EDICIÓN COMPLETA) -->
+                <section id="sec-products" class="admin-section active">
+                    <div class="admin-section-header">
+                        <div>
+                            <h3 style="margin:0 0 4px 0;">Mis Cuentas de Streaming</h3>
+                            <span style="font-size:0.75rem; color:var(--text-muted);">Crea, edita o elimina servicios, precios, fotos y stock en tiempo real.</span>
+                        </div>
+                        <button class="admin-btn" onclick="openNewProductModal()"><i class="fa-solid fa-plus"></i> Nueva Cuenta</button>
+                    </div>
+                    <div class="admin-table-container">
+                        <div class="admin-search-row">
+                            <input type="text" id="search-products-input" class="admin-search-input" placeholder="🔍 Buscar producto..." oninput="filterAdminProductsTable()">
+                        </div>
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Categoría</th>
+                                    <th>Precio</th>
+                                    <th>Stock</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-products-tbody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SECCIÓN CATEGORÍAS (CON GENERADOR DE NUEVAS CATEGORÍAS) -->
+                <section id="sec-categories" class="admin-section">
+                    <div class="admin-section-header">
+                        <div>
+                            <h3 style="margin:0 0 4px 0;">Categorías del Menú</h3>
+                            <span style="font-size:0.75rem; color:var(--text-muted);">Crea nuevas categorías y organiza cómo se filtran los productos en tu tienda.</span>
+                        </div>
+                        <button class="admin-btn" onclick="openNewCategoryModal()"><i class="fa-solid fa-plus"></i> Nueva Categoría</button>
+                    </div>
+                    <div class="admin-table-container">
+                        <div class="admin-search-row">
+                            <input type="text" id="search-categories-input" class="admin-search-input" placeholder="🔍 Buscar categoría..." oninput="filterAdminCategoriesTable()">
+                        </div>
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Icono</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-categories-tbody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SECCIÓN PROMOCIONES -->
+                <section id="sec-promotions" class="admin-section">
+                    <div class="admin-section-header">
+                        <div>
+                            <h3 style="margin:0 0 4px 0;">Promociones y Combos</h3>
+                            <span style="font-size:0.75rem; color:var(--text-muted);">Crea o edita popups promocionales y combos con descuento para tu catálogo.</span>
+                        </div>
+                        <div style="display:flex; gap:8px;">
+                            <button class="admin-btn popup" onclick="openNewPopupModal()"><i class="fa-solid fa-image"></i> Crear Popup</button>
+                            <button class="admin-btn combo" onclick="openNewComboModal()"><i class="fa-solid fa-plus"></i> Crear Combo</button>
+                        </div>
+                    </div>
+                    <div class="admin-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>TIPO</th>
+                                    <th>TÍTULO</th>
+                                    <th>DESCRIPCIÓN</th>
+                                    <th>VIGENCIA</th>
+                                    <th>ESTADO</th>
+                                    <th>ACCIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-promos-tbody"></tbody>
+                        </table>
                     </div>
                 </section>
 
                 <!-- SECCIÓN PERSONALIZAR -->
-                <section id="sec-design" class="admin-section active">
+                <section id="sec-design" class="admin-section">
                     <div class="admin-section-header">
                         <div>
                             <h3 style="margin:0 0 4px 0;">Personalizar Mi Catálogo</h3>
-                            <span style="font-size:0.75rem; color:var(--text-muted);">Ahora puedes cambiar la plantilla, colores, fondo, recuadros y tipografía sin editar código.</span>
+                            <span style="font-size:0.75rem; color:var(--text-muted);">Cambia la plantilla, colores, fondo, recuadros y tipografía sin editar código.</span>
                         </div>
                     </div>
 
@@ -1313,58 +1433,6 @@
                     </div>
                 </section>
 
-                <!-- SECCIÓN PRODUCTOS -->
-                <section id="sec-products" class="admin-section">
-                    <div class="admin-section-header">
-                        <h3>Mis Cuentas de Streaming</h3>
-                        <button class="admin-btn" onclick="openNewProductModal()"><i class="fa-solid fa-plus"></i> Nueva Cuenta</button>
-                    </div>
-                    <div class="admin-table-container">
-                        <table class="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nombre</th>
-                                    <th>Precio</th>
-                                    <th>Stock</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="admin-products-tbody"></tbody>
-                        </table>
-                    </div>
-                </section>
-
-                <!-- SECCIÓN PROMOCIONES -->
-                <section id="sec-promotions" class="admin-section">
-                    <div class="admin-section-header">
-                        <div>
-                            <h3 style="margin:0 0 4px 0;">Promociones</h3>
-                            <span style="font-size:0.75rem; color:var(--text-muted);">Crea popups promocionales y combos con descuento para tu catálogo</span>
-                        </div>
-                        <div style="display:flex; gap:8px;">
-                            <button class="admin-btn popup" onclick="openNewPopupModal()"><i class="fa-solid fa-image"></i> Crear Popup</button>
-                            <button class="admin-btn combo" onclick="openNewComboModal()"><i class="fa-solid fa-plus"></i> Crear Combo</button>
-                        </div>
-                    </div>
-                    <div class="admin-table-container">
-                        <table class="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>TIPO</th>
-                                    <th>TÍTULO</th>
-                                    <th>DESCRIPCIÓN</th>
-                                    <th>VIGENCIA</th>
-                                    <th>ESTADO</th>
-                                    <th>ACCIONES</th>
-                                </tr>
-                            </thead>
-                            <tbody id="admin-promos-tbody"></tbody>
-                        </table>
-                    </div>
-                </section>
-
                 <!-- SECCIÓN MI NEGOCIO -->
                 <section id="sec-business" class="admin-section">
                     <div class="admin-section-header">
@@ -1383,22 +1451,165 @@
                         <button class="admin-btn" onclick="saveBusinessConfig()">Guardar Perfil</button>
                     </div>
                 </section>
-
-                <!-- SECCIÓN CATEGORÍAS -->
-                <section id="sec-categories" class="admin-section">
-                    <div class="admin-section-header"><h3>Categorías del Menú</h3></div>
-                    <div class="admin-table-container">
-                        <table class="admin-table">
-                            <thead><tr><th>ID</th><th>Nombre</th><th>Estado</th></tr></thead>
-                            <tbody id="admin-categories-tbody"></tbody>
-                        </table>
-                    </div>
-                </section>
             </main>
         </div>
     </div>
 
-    <!-- ==================== MODAL DE AUTENTICACIÓN ADMIN PRIVADA ==================== -->
+    <!-- ==================== MODALES ==================== -->
+
+    <!-- MODAL PRODUCTO (CREAR / EDITAR) -->
+    <div id="modal-product" class="modal-bg">
+        <div class="modal-wrap">
+            <h3 id="modal-product-title">Nueva Cuenta</h3>
+            <div class="modal-scrollable">
+                <input type="hidden" id="form-p-id">
+                <div class="admin-form-group">
+                    <label>Nombre del Producto / Cuenta</label>
+                    <input type="text" id="form-p-name" placeholder="Ej: NETFLIX PERFIL 1 MES">
+                </div>
+                <div class="form-row">
+                    <div class="admin-form-group">
+                        <label>Precio ($ MXN)</label>
+                        <input type="number" id="form-p-price" placeholder="50.00">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Categoría</label>
+                        <select id="form-p-cat"></select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="admin-form-group">
+                        <label>Stock / Disponibilidad</label>
+                        <select id="form-p-stock">
+                            <option value="disponible">Disponible</option>
+                            <option value="limitado">Limitado</option>
+                            <option value="agotado">Agotado</option>
+                        </select>
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Estado</label>
+                        <select id="form-p-status">
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="admin-form-group">
+                    <label>Garantía / Descripción</label>
+                    <input type="text" id="form-p-warranty" placeholder="Ej: 25 días de garantía.">
+                </div>
+                <div class="admin-form-group">
+                    <label>Imagen del Producto</label>
+                    <div class="image-uploader-box">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <span>Subir Foto desde tu Celular</span>
+                        <input type="file" id="form-p-upload" accept="image/*" onchange="handleProductPicUpload(this)">
+                    </div>
+                    <input type="text" id="form-p-img" placeholder="O pega el enlace de la imagen" style="margin-top:8px;">
+                </div>
+            </div>
+            <button class="btn-full action" onclick="saveProductForm()">Guardar Producto</button>
+            <button class="btn-full cancel" onclick="closeFormModal('modal-product')">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- MODAL CATEGORÍA (CREAR / EDITAR) -->
+    <div id="modal-category" class="modal-bg">
+        <div class="modal-wrap">
+            <h3 id="modal-category-title">Nueva Categoría</h3>
+            <div class="modal-scrollable">
+                <input type="hidden" id="form-c-id">
+                <div class="admin-form-group">
+                    <label>Nombre de la Categoría</label>
+                    <input type="text" id="form-c-name" placeholder="Ej: Magis TV, HBO, Spotify...">
+                </div>
+                <div class="form-row">
+                    <div class="admin-form-group">
+                        <label>Icono (FontAwesome opcional)</label>
+                        <input type="text" id="form-c-icon" placeholder="Ej: fa-star, fa-tv, fa-tag" value="fa-tag">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Estado</label>
+                        <select id="form-c-status">
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-full action" onclick="saveCategoryForm()">Guardar Categoría</button>
+            <button class="btn-full cancel" onclick="closeFormModal('modal-category')">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- MODAL POPUP (CREAR / EDITAR) -->
+    <div id="modal-popup-form" class="modal-bg">
+        <div class="modal-wrap">
+            <h3 id="modal-popup-title">Crear Popup Promocional</h3>
+            <div class="modal-scrollable">
+                <input type="hidden" id="form-pop-id">
+                <div class="admin-form-group">
+                    <label>Título del Popup</label>
+                    <input type="text" id="form-pop-title" placeholder="Ej: Combos Halloween">
+                </div>
+                <div class="admin-form-group">
+                    <label>Descripción corta</label>
+                    <input type="text" id="form-pop-desc" placeholder="Ej: Combos solo por temporada">
+                </div>
+                <div class="admin-form-group">
+                    <label>Duración visible (Segundos)</label>
+                    <input type="number" id="form-pop-duration" placeholder="6">
+                </div>
+                <div class="form-row">
+                    <div class="admin-form-group"><label>Fecha Inicio</label><input type="date" id="form-pop-start"></div>
+                    <div class="admin-form-group"><label>Fecha Fin</label><input type="date" id="form-pop-end"></div>
+                </div>
+                <div class="admin-form-group">
+                    <label>Imagen del Popup</label>
+                    <div class="image-uploader-box">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <span>Subir Banner desde el Celular</span>
+                        <input type="file" id="form-pop-file" accept="image/*" onchange="handlePopupPicUpload(this)">
+                    </div>
+                    <input type="text" id="form-pop-url" placeholder="O pega el enlace de la foto" style="margin-top:8px;">
+                </div>
+            </div>
+            <button class="btn-full action" onclick="savePopupItem()">Guardar Popup</button>
+            <button class="btn-full cancel" onclick="closeFormModal('modal-popup-form')">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- MODAL COMBO (CREAR / EDITAR) -->
+    <div id="modal-combo-form" class="modal-bg">
+        <div class="modal-wrap">
+            <h3 id="modal-combo-title">Crear Combo</h3>
+            <div class="modal-scrollable">
+                <input type="hidden" id="form-combo-id">
+                <div class="admin-form-group"><label>Nombre del Combo</label><input type="text" id="form-combo-name"></div>
+                <div class="form-row">
+                    <div class="admin-form-group"><label>Precio ($ MXN)</label><input type="number" id="form-combo-price"></div>
+                    <div class="admin-form-group"><label>Garantía</label><input type="text" id="form-combo-desc"></div>
+                </div>
+                <div class="form-row">
+                    <div class="admin-form-group"><label>Inicio</label><input type="date" id="form-combo-start"></div>
+                    <div class="admin-form-group"><label>Fin</label><input type="date" id="form-combo-end"></div>
+                </div>
+                <div class="admin-form-group">
+                    <label>Imagen del Combo</label>
+                    <div class="image-uploader-box">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <span>Subir Foto del Celular</span>
+                        <input type="file" id="form-combo-file" accept="image/*" onchange="handleComboPicUpload(this)">
+                    </div>
+                    <input type="text" id="form-combo-url" placeholder="O pega el enlace de la imagen" style="margin-top:8px;">
+                </div>
+            </div>
+            <button class="btn-full action" style="background:#10b981;" onclick="saveComboItem()">Guardar Combo</button>
+            <button class="btn-full cancel" onclick="closeFormModal('modal-combo-form')">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- MODAL LOGIN ADMIN -->
     <div id="modal-admin-login" class="modal-bg">
         <div class="modal-wrap" style="max-width:320px; text-align:center;">
             <div style="font-size:2rem; color:var(--accent-color); margin-bottom:10px;"><i class="fa-solid fa-lock"></i></div>
@@ -1409,67 +1620,6 @@
             </div>
             <button class="btn-full action" onclick="verifyAdminPassword()">Ingresar al Panel</button>
             <button class="btn-full cancel" onclick="closeFormModal('modal-admin-login')">Cancelar</button>
-        </div>
-    </div>
-
-    <!-- MODAL POPUP -->
-    <div id="modal-popup-form" class="modal-bg">
-        <div class="modal-wrap">
-            <h3 id="modal-popup-title">Crear Popup Promocional</h3>
-            <div class="modal-scrollable">
-                <input type="hidden" id="form-pop-id">
-                <div class="admin-form-group"><label>Título del Popup</label><input type="text" id="form-pop-title" placeholder="Ej: Combos Halloween"></div>
-                <div class="admin-form-group"><label>Descripción corta</label><input type="text" id="form-pop-desc" placeholder="Ej: Combos solo por temporada"></div>
-                <div class="admin-form-group"><label>Duración (Segundos)</label><input type="number" id="form-pop-duration" placeholder="6"></div>
-                <div class="form-row">
-                    <div class="admin-form-group"><label>Fecha Inicio</label><input type="date" id="form-pop-start"></div>
-                    <div class="admin-form-group"><label>Fecha Fin</label><input type="date" id="form-pop-end"></div>
-                </div>
-                <div class="admin-form-group"><label>Imagen</label><input type="text" id="form-pop-url" placeholder="https://..."></div>
-            </div>
-            <button class="btn-full action" onclick="savePopupItem()">Guardar Popup</button>
-            <button class="btn-full cancel" onclick="closeFormModal('modal-popup-form')">Cancelar</button>
-        </div>
-    </div>
-
-    <!-- MODAL COMBO -->
-    <div id="modal-combo-form" class="modal-bg">
-        <div class="modal-wrap">
-            <h3 id="modal-combo-title">Crear Combo</h3>
-            <div class="modal-scrollable">
-                <input type="hidden" id="form-combo-id">
-                <div class="admin-form-group"><label>Nombre</label><input type="text" id="form-combo-name"></div>
-                <div class="form-row">
-                    <div class="admin-form-group"><label>Precio ($ MXN)</label><input type="number" id="form-combo-price"></div>
-                    <div class="admin-form-group"><label>Garantía</label><input type="text" id="form-combo-desc"></div>
-                </div>
-                <div class="form-row">
-                    <div class="admin-form-group"><label>Inicio</label><input type="date" id="form-combo-start"></div>
-                    <div class="admin-form-group"><label>Fin</label><input type="date" id="form-combo-end"></div>
-                </div>
-                <div class="admin-form-group"><label>Imagen</label><input type="text" id="form-combo-url"></div>
-            </div>
-            <button class="btn-full action" style="background:#10b981;" onclick="saveComboItem()">Guardar Combo</button>
-            <button class="btn-full cancel" onclick="closeFormModal('modal-combo-form')">Cancelar</button>
-        </div>
-    </div>
-
-    <!-- MODAL PRODUCTO -->
-    <div id="modal-product" class="modal-bg">
-        <div class="modal-wrap">
-            <h3 id="modal-product-title">Nueva Cuenta</h3>
-            <div class="modal-scrollable">
-                <input type="hidden" id="form-p-id">
-                <div class="admin-form-group"><label>Nombre</label><input type="text" id="form-p-name"></div>
-                <div class="form-row">
-                    <div class="admin-form-group"><label>Precio ($ MXN)</label><input type="number" id="form-p-price"></div>
-                    <div class="admin-form-group"><label>Categoría</label><select id="form-p-cat"></select></div>
-                </div>
-                <div class="admin-form-group"><label>Garantía</label><input type="text" id="form-p-warranty"></div>
-                <div class="admin-form-group"><label>Imagen</label><input type="text" id="form-p-img"></div>
-            </div>
-            <button class="btn-full action" onclick="saveProductForm()">Guardar</button>
-            <button class="btn-full cancel" onclick="closeFormModal('modal-product')">Cancelar</button>
         </div>
     </div>
 
@@ -1485,7 +1635,6 @@
 
     <!-- SCRIPT PRINCIPAL -->
     <script>
-        // CONTRASEÑA PRIVADA DEL ADMINISTRADOR
         const ADMIN_SECRET_PIN = "426153";
 
         let business = JSON.parse(localStorage.getItem('streaming_biz')) || {
@@ -1516,20 +1665,14 @@
             }
         };
 
-        let promotions = JSON.parse(localStorage.getItem('streaming_promos_table')) || [
-            { id: 101, type: 'POPUP', title: 'Combos Halloween', desc: 'Combos de temporada', startDate: '2026-10-23', endDate: '2026-12-31', duration: 6, img: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800', status: 'ACTIVA' },
-            { id: 102, type: 'COMBO', title: 'Combo Pato', desc: '25 días de garantía', price: 80.00, startDate: '2026-10-23', endDate: '2026-11-07', img: 'https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=500', status: 'ACTIVA' },
-            { id: 103, type: 'COMBO', title: 'Combo Snorlax', desc: '25 días de garantía', price: 90.00, startDate: '2026-10-23', endDate: '2026-11-07', img: 'https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?w=500', status: 'ACTIVA' }
-        ];
-
         let categories = JSON.parse(localStorage.getItem('streaming_cats')) || [
-            { id: 1, name: "Netflix", status: "activo" },
-            { id: 2, name: "Disney+", status: "activo" },
-            { id: 3, name: "HBO Max", status: "activo" },
-            { id: 4, name: "Amazon Prime", status: "activo" },
-            { id: 5, name: "Spotify", status: "activo" },
-            { id: 6, name: "YouTube Premium", status: "activo" },
-            { id: 18, name: "Vix", status: "activo" }
+            { id: 1, name: "Netflix", icon: "fa-film", status: "activo" },
+            { id: 2, name: "Disney+", icon: "fa-star", status: "activo" },
+            { id: 3, name: "HBO Max", icon: "fa-play-circle", status: "activo" },
+            { id: 4, name: "Amazon Prime", icon: "fa-amazon", status: "activo" },
+            { id: 5, name: "Spotify", icon: "fa-music", status: "activo" },
+            { id: 6, name: "YouTube Premium", icon: "fa-youtube", status: "activo" },
+            { id: 18, name: "Vix", icon: "fa-play", status: "activo" }
         ];
 
         let products = JSON.parse(localStorage.getItem('streaming_prods')) || [
@@ -1540,8 +1683,17 @@
             { id: 36, name: "Vix 1 mes", price: 20.00, catId: 18, warranty: "Perfil 1 mes 25 días de garantía.", stock: "limitado", status: "activo", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/ViX_Logo.svg" }
         ];
 
+        let promotions = JSON.parse(localStorage.getItem('streaming_promos_table')) || [
+            { id: 101, type: 'POPUP', title: 'Combos Halloween', desc: 'Combos de temporada', startDate: '2026-10-23', endDate: '2026-12-31', duration: 6, img: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800', status: 'ACTIVA' },
+            { id: 102, type: 'COMBO', title: 'Combo Pato', desc: '25 días de garantía', price: 80.00, startDate: '2026-10-23', endDate: '2026-11-07', img: 'https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=500', status: 'ACTIVA' },
+            { id: 103, type: 'COMBO', title: 'Combo Snorlax', desc: '25 días de garantía', price: 90.00, startDate: '2026-10-23', endDate: '2026-11-07', img: 'https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?w=500', status: 'ACTIVA' }
+        ];
+
         let cart = [];
         let activeClientCat = "todos";
+        let tempProdImgBuffer = "";
+        let tempPopupImgBuffer = "";
+        let tempComboImgBuffer = "";
         let tempUploadBgBuffer = "";
         let popupCountdownTimer = null;
 
@@ -1559,7 +1711,6 @@
                 document.getElementById('screen-admin').classList.add('active');
                 initAdminSystem();
             } else if (params.get('admin') === '1') {
-                // Si alguien coloca ?admin=1 en el link pero no está autenticado, pide la clave
                 document.getElementById('screen-client').style.display = 'block';
                 document.getElementById('screen-admin').classList.remove('active');
                 initClientShop();
@@ -1572,7 +1723,7 @@
             }
         }
 
-        /* GESTIÓN DE ACCESO ADMINISTRADOR */
+        /* SEGURIDAD ADMIN */
         function openAdminLoginModal() {
             const passInput = document.getElementById('admin-login-pass');
             passInput.value = "";
@@ -1602,65 +1753,6 @@
             sessionStorage.removeItem('is_admin_active');
             window.location.search = "";
             checkAndRunViews();
-        }
-
-        /* APLICAR ESTILOS */
-        function applyLoadedDesign() {
-            const root = document.documentElement;
-            const c = themeSettings.colors;
-
-            root.style.setProperty('--primary-color', c.primary);
-            root.style.setProperty('--accent-color', c.accent);
-            root.style.setProperty('--bg-color', c.bg);
-            root.style.setProperty('--panel-color', c.panel);
-            root.style.setProperty('--title-color', c.title);
-            root.style.setProperty('--secondary-text-color', c.secondary);
-            root.style.setProperty('--float-cart-color', c.floatCart);
-            root.style.setProperty('--burbuja-color', c.burbuja);
-            root.style.setProperty('--btn-principal-color', c.btnPrincipal);
-
-            root.style.setProperty('--main-font', themeSettings.fontFamily || "'Poppins', sans-serif");
-            document.body.style.fontFamily = themeSettings.fontFamily || "'Poppins', sans-serif";
-
-            if (themeSettings.bgImage) {
-                document.body.style.backgroundImage = `url('${themeSettings.bgImage}')`;
-                document.querySelector('.bg-overlay').style.display = 'block';
-            } else {
-                document.body.style.backgroundImage = 'none';
-                document.querySelector('.bg-overlay').style.display = 'none';
-            }
-
-            applyCardStyleToRoot(themeSettings.cardStyle || 'modern-rounded');
-        }
-
-        function applyCardStyleToRoot(style) {
-            const root = document.documentElement;
-            if (style === 'glassmorphism') {
-                root.style.setProperty('--card-radius', '16px');
-                root.style.setProperty('--card-border', '1px solid rgba(255, 255, 255, 0.2)');
-                root.style.setProperty('--card-backdrop', 'blur(12px)');
-                root.style.setProperty('--card-shadow', '0 8px 32px 0 rgba(0, 0, 0, 0.37)');
-            } else if (style === 'neon-glow') {
-                root.style.setProperty('--card-radius', '14px');
-                root.style.setProperty('--card-border', '2px solid var(--accent-color)');
-                root.style.setProperty('--card-backdrop', 'none');
-                root.style.setProperty('--card-shadow', '0 0 15px rgba(168, 85, 247, 0.4)');
-            } else if (style === 'sharp-future') {
-                root.style.setProperty('--card-radius', '4px');
-                root.style.setProperty('--card-border', '1.5px solid rgba(255, 255, 255, 0.15)');
-                root.style.setProperty('--card-backdrop', 'none');
-                root.style.setProperty('--card-shadow', 'none');
-            } else if (style === 'subtle-border') {
-                root.style.setProperty('--card-radius', '12px');
-                root.style.setProperty('--card-border', '1px solid rgba(255, 255, 255, 0.04)');
-                root.style.setProperty('--card-backdrop', 'none');
-                root.style.setProperty('--card-shadow', 'none');
-            } else {
-                root.style.setProperty('--card-radius', '18px');
-                root.style.setProperty('--card-border', '1px solid rgba(255, 255, 255, 0.06)');
-                root.style.setProperty('--card-backdrop', 'none');
-                root.style.setProperty('--card-shadow', 'none');
-            }
         }
 
         /* CLIENT VIEW */
@@ -1799,8 +1891,9 @@
         function renderCategoriesPills() {
             const container = document.getElementById('categories-container');
             let html = `<div class="category-pill ${activeClientCat === 'todos' ? 'active' : ''}" onclick="selectCategory('todos')">Todos</div>`;
-            categories.forEach(c => {
-                html += `<div class="category-pill ${activeClientCat == c.id ? 'active' : ''}" onclick="selectCategory(${c.id})">${c.name}</div>`;
+            categories.filter(c => c.status === 'activo').forEach(c => {
+                const iconHtml = c.icon ? `<i class="fa-solid ${c.icon}"></i>` : '';
+                html += `<div class="category-pill ${activeClientCat == c.id ? 'active' : ''}" onclick="selectCategory(${c.id})">${iconHtml} ${c.name}</div>`;
             });
             container.innerHTML = html;
         }
@@ -1814,7 +1907,12 @@
         function renderCatalogItems() {
             const container = document.getElementById('catalog-container');
             container.innerHTML = '';
-            const filtered = products.filter(p => activeClientCat === 'todos' || p.catId == activeClientCat);
+            const filtered = products.filter(p => p.status === 'activo' && (activeClientCat === 'todos' || p.catId == activeClientCat));
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div style="grid-column: span 10; color:var(--text-muted); padding:30px 10px; text-align:center;">No hay servicios disponibles en esta categoría por ahora.</div>`;
+                return;
+            }
 
             filtered.forEach(p => {
                 const card = document.createElement('div');
@@ -1831,8 +1929,8 @@
                         <div>
                             <div class="price-row">$ ${parseFloat(p.price).toFixed(2)}</div>
                             <div class="card-buttons-row">
-                                <button class="card-action-btn cart-add" onclick="addItemToCart(${p.id})">
-                                    <i class="fa-solid fa-shopping-cart"></i> Agregar
+                                <button class="card-action-btn cart-add" ${p.stock === 'agotado' ? 'disabled' : ''} onclick="addItemToCart(${p.id})">
+                                    <i class="fa-solid fa-shopping-cart"></i> ${p.stock === 'agotado' ? 'Agotado' : 'Agregar'}
                                 </button>
                             </div>
                         </div>
@@ -1844,7 +1942,7 @@
 
         function addItemToCart(id) {
             const p = products.find(prod => prod.id === id);
-            if (!p) return;
+            if (!p || p.stock === 'agotado') return;
             cart.push(p);
             updateCartSummary();
             alert(`Añadido: ${p.name}`);
@@ -1910,12 +2008,14 @@
             window.open(`https://wa.me/${business.whatsapp}?text=${encodeURIComponent(message)}`, '_blank');
         }
 
-        /* ADMIN INIT & CUSTOMIZER */
+        /* ================= VISTA ADMINISTRADOR ================= */
         function initAdminSystem() {
             document.getElementById('admin-sidebar-name').innerText = business.name;
             loadBusinessAdminForm();
-            renderAdminPromotionsTable();
+            populateCategorySelects();
             renderAdminProductsTable();
+            renderAdminCategoriesTable();
+            renderAdminPromotionsTable();
             populateCustomizerInputs();
         }
 
@@ -1928,6 +2028,472 @@
             const matched = document.getElementById(`sec-${secId}`);
             if (matched) matched.classList.add('active');
             document.getElementById('admin-sidebar').classList.remove('show');
+        }
+
+        function populateCategorySelects() {
+            const sel = document.getElementById('form-p-cat');
+            sel.innerHTML = '';
+            categories.forEach(c => {
+                sel.innerHTML += `<option value="${c.id}">${c.name}</option>`;
+            });
+        }
+
+        /* 1. CRUD PRODUCTOS (CREAR, EDITAR TODOS LOS CAMPOS Y BORRAR) */
+        function renderAdminProductsTable() {
+            const tbody = document.getElementById('admin-products-tbody');
+            tbody.innerHTML = '';
+
+            products.forEach(p => {
+                const catObj = categories.find(c => c.id == p.catId);
+                const catName = catObj ? catObj.name : "Sin Categoría";
+                const stockBadgeClass = p.stock === 'agotado' ? 'stock-none' : (p.stock === 'limitado' ? 'stock-low' : 'stock-ok');
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>#${p.id}</td>
+                    <td>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <img src="${p.img || 'https://via.placeholder.com/30'}" style="width:30px; height:30px; object-fit:contain; border-radius:4px; background:#000;">
+                            <div>
+                                <strong>${p.name}</strong><br>
+                                <span style="font-size:0.7rem; color:var(--text-muted);">${p.warranty || ''}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="admin-table-badge" style="background:rgba(124, 58, 237, 0.15); color:#c4b5fd;">${catName}</span></td>
+                    <td>$ ${parseFloat(p.price).toFixed(2)}</td>
+                    <td><span class="admin-table-badge ${stockBadgeClass}">${p.stock || 'Disponible'}</span></td>
+                    <td><span class="admin-table-badge ${p.status === 'activo' ? 'active' : 'inactive'}">${p.status}</span></td>
+                    <td>
+                        <div class="table-action-row">
+                            <button class="table-action-btn edit" onclick="editProductAdmin(${p.id})">✏️</button>
+                            <button class="table-action-btn del" onclick="deleteProductAdmin(${p.id})">🗑️</button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filterAdminProductsTable() {
+            const q = document.getElementById('search-products-input').value.toLowerCase();
+            const rows = document.querySelectorAll('#admin-products-tbody tr');
+            rows.forEach(r => {
+                const text = r.innerText.toLowerCase();
+                r.style.display = text.includes(q) ? '' : 'none';
+            });
+        }
+
+        function openNewProductModal() {
+            document.getElementById('modal-product-title').innerText = "Nueva Cuenta de Streaming";
+            document.getElementById('form-p-id').value = "";
+            document.getElementById('form-p-name').value = "";
+            document.getElementById('form-p-price').value = "";
+            document.getElementById('form-p-warranty').value = "25 días de garantía.";
+            document.getElementById('form-p-stock').value = "disponible";
+            document.getElementById('form-p-status').value = "activo";
+            document.getElementById('form-p-img').value = "";
+            document.getElementById('form-p-upload').value = "";
+            tempProdImgBuffer = "";
+            populateCategorySelects();
+            document.getElementById('modal-product').style.display = 'flex';
+        }
+
+        function editProductAdmin(id) {
+            const p = products.find(prod => prod.id === id);
+            if (!p) return;
+
+            document.getElementById('modal-product-title').innerText = "Editar Cuenta";
+            document.getElementById('form-p-id').value = p.id;
+            document.getElementById('form-p-name').value = p.name;
+            document.getElementById('form-p-price').value = p.price;
+            document.getElementById('form-p-warranty').value = p.warranty || "";
+            document.getElementById('form-p-stock').value = p.stock || "disponible";
+            document.getElementById('form-p-status').value = p.status || "activo";
+            document.getElementById('form-p-img').value = p.img.startsWith('data:') ? '' : p.img;
+            document.getElementById('form-p-upload').value = "";
+            tempProdImgBuffer = p.img.startsWith('data:') ? p.img : "";
+
+            populateCategorySelects();
+            document.getElementById('form-p-cat').value = p.catId;
+
+            document.getElementById('modal-product').style.display = 'flex';
+        }
+
+        function handleProductPicUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => { tempProdImgBuffer = e.target.result; };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function saveProductForm() {
+            const id = document.getElementById('form-p-id').value;
+            const name = document.getElementById('form-p-name').value.trim();
+            const price = parseFloat(document.getElementById('form-p-price').value);
+            const catId = parseInt(document.getElementById('form-p-cat').value);
+            const warranty = document.getElementById('form-p-warranty').value.trim();
+            const stock = document.getElementById('form-p-stock').value;
+            const status = document.getElementById('form-p-status').value;
+            const urlImg = document.getElementById('form-p-img').value.trim();
+            const finalImg = tempProdImgBuffer || urlImg || "https://via.placeholder.com/150";
+
+            if (!name || isNaN(price)) {
+                alert("Completa el nombre y precio del producto.");
+                return;
+            }
+
+            if (id) {
+                const p = products.find(prod => prod.id == id);
+                if (p) {
+                    p.name = name;
+                    p.price = price;
+                    p.catId = catId;
+                    p.warranty = warranty;
+                    p.stock = stock;
+                    p.status = status;
+                    if (finalImg) p.img = finalImg;
+                }
+            } else {
+                products.push({
+                    id: Date.now(),
+                    name, price, catId, warranty, stock, status,
+                    img: finalImg
+                });
+            }
+
+            localStorage.setItem('streaming_prods', JSON.stringify(products));
+            closeFormModal('modal-product');
+            renderAdminProductsTable();
+            renderCatalogItems();
+            alert("¡Producto guardado exitosamente!");
+        }
+
+        function deleteProductAdmin(id) {
+            if (confirm("¿Estás segura de eliminar este producto?")) {
+                products = products.filter(p => p.id !== id);
+                localStorage.setItem('streaming_prods', JSON.stringify(products));
+                renderAdminProductsTable();
+                renderCatalogItems();
+            }
+        }
+
+        /* 2. CRUD CATEGORÍAS (GENERAR NUEVAS, EDITAR Y BORRAR) */
+        function renderAdminCategoriesTable() {
+            const tbody = document.getElementById('admin-categories-tbody');
+            tbody.innerHTML = '';
+
+            categories.forEach(c => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>#${c.id}</td>
+                    <td><strong>${c.name}</strong></td>
+                    <td><i class="fa-solid ${c.icon || 'fa-tag'}" style="color:var(--accent-color);"></i> <span style="font-size:0.75rem; color:var(--text-muted);">${c.icon || 'fa-tag'}</span></td>
+                    <td><span class="admin-table-badge ${c.status === 'activo' ? 'active' : 'inactive'}">${c.status}</span></td>
+                    <td>
+                        <div class="table-action-row">
+                            <button class="table-action-btn edit" onclick="editCategoryAdmin(${c.id})">✏️</button>
+                            <button class="table-action-btn del" onclick="deleteCategoryAdmin(${c.id})">🗑️</button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filterAdminCategoriesTable() {
+            const q = document.getElementById('search-categories-input').value.toLowerCase();
+            const rows = document.querySelectorAll('#admin-categories-tbody tr');
+            rows.forEach(r => {
+                const text = r.innerText.toLowerCase();
+                r.style.display = text.includes(q) ? '' : 'none';
+            });
+        }
+
+        function openNewCategoryModal() {
+            document.getElementById('modal-category-title').innerText = "Nueva Categoría";
+            document.getElementById('form-c-id').value = "";
+            document.getElementById('form-c-name').value = "";
+            document.getElementById('form-c-icon').value = "fa-tag";
+            document.getElementById('form-c-status').value = "activo";
+            document.getElementById('modal-category').style.display = 'flex';
+        }
+
+        function editCategoryAdmin(id) {
+            const c = categories.find(cat => cat.id === id);
+            if (!c) return;
+
+            document.getElementById('modal-category-title').innerText = "Editar Categoría";
+            document.getElementById('form-c-id').value = c.id;
+            document.getElementById('form-c-name').value = c.name;
+            document.getElementById('form-c-icon').value = c.icon || "fa-tag";
+            document.getElementById('form-c-status').value = c.status || "activo";
+            document.getElementById('modal-category').style.display = 'flex';
+        }
+
+        function saveCategoryForm() {
+            const id = document.getElementById('form-c-id').value;
+            const name = document.getElementById('form-c-name').value.trim();
+            const icon = document.getElementById('form-c-icon').value.trim() || 'fa-tag';
+            const status = document.getElementById('form-c-status').value;
+
+            if (!name) {
+                alert("Indica el nombre de la categoría.");
+                return;
+            }
+
+            if (id) {
+                const c = categories.find(cat => cat.id == id);
+                if (c) {
+                    c.name = name;
+                    c.icon = icon;
+                    c.status = status;
+                }
+            } else {
+                categories.push({
+                    id: Date.now(),
+                    name,
+                    icon,
+                    status
+                });
+            }
+
+            localStorage.setItem('streaming_cats', JSON.stringify(categories));
+            closeFormModal('modal-category');
+            renderAdminCategoriesTable();
+            renderCategoriesPills();
+            populateCategorySelects();
+            alert("¡Categoría guardada exitosamente!");
+        }
+
+        function deleteCategoryAdmin(id) {
+            if (confirm("¿Eliminar esta categoría? Los productos asociados se mantendrán pero quedarán sin categoría.")) {
+                categories = categories.filter(c => c.id !== id);
+                localStorage.setItem('streaming_cats', JSON.stringify(categories));
+                renderAdminCategoriesTable();
+                renderCategoriesPills();
+                populateCategorySelects();
+            }
+        }
+
+        /* 3. CRUD PROMOCIONES Y COMBOS (EDITAR Y CREAR) */
+        function renderAdminPromotionsTable() {
+            const tbody = document.getElementById('admin-promos-tbody');
+            tbody.innerHTML = '';
+            promotions.forEach(p => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><span class="admin-table-badge ${p.type === 'POPUP' ? 'popup-badge' : 'combo-badge'}">${p.type}</span></td>
+                    <td><strong>${p.title}</strong></td>
+                    <td>${p.desc || ''}</td>
+                    <td>${p.startDate} - ${p.endDate}</td>
+                    <td><span class="admin-table-badge ${p.status === 'ACTIVA' ? 'active' : 'inactive'}">${p.status}</span></td>
+                    <td>
+                        <div class="table-action-row">
+                            <button class="table-action-btn edit" onclick="editPromoItem(${p.id})">✏️</button>
+                            <button class="table-action-btn del" onclick="deletePromoItem(${p.id})">🗑️</button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function openNewPopupModal() {
+            document.getElementById('modal-popup-title').innerText = "Crear Popup Promocional";
+            document.getElementById('form-pop-id').value = "";
+            document.getElementById('form-pop-title').value = "Combos";
+            document.getElementById('form-pop-desc').value = "Combos solo por temporada";
+            document.getElementById('form-pop-duration').value = "6";
+            document.getElementById('form-pop-start').value = new Date().toISOString().slice(0, 10);
+            document.getElementById('form-pop-end').value = new Date(Date.now() + 15 * 86400000).toISOString().slice(0, 10);
+            document.getElementById('form-pop-url').value = "";
+            tempPopupImgBuffer = "";
+            document.getElementById('modal-popup-form').style.display = 'flex';
+        }
+
+        function openNewComboModal() {
+            document.getElementById('modal-combo-title').innerText = "Crear Combo";
+            document.getElementById('form-combo-id').value = "";
+            document.getElementById('form-combo-name').value = "";
+            document.getElementById('form-combo-price').value = "";
+            document.getElementById('form-combo-desc').value = "25 días de garantía.";
+            document.getElementById('form-combo-start').value = new Date().toISOString().slice(0, 10);
+            document.getElementById('form-combo-end').value = new Date(Date.now() + 15 * 86400000).toISOString().slice(0, 10);
+            document.getElementById('form-combo-url').value = "";
+            tempComboImgBuffer = "";
+            document.getElementById('modal-combo-form').style.display = 'flex';
+        }
+
+        function editPromoItem(id) {
+            const item = promotions.find(p => p.id === id);
+            if (!item) return;
+
+            if (item.type === 'POPUP') {
+                document.getElementById('modal-popup-title').innerText = "Editar Popup";
+                document.getElementById('form-pop-id').value = item.id;
+                document.getElementById('form-pop-title').value = item.title;
+                document.getElementById('form-pop-desc').value = item.desc || "";
+                document.getElementById('form-pop-duration').value = item.duration || 6;
+                document.getElementById('form-pop-start').value = item.startDate;
+                document.getElementById('form-pop-end').value = item.endDate;
+                document.getElementById('form-pop-url').value = item.img.startsWith('data:') ? '' : item.img;
+                tempPopupImgBuffer = item.img.startsWith('data:') ? item.img : '';
+                document.getElementById('modal-popup-form').style.display = 'flex';
+            } else {
+                document.getElementById('modal-combo-title').innerText = "Editar Combo";
+                document.getElementById('form-combo-id').value = item.id;
+                document.getElementById('form-combo-name').value = item.title;
+                document.getElementById('form-combo-price').value = item.price;
+                document.getElementById('form-combo-desc').value = item.desc || "";
+                document.getElementById('form-combo-start').value = item.startDate;
+                document.getElementById('form-combo-end').value = item.endDate;
+                document.getElementById('form-combo-url').value = item.img.startsWith('data:') ? '' : item.img;
+                tempComboImgBuffer = item.img.startsWith('data:') ? item.img : '';
+                document.getElementById('modal-combo-form').style.display = 'flex';
+            }
+        }
+
+        function handlePopupPicUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => { tempPopupImgBuffer = e.target.result; };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function handleComboPicUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => { tempComboImgBuffer = e.target.result; };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function savePopupItem() {
+            const id = document.getElementById('form-pop-id').value;
+            const title = document.getElementById('form-pop-title').value.trim();
+            const desc = document.getElementById('form-pop-desc').value.trim();
+            const duration = parseInt(document.getElementById('form-pop-duration').value) || 6;
+            const startDate = document.getElementById('form-pop-start').value || new Date().toISOString().slice(0, 10);
+            const endDate = document.getElementById('form-pop-end').value || '2026-12-31';
+            const url = document.getElementById('form-pop-url').value.trim();
+            const img = tempPopupImgBuffer || url || "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800";
+
+            if (!title) { alert("Completa el título."); return; }
+
+            if (id) {
+                const p = promotions.find(x => x.id == id);
+                if (p) {
+                    p.title = title; p.desc = desc; p.duration = duration;
+                    p.startDate = startDate; p.endDate = endDate; p.img = img;
+                }
+            } else {
+                promotions.push({ id: Date.now(), type: 'POPUP', title, desc, duration, startDate, endDate, img, status: 'ACTIVA' });
+            }
+
+            localStorage.setItem('streaming_promos_table', JSON.stringify(promotions));
+            closeFormModal('modal-popup-form');
+            renderAdminPromotionsTable();
+            alert("¡Popup guardado!");
+        }
+
+        function saveComboItem() {
+            const id = document.getElementById('form-combo-id').value;
+            const title = document.getElementById('form-combo-name').value.trim();
+            const price = parseFloat(document.getElementById('form-combo-price').value) || 0;
+            const desc = document.getElementById('form-combo-desc').value.trim();
+            const startDate = document.getElementById('form-combo-start').value || new Date().toISOString().slice(0, 10);
+            const endDate = document.getElementById('form-combo-end').value || '2026-12-31';
+            const url = document.getElementById('form-combo-url').value.trim();
+            const img = tempComboImgBuffer || url || "https://via.placeholder.com/300";
+
+            if (!title || price <= 0) { alert("Indica el nombre y precio del combo."); return; }
+
+            if (id) {
+                const c = promotions.find(x => x.id == id);
+                if (c) {
+                    c.title = title; c.price = price; c.desc = desc;
+                    c.startDate = startDate; c.endDate = endDate; c.img = img;
+                }
+            } else {
+                promotions.push({ id: Date.now(), type: 'COMBO', title, price, desc, startDate, endDate, img, status: 'ACTIVA' });
+            }
+
+            localStorage.setItem('streaming_promos_table', JSON.stringify(promotions));
+            closeFormModal('modal-combo-form');
+            renderAdminPromotionsTable();
+            renderCombosDrawerItems();
+            alert("¡Combo guardado!");
+        }
+
+        function deletePromoItem(id) {
+            if (confirm("¿Eliminar esta promoción?")) {
+                promotions = promotions.filter(p => p.id !== id);
+                localStorage.setItem('streaming_promos_table', JSON.stringify(promotions));
+                renderAdminPromotionsTable();
+                renderCombosDrawerItems();
+            }
+        }
+
+        /* PERSONALIZADOR & ESTILOS */
+        function applyLoadedDesign() {
+            const root = document.documentElement;
+            const c = themeSettings.colors;
+
+            root.style.setProperty('--primary-color', c.primary);
+            root.style.setProperty('--accent-color', c.accent);
+            root.style.setProperty('--bg-color', c.bg);
+            root.style.setProperty('--panel-color', c.panel);
+            root.style.setProperty('--title-color', c.title);
+            root.style.setProperty('--secondary-text-color', c.secondary);
+            root.style.setProperty('--float-cart-color', c.floatCart);
+            root.style.setProperty('--burbuja-color', c.burbuja);
+            root.style.setProperty('--btn-principal-color', c.btnPrincipal);
+
+            root.style.setProperty('--main-font', themeSettings.fontFamily || "'Poppins', sans-serif");
+            document.body.style.fontFamily = themeSettings.fontFamily || "'Poppins', sans-serif";
+
+            if (themeSettings.bgImage) {
+                document.body.style.backgroundImage = `url('${themeSettings.bgImage}')`;
+                document.querySelector('.bg-overlay').style.display = 'block';
+            } else {
+                document.body.style.backgroundImage = 'none';
+                document.querySelector('.bg-overlay').style.display = 'none';
+            }
+
+            applyCardStyleToRoot(themeSettings.cardStyle || 'modern-rounded');
+        }
+
+        function applyCardStyleToRoot(style) {
+            const root = document.documentElement;
+            if (style === 'glassmorphism') {
+                root.style.setProperty('--card-radius', '16px');
+                root.style.setProperty('--card-border', '1px solid rgba(255, 255, 255, 0.2)');
+                root.style.setProperty('--card-backdrop', 'blur(12px)');
+                root.style.setProperty('--card-shadow', '0 8px 32px 0 rgba(0, 0, 0, 0.37)');
+            } else if (style === 'neon-glow') {
+                root.style.setProperty('--card-radius', '14px');
+                root.style.setProperty('--card-border', '2px solid var(--accent-color)');
+                root.style.setProperty('--card-backdrop', 'none');
+                root.style.setProperty('--card-shadow', '0 0 15px rgba(168, 85, 247, 0.4)');
+            } else if (style === 'sharp-future') {
+                root.style.setProperty('--card-radius', '4px');
+                root.style.setProperty('--card-border', '1.5px solid rgba(255, 255, 255, 0.15)');
+                root.style.setProperty('--card-backdrop', 'none');
+                root.style.setProperty('--card-shadow', 'none');
+            } else if (style === 'subtle-border') {
+                root.style.setProperty('--card-radius', '12px');
+                root.style.setProperty('--card-border', '1px solid rgba(255, 255, 255, 0.04)');
+                root.style.setProperty('--card-backdrop', 'none');
+                root.style.setProperty('--card-shadow', 'none');
+            } else {
+                root.style.setProperty('--card-radius', '18px');
+                root.style.setProperty('--card-border', '1px solid rgba(255, 255, 255, 0.06)');
+                root.style.setProperty('--card-backdrop', 'none');
+                root.style.setProperty('--card-shadow', 'none');
+            }
         }
 
         function populateCustomizerInputs() {
@@ -2088,110 +2654,10 @@
             business.scheduleClose = document.getElementById('biz-schedule-close').value;
             business.scheduleDays = document.getElementById('biz-schedule-days').value;
             localStorage.setItem('streaming_biz', JSON.stringify(business));
-            alert("Perfil guardado");
-        }
-
-        function renderAdminPromotionsTable() {
-            const tbody = document.getElementById('admin-promos-tbody');
-            tbody.innerHTML = '';
-            promotions.forEach(p => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><span class="admin-table-badge ${p.type === 'POPUP' ? 'popup-badge' : 'combo-badge'}">${p.type}</span></td>
-                    <td><strong>${p.title}</strong></td>
-                    <td>${p.desc}</td>
-                    <td>${p.startDate} - ${p.endDate}</td>
-                    <td><span class="admin-table-badge ${p.status === 'ACTIVA' ? 'active' : 'inactive'}">${p.status}</span></td>
-                    <td><button class="table-action-btn del" onclick="deletePromoItem(${p.id})">🗑️</button></td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function deletePromoItem(id) {
-            promotions = promotions.filter(p => p.id !== id);
-            localStorage.setItem('streaming_promos_table', JSON.stringify(promotions));
-            renderAdminPromotionsTable();
-        }
-
-        function renderAdminProductsTable() {
-            const tbody = document.getElementById('admin-products-tbody');
-            tbody.innerHTML = '';
-            products.forEach(p => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${p.id}</td>
-                    <td><strong>${p.name}</strong></td>
-                    <td>$ ${parseFloat(p.price).toFixed(2)}</td>
-                    <td>${p.stock}</td>
-                    <td>${p.status}</td>
-                    <td><button class="table-action-btn del" onclick="deleteProduct(${p.id})">🗑️</button></td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function openNewProductModal() {
-            const sel = document.getElementById('form-p-cat');
-            sel.innerHTML = '';
-            categories.forEach(c => sel.innerHTML += `<option value="${c.id}">${c.name}</option>`);
-            document.getElementById('modal-product').style.display = 'flex';
-        }
-
-        function saveProductForm() {
-            const name = document.getElementById('form-p-name').value.trim();
-            const price = parseFloat(document.getElementById('form-p-price').value);
-            const catId = parseInt(document.getElementById('form-p-cat').value);
-            const warranty = document.getElementById('form-p-warranty').value;
-            const img = document.getElementById('form-p-img').value || "https://via.placeholder.com/150";
-
-            if (!name || isNaN(price)) return;
-            products.push({ id: Date.now(), name, price, catId, warranty, img, stock: 'disponible', status: 'activo' });
-            localStorage.setItem('streaming_prods', JSON.stringify(products));
-            closeFormModal('modal-product');
-            renderAdminProductsTable();
-        }
-
-        function deleteProduct(id) {
-            products = products.filter(p => p.id !== id);
-            localStorage.setItem('streaming_prods', JSON.stringify(products));
-            renderAdminProductsTable();
-        }
-
-        function openNewPopupModal() { document.getElementById('modal-popup-form').style.display = 'flex'; }
-        function openNewComboModal() { document.getElementById('modal-combo-form').style.display = 'flex'; }
-
-        function savePopupItem() {
-            const title = document.getElementById('form-pop-title').value.trim();
-            const desc = document.getElementById('form-pop-desc').value.trim();
-            const duration = parseInt(document.getElementById('form-pop-duration').value) || 6;
-            const startDate = document.getElementById('form-pop-start').value || new Date().toISOString().slice(0, 10);
-            const endDate = document.getElementById('form-pop-end').value || '2026-12-31';
-            const img = document.getElementById('form-pop-url').value.trim() || "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800";
-
-            if(!title) return;
-            promotions.push({ id: Date.now(), type: 'POPUP', title, desc, duration, startDate, endDate, img, status: 'ACTIVA' });
-            localStorage.setItem('streaming_promos_table', JSON.stringify(promotions));
-            closeFormModal('modal-popup-form');
-            renderAdminPromotionsTable();
-        }
-
-        function saveComboItem() {
-            const title = document.getElementById('form-combo-name').value.trim();
-            const price = parseFloat(document.getElementById('form-combo-price').value) || 0;
-            const desc = document.getElementById('form-combo-desc').value.trim();
-            const startDate = document.getElementById('form-combo-start').value || new Date().toISOString().slice(0, 10);
-            const endDate = document.getElementById('form-combo-end').value || '2026-12-31';
-            const img = document.getElementById('form-combo-url').value.trim() || "https://via.placeholder.com/300";
-
-            if(!title || price <= 0) return;
-            promotions.push({ id: Date.now(), type: 'COMBO', title, price, desc, startDate, endDate, img, status: 'ACTIVA' });
-            localStorage.setItem('streaming_promos_table', JSON.stringify(promotions));
-            closeFormModal('modal-combo-form');
-            renderAdminPromotionsTable();
+            alert("Perfil de negocio guardado.");
         }
 
         function closeFormModal(id) { document.getElementById(id).style.display = 'none'; }
     </script>
 </body>
-    </html>
+                    </html>
