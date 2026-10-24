@@ -4,20 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MICHELLE777 - Streaming Store</title>
+    <!-- Fuentes de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@400;600;800&family=Montserrat:wght@400;600;800&family=Orbitron:wght@500;700;900&family=Outfit:wght@400;600;800&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     <!-- Iconos FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         :root {
-            --bg-color: #0c0c0e;
-            --card-bg: #16161a;
-            --primary-color: #7c3aed;
-            --accent-color: #a855f7;
-            --base-theme-color: #9f00f5;
-            --panel-color: #5b21b6;
-            --title-color: #ffffff;
-            --secondary-text-color: #c4b5fd;
-            --burbuja-color: #7c3aed;
-            --btn-principal-color: #6d28d9;
+            /* 9 Variables de color idénticas a la referencia */
+            --primary-color: #7c3aed;       /* Botones, enlaces, precios */
+            --accent-color: #a855f7;        /* Segundo tono para gradientes */
+            --bg-color: #0c0c0e;            /* Color base de toda la página */
+            --panel-color: #16161a;         /* Superficies y paneles del catálogo */
+            --title-color: #ffffff;         /* Títulos y textos claros */
+            --secondary-text-color: #c4b5fd;/* Descripciones y textos secundarios */
+            --float-cart-color: #7c3aed;    /* Botón flotante y acentos del carrito */
+            --burbuja-color: #9333ea;       /* Color de la burbuja con la cantidad */
+            --btn-principal-color: #6d28d9; /* Botones principales de acción */
+            
+            /* Tipografía y bordes dinámicos */
+            --main-font: 'Poppins', sans-serif;
+            --card-radius: 18px;
+            --card-border: 1px solid rgba(255, 255, 255, 0.06);
+            --card-backdrop: blur(0px);
+            --card-shadow: none;
+
             --promo-color: #f59e0b;
             --text-muted: #9ca3af;
             --success-color: #10b981;
@@ -26,13 +39,26 @@
 
         body {
             background-color: var(--bg-color);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
             color: var(--title-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: var(--main-font);
             margin: 0;
             padding: 0;
             padding-bottom: 95px;
             overflow-x: hidden;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Capa oscura si hay imagen de fondo */
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.78);
+            z-index: -1;
+            pointer-events: none;
         }
 
         /* ================= VISTA CLIENTE ================= */
@@ -43,8 +69,9 @@
             align-items: center;
             justify-content: space-between;
             padding: 15px 20px;
-            background: linear-gradient(180deg, rgba(30, 17, 53, 0.4) 0%, var(--bg-color) 100%);
+            background: linear-gradient(180deg, rgba(30, 17, 53, 0.45) 0%, rgba(12, 12, 14, 0.8) 100%);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
         }
 
         .header-brand { display: flex; align-items: center; gap: 12px; }
@@ -82,9 +109,9 @@
             box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
         }
 
-        /* CINTILLO DE HORARIO DE ATENCIÓN */
+        /* CINTILLO DE HORARIO */
         .schedule-banner {
-            background: linear-gradient(90deg, rgba(124, 58, 237, 0.15), rgba(22, 22, 26, 0.8));
+            background: linear-gradient(90deg, rgba(124, 58, 237, 0.15), rgba(22, 22, 26, 0.85));
             border-bottom: 1px solid rgba(124, 58, 237, 0.3);
             padding: 8px 16px;
             font-size: 0.78rem;
@@ -138,7 +165,7 @@
         .categories-carousel::-webkit-scrollbar { display: none; }
 
         .category-pill {
-            background-color: var(--card-bg);
+            background-color: var(--panel-color);
             color: var(--secondary-text-color);
             border: 1px solid rgba(255, 255, 255, 0.05);
             padding: 8px 18px;
@@ -176,13 +203,15 @@
         }
 
         .client-card {
-            background-color: #000000;
-            border-radius: 18px;
+            background-color: var(--panel-color);
+            border-radius: var(--card-radius);
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: transform 0.25s, border-color 0.25s;
+            border: var(--card-border);
+            box-shadow: var(--card-shadow);
+            backdrop-filter: var(--card-backdrop);
+            transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
         }
 
         .client-card:hover {
@@ -204,7 +233,7 @@
         }
 
         .card-info-wrap {
-            background: linear-gradient(180deg, var(--panel-color) 0%, #1e1b4b 100%);
+            background: linear-gradient(180deg, var(--panel-color) 0%, rgba(12, 12, 14, 0.95) 100%);
             padding: 12px 10px 14px 10px;
             display: flex;
             flex-direction: column;
@@ -224,6 +253,7 @@
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
+            color: var(--title-color);
         }
 
         .card-info-wrap .warranty-label {
@@ -271,13 +301,13 @@
             width: 38px;
         }
 
-        /* BOTÓN FLOTANTE LATERAL IZQUIERDO CON FLECHA A LA DERECHA */
+        /* BOTÓN LATERAL IZQUIERDO COMBOS */
         .combos-drawer-btn {
             position: fixed;
             left: 0;
             top: 45%;
             transform: translateY(-50%);
-            background: linear-gradient(135deg, #7c3aed, #ec4899);
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
             color: #ffffff;
             border: 2px solid rgba(255, 255, 255, 0.2);
             border-left: none;
@@ -306,7 +336,7 @@
             50% { transform: translateX(4px); }
         }
 
-        /* CAJÓN LATERAL DE COMBOS */
+        /* CAJÓN OFFCANVAS DE COMBOS */
         .combos-drawer-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -323,7 +353,7 @@
             width: 85%;
             max-width: 340px;
             height: 100%;
-            background: linear-gradient(180deg, #13111c 0%, #0c0c0e 100%);
+            background: linear-gradient(180deg, #13111c 0%, var(--bg-color) 100%);
             border-right: 2px solid var(--accent-color);
             display: flex;
             flex-direction: column;
@@ -343,34 +373,12 @@
             background: rgba(124, 58, 237, 0.1);
         }
 
-        .combos-drawer-header h3 {
-            margin: 0;
-            color: #ffffff;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .combos-drawer-close {
-            background: none;
-            border: none;
-            color: #ffffff;
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
-
-        .combos-drawer-content {
-            padding: 16px;
-            overflow-y: auto;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
+        .combos-drawer-header h3 { margin: 0; color: #ffffff; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
+        .combos-drawer-close { background: none; border: none; color: #ffffff; font-size: 1.2rem; cursor: pointer; }
+        .combos-drawer-content { padding: 16px; overflow-y: auto; flex-grow: 1; display: flex; flex-direction: column; gap: 14px; }
 
         .combo-item-card {
-            background: #16161a;
+            background: var(--panel-color);
             border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 14px;
             overflow: hidden;
@@ -379,54 +387,13 @@
             border-top: 3px solid #10b981;
         }
 
-        .combo-item-img {
-            height: 120px;
-            width: 100%;
-            object-fit: cover;
-            background-color: #000;
-        }
-
-        .combo-item-body {
-            padding: 12px;
-            text-align: left;
-        }
-
-        .combo-item-body h4 {
-            margin: 0 0 4px 0;
-            font-size: 0.95rem;
-            color: #fff;
-            text-transform: uppercase;
-        }
-
-        .combo-item-body p {
-            margin: 0 0 8px 0;
-            font-size: 0.78rem;
-            color: var(--secondary-text-color);
-        }
-
-        .combo-item-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 8px;
-        }
-
-        .combo-item-price {
-            font-weight: 800;
-            font-size: 1.1rem;
-            color: #10b981;
-        }
-
-        .combo-add-btn {
-            background-color: #10b981;
-            color: #000;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 0.78rem;
-            cursor: pointer;
-        }
+        .combo-item-img { height: 120px; width: 100%; object-fit: cover; background-color: #000; }
+        .combo-item-body { padding: 12px; text-align: left; }
+        .combo-item-body h4 { margin: 0 0 4px 0; font-size: 0.95rem; color: #fff; text-transform: uppercase; }
+        .combo-item-body p { margin: 0 0 8px 0; font-size: 0.78rem; color: var(--secondary-text-color); }
+        .combo-item-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+        .combo-item-price { font-weight: 800; font-size: 1.1rem; color: #10b981; }
+        .combo-add-btn { background-color: #10b981; color: #000; border: none; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 0.78rem; cursor: pointer; }
 
         /* POPUP PUBLICITARIO */
         .popup-modal-overlay {
@@ -442,15 +409,8 @@
             box-sizing: border-box;
         }
 
-        .popup-modal-overlay.active {
-            display: flex;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+        .popup-modal-overlay.active { display: flex; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .popup-card-content {
             position: relative;
@@ -464,14 +424,7 @@
             text-align: center;
         }
 
-        .popup-card-content img {
-            width: 100%;
-            height: auto;
-            max-height: 400px;
-            object-fit: cover;
-            display: block;
-        }
-
+        .popup-card-content img { width: 100%; height: auto; max-height: 400px; object-fit: cover; display: block; }
         .popup-close-circle {
             position: absolute;
             top: 12px;
@@ -523,8 +476,8 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background-color: var(--card-bg);
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            background-color: var(--panel-color);
+            border-top: 2px solid var(--float-cart-color);
             box-shadow: 0 -4px 18px rgba(0,0,0,0.5);
             z-index: 999;
         }
@@ -542,16 +495,18 @@
         .cart-data-summary { display: flex; flex-direction: column; text-align: left; }
         .cart-data-summary span { font-size: 0.72rem; color: var(--secondary-text-color); }
         .cart-data-summary strong { font-size: 1.1rem; color: var(--title-color); }
+        
+        .cart-badge-count {
+            background-color: var(--burbuja-color);
+            color: white;
+            padding: 2px 7px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 800;
+        }
 
         .cart-ui-actions { display: flex; align-items: center; gap: 8px; }
-        .cart-text-btn {
-            background: none;
-            border: none;
-            color: var(--accent-color);
-            font-size: 0.8rem;
-            cursor: pointer;
-            text-decoration: underline;
-        }
+        .cart-text-btn { background: none; border: none; color: var(--accent-color); font-size: 0.8rem; cursor: pointer; text-decoration: underline; }
 
         .checkout-submit-btn {
             background-color: #25d366;
@@ -676,9 +631,10 @@
             overflow-y: auto;
             max-height: calc(100vh - 65px);
             text-align: left;
+            padding-bottom: 110px; /* Espacio para barra flotante de guardar */
         }
 
-        @media (max-width: 480px) { .admin-content-view { padding: 14px; } }
+        @media (max-width: 480px) { .admin-content-view { padding: 14px; padding-bottom: 110px; } }
 
         .admin-section { display: none; }
         .admin-section.active { display: block; }
@@ -709,6 +665,262 @@
         .admin-btn.popup { background: linear-gradient(135deg, #a855f7, #6366f1); }
         .admin-btn.combo { background: linear-gradient(135deg, #10b981, #059669); }
 
+        /* ================= PANTALLA PERSONALIZAR (image_20.png) ================= */
+        .customizer-box {
+            background-color: #121215;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .customizer-box-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 12px;
+        }
+
+        .customizer-icon {
+            color: #38bdf8;
+            font-size: 1.25rem;
+            margin-top: 2px;
+        }
+
+        .customizer-box-header h4 { margin: 0 0 4px 0; font-size: 1.05rem; color: #ffffff; }
+        .customizer-box-header p { margin: 0; font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; }
+
+        /* GRID DE PLANTILLAS / ESTILOS */
+        .templates-showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .theme-card-option {
+            background: #18181f;
+            border: 2px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 16px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.25s ease;
+            text-align: left;
+        }
+
+        .theme-card-option:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .theme-card-option.active {
+            border-color: #38bdf8;
+            background: rgba(56, 189, 248, 0.04);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+        }
+
+        .theme-card-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--accent-color);
+            color: #ffffff;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 12px;
+            display: none;
+            text-transform: uppercase;
+        }
+
+        .theme-card-option.active .theme-card-badge { display: inline-block; }
+
+        .theme-preview-bars {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .theme-color-block {
+            height: 38px;
+            flex-grow: 1;
+            border-radius: 8px;
+        }
+
+        .theme-card-option h5 { margin: 0 0 6px 0; font-size: 0.95rem; color: #fff; }
+        .theme-card-option p { margin: 0; font-size: 0.75rem; color: var(--text-muted); line-height: 1.35; }
+
+        /* SELECTORES DE FUENTE Y RECUADROS */
+        .settings-selectors-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .selector-field-card {
+            background: #18181f;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 14px;
+        }
+
+        .selector-field-card label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .selector-field-card select {
+            width: 100%;
+            background: #121215;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        /* PALETA DE 9 COLORES (image_20.png) */
+        .nine-colors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .palette-item-box {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .palette-item-box input[type="color"] {
+            border: none;
+            width: 38px;
+            height: 38px;
+            padding: 0;
+            background: none;
+            cursor: pointer;
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+
+        .palette-item-details {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            overflow: hidden;
+        }
+
+        .palette-item-code {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #1e1b4b;
+            font-family: monospace;
+        }
+
+        .palette-item-desc {
+            font-size: 0.7rem;
+            color: #4b5563;
+            line-height: 1.25;
+            white-space: normal;
+        }
+
+        /* CARGA DE FONDO (image_20.png) */
+        .bg-upload-panel {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 24px 16px;
+            text-align: center;
+            border: 2px dashed #cbd5e1;
+            cursor: pointer;
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .bg-upload-panel i {
+            color: #38bdf8;
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .bg-upload-panel h6 {
+            margin: 0 0 4px 0;
+            color: #1e293b;
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
+        .bg-upload-panel p {
+            margin: 0;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .bg-upload-panel input[type="file"] {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* BARRA FLOTANTE DE ACCIONES ADMIN (image_20.png) */
+        .admin-floating-actions {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #181820;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1200;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.6);
+        }
+
+        .btn-action-save {
+            background: var(--primary-color);
+            color: #ffffff;
+            border: none;
+            padding: 11px 22px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+        }
+
+        .btn-action-view {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 11px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* TABLAS Y FORMULARIOS */
         .admin-table-container {
             background-color: #121215;
             border: 1px solid rgba(255,255,255,0.05);
@@ -777,7 +989,6 @@
         .table-action-btn.edit { color: var(--accent-color); }
         .table-action-btn.del { color: var(--danger-color); }
 
-        /* FORMULARIOS Y CONTROLES */
         .admin-form-box {
             background-color: #121215;
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -869,6 +1080,8 @@
 </head>
 <body>
 
+    <div class="bg-overlay"></div>
+
     <!-- ==================== PANTALLA CLIENTE ==================== -->
     <div id="screen-client" class="client-view">
         <header class="client-header">
@@ -881,11 +1094,11 @@
             </a>
         </header>
 
-        <!-- CINTILLO DINÁMICO DE HORARIO DE ATENCIÓN -->
+        <!-- HORARIO DE ATENCIÓN EN VIVO -->
         <div class="schedule-banner">
             <div class="schedule-info">
                 <i class="fa-regular fa-clock" style="color:var(--accent-color);"></i>
-                <span>Horario de atención: <strong id="display-schedule-hours">9:00 AM - 11:00 PM</strong> (<span id="display-schedule-days">Lun a Dom</span>)</span>
+                <span>Horario: <strong id="display-schedule-hours">9:00 AM - 11:00 PM</strong> (<span id="display-schedule-days">Lun a Dom</span>)</span>
             </div>
             <div id="schedule-status-badge" class="schedule-status-badge open">
                 <i class="fa-solid fa-circle" style="font-size:0.5rem;"></i>
@@ -893,14 +1106,14 @@
             </div>
         </div>
 
-        <!-- BOTÓN LATERAL IZQUIERDO CON FLECHA A LA DERECHA (COMBOS) -->
+        <!-- BOTÓN LATERAL IZQUIERDO COMBOS -->
         <button class="combos-drawer-btn" onclick="openCombosDrawer()">
             <i class="fa-solid fa-fire"></i>
             <span>COMBOS</span>
             <i class="fa-solid fa-arrow-right"></i>
         </button>
 
-        <!-- CAJÓN OFFCANVAS DE COMBOS -->
+        <!-- CAJÓN OFFCANVAS COMBOS -->
         <div id="combos-drawer" class="combos-drawer-overlay" onclick="closeCombosDrawer(event)">
             <div class="combos-drawer-panel">
                 <div class="combos-drawer-header">
@@ -911,7 +1124,7 @@
             </div>
         </div>
 
-        <!-- POPUP PUBLICITARIO AUTOMÁTICO -->
+        <!-- POPUP PUBLICITARIO -->
         <div id="promo-popup" class="popup-modal-overlay">
             <div class="popup-card-content">
                 <button class="popup-close-circle" onclick="closePromoPopup()"><i class="fa-solid fa-xmark"></i></button>
@@ -929,11 +1142,11 @@
             <i class="fab fa-whatsapp"></i>
         </a>
 
-        <!-- BARRA FLOTANTE DE COMPRAS -->
+        <!-- BARRA FLOTANTE DEL CARRITO -->
         <div class="client-cart-bar" id="cart-float-bar">
             <div class="cart-bar-content">
                 <div class="cart-data-summary">
-                    <span>Items elegidos: <strong id="cart-items-count">0</strong></span>
+                    <span>Items elegidos: <span id="cart-items-count" class="cart-badge-count">0</span></span>
                     <strong>Total: <span id="cart-total-price">$0.00</span></strong>
                 </div>
                 <div class="cart-ui-actions">
@@ -948,7 +1161,7 @@
         <footer>
             <p>© MICHELLE777 - Todos los derechos reservados</p>
             <p>Horario de atención: 9:00 AM a 11:00 PM de Lunes a Domingo</p>
-            <p>Soporte y entregas inmediatas dentro del horario de atención.</p>
+            <p>Entregas y garantías inmediatas.</p>
             <a href="javascript:void(0)" onclick="tryEnterAdmin()"><i class="fa-solid fa-user-lock"></i> Acceso Admin</a>
         </footer>
     </div>
@@ -976,7 +1189,7 @@
                         <div class="admin-sidebar-header-sub">Panel de Administración</div>
                     </div>
                     <ul class="admin-menu-list">
-                        <li class="admin-menu-item active" onclick="switchAdminSection('dashboard', this)">
+                        <li class="admin-menu-item" onclick="switchAdminSection('dashboard', this)">
                             <i class="fa-solid fa-chart-line"></i> Dashboard
                         </li>
                         <li class="admin-menu-item" onclick="switchAdminSection('business', this)">
@@ -991,7 +1204,7 @@
                         <li class="admin-menu-item" onclick="switchAdminSection('categories', this)">
                             <i class="fa-solid fa-tags"></i> Categorías
                         </li>
-                        <li class="admin-menu-item" onclick="switchAdminSection('design', this)">
+                        <li class="admin-menu-item active" onclick="switchAdminSection('design', this)">
                             <i class="fa-solid fa-palette"></i> Personalizar
                         </li>
                         <li class="admin-menu-item" style="color: #c084fc;" onclick="exitAdminToClient()">
@@ -1009,43 +1222,263 @@
             <main class="admin-content-view">
                 
                 <!-- SECCIÓN DASHBOARD -->
-                <section id="sec-dashboard" class="admin-section active">
+                <section id="sec-dashboard" class="admin-section">
                     <div style="background: linear-gradient(135deg, #1e1b4b, #111015); padding:20px; border-radius:14px; margin-bottom:20px;">
                         <h4 style="margin:0 0 6px 0; color:#fff;">👋 ¡Bienvenida Administradora!</h4>
-                        <p style="margin:0; font-size:0.85rem; color:var(--text-muted);">Gestiona tus cuentas, modifica tu horario de atención, crea popups temporales y combos con vigencia automática.</p>
+                        <p style="margin:0; font-size:0.85rem; color:var(--text-muted);">Desde aquí puedes personalizar la apariencia de tu catálogo, gestionar productos, promociones y combos.</p>
                     </div>
                 </section>
 
-                <!-- SECCIÓN GESTIÓN DE PROMOCIONES -->
-                <section id="sec-promotions" class="admin-section">
+                <!-- SECCIÓN PERSONALIZAR (image_20.png MEJORADA) -->
+                <section id="sec-design" class="admin-section active">
                     <div class="admin-section-header">
                         <div>
-                            <h3 style="margin:0 0 4px 0;">Promociones</h3>
-                            <span style="font-size:0.75rem; color:var(--text-muted);">Crea popups promocionales y combos con descuento para tu catálogo</span>
-                        </div>
-                        <div style="display:flex; gap:8px;">
-                            <button class="admin-btn popup" onclick="openNewPopupModal()"><i class="fa-solid fa-image"></i> Crear Popup</button>
-                            <button class="admin-btn combo" onclick="openNewComboModal()"><i class="fa-solid fa-plus"></i> Crear Combo</button>
+                            <h3 style="margin:0 0 4px 0;">Personalizar Mi Catálogo</h3>
+                            <span style="font-size:0.75rem; color:var(--text-muted);">Ahora puedes cambiar la plantilla, colores, fondo, recuadros y tipografía sin editar código.</span>
                         </div>
                     </div>
 
-                    <div class="admin-table-container">
-                        <div class="admin-search-row">
-                            <input type="text" id="search-promos-input" class="admin-search-input" placeholder="🔍 Buscar promociones..." oninput="filterPromosTable()">
+                    <!-- CAJA 1: PLANTILLAS Y ESTILOS -->
+                    <div class="customizer-box">
+                        <div class="customizer-box-header">
+                            <i class="fa-solid fa-cubes customizer-icon"></i>
+                            <div>
+                                <h4>Elige el Diseño y Plantilla Pública</h4>
+                                <p>La configuración de colores, recuadros y estilo se aplicará automáticamente a todas las vistas.</p>
+                            </div>
                         </div>
-                        <table class="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>TIPO</th>
-                                    <th>TÍTULO</th>
-                                    <th>DESCRIPCIÓN</th>
-                                    <th>VIGENCIA</th>
-                                    <th>ESTADO</th>
-                                    <th>ACCIONES</th>
-                                </tr>
-                            </thead>
-                            <tbody id="admin-promos-tbody"></tbody>
-                        </table>
+
+                        <div class="templates-showcase-grid">
+                            <!-- Minimalista -->
+                            <div class="theme-card-option active" onclick="selectTemplate('minimalista', this)">
+                                <span class="theme-card-badge">ACTIVO</span>
+                                <div class="theme-preview-bars">
+                                    <div class="theme-color-block" style="background:#00f2fe;"></div>
+                                    <div class="theme-color-block" style="background:#4facfe;"></div>
+                                </div>
+                                <h5>Minimalista</h5>
+                                <p>Equilibrado, rápido y limpio. Grid de productos, búsqueda, filtros y carrito.</p>
+                            </div>
+
+                            <!-- Premium -->
+                            <div class="theme-card-option" onclick="selectTemplate('premium', this)">
+                                <span class="theme-card-badge">ACTIVO</span>
+                                <div class="theme-preview-bars">
+                                    <div class="theme-color-block" style="background:#7c3aed;"></div>
+                                    <div class="theme-color-block" style="background:#1e1b4b;"></div>
+                                </div>
+                                <h5>Premium</h5>
+                                <p>Presentación de alta gama con navegación visual, fondos oscuros y filtros avanzados.</p>
+                            </div>
+
+                            <!-- Neon Glass -->
+                            <div class="theme-card-option" onclick="selectTemplate('neon-glass', this)">
+                                <span class="theme-card-badge">ACTIVO</span>
+                                <div class="theme-preview-bars">
+                                    <div class="theme-color-block" style="background:#ec4899;"></div>
+                                    <div class="theme-color-block" style="background:#8b5cf6;"></div>
+                                </div>
+                                <h5>Neon Glass</h5>
+                                <p>Tarjetas de cristal translúcido, bordes luminosos y una estética tecnológica impactante.</p>
+                            </div>
+
+                            <!-- Aurora Luxe -->
+                            <div class="theme-card-option" onclick="selectTemplate('aurora-luxe', this)">
+                                <span class="theme-card-badge">ACTIVO</span>
+                                <div class="theme-preview-bars">
+                                    <div class="theme-color-block" style="background:#06b6d4;"></div>
+                                    <div class="theme-color-block" style="background:#3b82f6;"></div>
+                                </div>
+                                <h5>Aurora Luxe</h5>
+                                <p>Estilo claro, elegante y vibrante, pensado para destacar productos y suscripciones.</p>
+                            </div>
+
+                            <!-- Cyberpunk Gamer -->
+                            <div class="theme-card-option" onclick="selectTemplate('cyberpunk', this)">
+                                <span class="theme-card-badge">ACTIVO</span>
+                                <div class="theme-preview-bars">
+                                    <div class="theme-color-block" style="background:#facc15;"></div>
+                                    <div class="theme-color-block" style="background:#ef4444;"></div>
+                                </div>
+                                <h5>Cyberpunk Gamer</h5>
+                                <p>Colores amarillos y rojos de alto contraste con estética futurista gaming.</p>
+                            </div>
+
+                            <!-- Esmeralda Luxury -->
+                            <div class="theme-card-option" onclick="selectTemplate('emerald', this)">
+                                <span class="theme-card-badge">ACTIVO</span>
+                                <div class="theme-preview-bars">
+                                    <div class="theme-color-block" style="background:#10b981;"></div>
+                                    <div class="theme-color-block" style="background:#047857;"></div>
+                                </div>
+                                <h5>Esmeralda Luxury</h5>
+                                <p>Tonos esmeralda y menta que transmiten confianza, seguridad y rapidez.</p>
+                            </div>
+
+                            <!-- Sunset Glow -->
+                            <div class="theme-card-option" onclick="selectTemplate('sunset', this)">
+                                <span class="theme-card-badge">ACTIVO</span>
+                                <div class="theme-preview-bars">
+                                    <div class="theme-color-block" style="background:#f97316;"></div>
+                                    <div class="theme-color-block" style="background:#e11d48;"></div>
+                                </div>
+                                <h5>Sunset Glow</h5>
+                                <p>Gradientes cálidos al atardecer para una tienda llamativa y comercial.</p>
+                            </div>
+                        </div>
+
+                        <!-- AJUSTES DE FUENTE Y RECUADROS -->
+                        <div class="settings-selectors-row">
+                            <div class="selector-field-card">
+                                <label><i class="fa-solid fa-font"></i> Fuente de la Letra (Tipografía)</label>
+                                <select id="select-font-family" onchange="previewFontFamily(this.value)">
+                                    <option value="'Poppins', sans-serif">Poppins (Moderna y Limpia - Recomendada)</option>
+                                    <option value="'Montserrat', sans-serif">Montserrat (Geométrica e Impactante)</option>
+                                    <option value="'Inter', sans-serif">Inter (Minimalista y Ejecutiva)</option>
+                                    <option value="'Orbitron', sans-serif">Orbitron (Futurista / Gaming / Streaming)</option>
+                                    <option value="'Outfit', sans-serif">Outfit (Suave y Amigable)</option>
+                                    <option value="'Cinzel', serif">Cinzel (Elegante y Lujosa)</option>
+                                </select>
+                            </div>
+
+                            <div class="selector-field-card">
+                                <label><i class="fa-solid fa-shapes"></i> Estilo de Recuadro / Tarjetas</label>
+                                <select id="select-card-style" onchange="previewCardStyle(this.value)">
+                                    <option value="modern-rounded">Redondeado Moderno (Curvas suaves de 18px)</option>
+                                    <option value="glassmorphism">Glassmorphism (Efecto Cristal translúcido con desenfoque)</option>
+                                    <option value="neon-glow">Neon Glow (Borde luminoso brillante con sombra neón)</option>
+                                    <option value="sharp-future">Futurista Recto (Bordes rectos 4px estilo consola)</option>
+                                    <option value="subtle-border">Minimalista Sutil (Borde fino discreto)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CAJA 2: PALETA DE 9 COLORES PERSONALIZABLE -->
+                    <div class="customizer-box">
+                        <div class="customizer-box-header">
+                            <i class="fa-solid fa-droplet customizer-icon"></i>
+                            <div>
+                                <h4>Paleta de Colores</h4>
+                                <p>Cada color se guarda en tus ajustes y se transforma en variables CSS aplicables a toda tu tienda.</p>
+                            </div>
+                        </div>
+
+                        <div class="nine-colors-grid">
+                            <!-- 1. Color principal -->
+                            <div class="palette-item-box">
+                                <input type="color" id="c-primary" onchange="syncColorInput('c-primary', this.value)">
+                                <div class="palette-item-details">
+                                    <span class="palette-item-code" id="lbl-c-primary">#7c3aed</span>
+                                    <span class="palette-item-desc">Botones, enlaces, precios y elementos destacados</span>
+                                </div>
+                            </div>
+
+                            <!-- 2. Color secundario -->
+                            <div class="palette-item-box">
+                                <input type="color" id="c-accent" onchange="syncColorInput('c-accent', this.value)">
+                                <div class="palette-item-details">
+                                    <span class="palette-item-code" id="lbl-c-accent">#a855f7</span>
+                                    <span class="palette-item-desc">Segundo tono para gradientes y detalles</span>
+                                </div>
+                            </div>
+
+                            <!-- 3. Color base página -->
+                            <div class="palette-item-box">
+                                <input type="color" id="c-bg" onchange="syncColorInput('c-bg', this.value)">
+                                <div class="palette-item-details">
+                                    <span class="palette-item-code" id="lbl-c-bg">#0c0c0e</span>
+                                    <span class="palette-item-desc">Color base de toda la página</span>
+                                </div>
+                            </div>
+
+                            <!-- 4. Superficies y paneles -->
+                            <div class="palette-item-box">
+                                <input type="color" id="c-panel" onchange="syncColorInput('c-panel', this.value)">
+                                <div class="palette-item-details">
+                                    <span class="palette-item-code" id="lbl-c-panel">#16161a</span>
+                                    <span class="palette-item-desc">Superficies y paneles del catálogo</span>
+                                </div>
+                            </div>
+
+                            <!-- 5. Títulos -->
+                            <div class="palette-item-box">
+                                <input type="color" id="c-title" onchange="syncColorInput('c-title', this.value)">
+                                <div class="palette-item-details">
+                                    <span class="palette-item-code" id="lbl-c-title">#ffffff</span>
+                                    <span class="palette-item-desc">Títulos y textos claros</span>
+                                </div>
+                            </div>
+
+                            <!-- 6. Textos secundarios -->
+                            <div class="palette-item-box">
+                                <input type="color" id="c-secondary" onchange="syncColorInput('c-secondary', this.value)">
+                                <div class="palette-item-details">
+                                    <span class="palette-item-code" id="lbl-c-secondary">#c4b5fd</span>
+                                    <span class="palette-item-desc">Descripciones y textos secundarios</span>
+                                </div>
+                            </div>
+
+                            <!-- 7. Botón flotante -->
+                            <div class="palette-item-box">
+                                <input type="color" id="c-float-cart" onchange="syncColorInput('c-float-cart', this.value)">
+                                <div class="palette-item-details">
+                                    <span class="palette-item-code" id="lbl-c-float-cart">#7c3aed</span>
+                                    <span class="palette-item-desc">Botón flotante y acentos del carrito</span>
+                                </div>
+                            </div>
+
+                            <!-- 8. Burbuja del carrito -->
+                            <div class="palette-item-box">
+                                <input type="color" id="c-burbuja" onchange="syncColorInput('c-burbuja', this.value)">
+                                <div class="palette-item-details">
+                                    <span class="palette-item-code" id="lbl-c-burbuja">#9333ea</span>
+                                    <span class="palette-item-desc">Color de la burbuja con la cantidad</span>
+                                </div>
+                            </div>
+
+                            <!-- 9. Botones principales de acción -->
+                            <div class="palette-item-box">
+                                <input type="color" id="c-btn-principal" onchange="syncColorInput('c-btn-principal', this.value)">
+                                <div class="palette-item-details">
+                                    <span class="palette-item-code" id="lbl-c-btn-principal">#6d28d9</span>
+                                    <span class="palette-item-desc">Botones principales de acción</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CAJA 3: IMAGEN DE FONDO -->
+                    <div class="customizer-box">
+                        <div class="customizer-box-header">
+                            <i class="fa-solid fa-image customizer-icon"></i>
+                            <div>
+                                <h4>Imagen de Fondo</h4>
+                                <p>Puedes usar un color, una imagen o ambos. La imagen tendrá una capa suave para mantener la lectura.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-upload-panel">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <h6>Seleccionar nueva imagen de fondo</h6>
+                            <p>JPG, PNG, GIF o WebP. Máximo 5 MB</p>
+                            <input type="file" id="bg-image-file" accept="image/*" onchange="handleBgImageUpload(this)">
+                        </div>
+
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <input type="text" id="bg-image-url" placeholder="O pega el enlace de la imagen de fondo" style="flex-grow:1; background:#16161a; border:1px solid rgba(255,255,255,0.1); padding:10px; border-radius:8px; color:#fff; font-size:0.85rem;">
+                            <button class="admin-btn" onclick="removeBgImage()" style="background:#ef4444; flex-shrink:0;">Quitar fondo</button>
+                        </div>
+                    </div>
+
+                    <!-- BARRA FLOTANTE DE ACCIONES -->
+                    <div class="admin-floating-actions">
+                        <button class="btn-action-save" onclick="saveAllCustomizationSettings()">
+                            <i class="fa-solid fa-floppy-disk"></i> Guardar Cambios
+                        </button>
+                        <button class="btn-action-view" onclick="exitAdminToClient()">
+                            <i class="fa-solid fa-eye"></i> Ver Catálogo
+                        </button>
                     </div>
                 </section>
 
@@ -1072,7 +1505,36 @@
                     </div>
                 </section>
 
-                <!-- SECCIÓN MI NEGOCIO (CON CONFIGURACIÓN DE HORARIOS) -->
+                <!-- SECCIÓN PROMOCIONES -->
+                <section id="sec-promotions" class="admin-section">
+                    <div class="admin-section-header">
+                        <div>
+                            <h3 style="margin:0 0 4px 0;">Promociones</h3>
+                            <span style="font-size:0.75rem; color:var(--text-muted);">Crea popups promocionales y combos con descuento para tu catálogo</span>
+                        </div>
+                        <div style="display:flex; gap:8px;">
+                            <button class="admin-btn popup" onclick="openNewPopupModal()"><i class="fa-solid fa-image"></i> Crear Popup</button>
+                            <button class="admin-btn combo" onclick="openNewComboModal()"><i class="fa-solid fa-plus"></i> Crear Combo</button>
+                        </div>
+                    </div>
+                    <div class="admin-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>TIPO</th>
+                                    <th>TÍTULO</th>
+                                    <th>DESCRIPCIÓN</th>
+                                    <th>VIGENCIA</th>
+                                    <th>ESTADO</th>
+                                    <th>ACCIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-promos-tbody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SECCIÓN MI NEGOCIO -->
                 <section id="sec-business" class="admin-section">
                     <div class="admin-section-header">
                         <h3>Perfil del Negocio</h3>
@@ -1084,11 +1546,10 @@
                                 <input type="text" id="biz-name">
                             </div>
                             <div class="admin-form-group">
-                                <label>WhatsApp (con código de país)</label>
+                                <label>WhatsApp</label>
                                 <input type="text" id="biz-whatsapp">
                             </div>
                         </div>
-
                         <div class="form-row">
                             <div class="admin-form-group">
                                 <label>Hora de Apertura</label>
@@ -1103,8 +1564,7 @@
                                 <input type="text" id="biz-schedule-days" value="Lunes a Domingo">
                             </div>
                         </div>
-
-                        <button class="admin-btn" onclick="saveBusinessConfig()">Guardar Perfil y Horarios</button>
+                        <button class="admin-btn" onclick="saveBusinessConfig()">Guardar Perfil</button>
                     </div>
                 </section>
 
@@ -1127,23 +1587,11 @@
                     </div>
                 </section>
 
-                <!-- SECCIÓN PERSONALIZAR -->
-                <section id="sec-design" class="admin-section">
-                    <div class="admin-section-header">
-                        <h3>Diseño y Paletas</h3>
-                    </div>
-                    <div class="admin-form-box">
-                        <p style="font-size:0.85rem; color:var(--text-muted);">Estilo morado Neón activo para MICHELLE777.</p>
-                    </div>
-                </section>
-
             </main>
         </div>
     </div>
 
     <!-- ==================== MODALES ==================== -->
-
-    <!-- MODAL POPUP -->
     <div id="modal-popup-form" class="modal-bg">
         <div class="modal-wrap">
             <h3 id="modal-popup-title">Crear Popup Promocional</h3>
@@ -1158,27 +1606,16 @@
                     <input type="text" id="form-pop-desc" placeholder="Ej: Combos solo por halloween">
                 </div>
                 <div class="admin-form-group">
-                    <label>Duración visible en pantalla (Segundos)</label>
-                    <input type="number" id="form-pop-duration" placeholder="Ej: 6">
+                    <label>Duración (Segundos)</label>
+                    <input type="number" id="form-pop-duration" placeholder="6">
                 </div>
                 <div class="form-row">
-                    <div class="admin-form-group">
-                        <label>Fecha de Inicio</label>
-                        <input type="date" id="form-pop-start">
-                    </div>
-                    <div class="admin-form-group">
-                        <label>Fecha Límite</label>
-                        <input type="date" id="form-pop-end">
-                    </div>
+                    <div class="admin-form-group"><label>Fecha Inicio</label><input type="date" id="form-pop-start"></div>
+                    <div class="admin-form-group"><label>Fecha Fin</label><input type="date" id="form-pop-end"></div>
                 </div>
                 <div class="admin-form-group">
-                    <label>Imagen o Banner del Popup</label>
-                    <div class="image-uploader-box">
-                        <i class="fa-solid fa-cloud-arrow-up"></i>
-                        <span>Seleccionar Foto de tu Celular</span>
-                        <input type="file" id="form-pop-file" accept="image/*" onchange="handleImageBuffer(this, 'pop')">
-                    </div>
-                    <input type="text" id="form-pop-url" placeholder="O pega el enlace de la imagen" style="margin-top:8px;">
+                    <label>Imagen</label>
+                    <input type="text" id="form-pop-url" placeholder="https://...">
                 </div>
             </div>
             <button class="btn-full action" onclick="savePopupItem()">Guardar Popup</button>
@@ -1186,86 +1623,45 @@
         </div>
     </div>
 
-    <!-- MODAL COMBO -->
     <div id="modal-combo-form" class="modal-bg">
         <div class="modal-wrap">
             <h3 id="modal-combo-title">Crear Combo</h3>
             <div class="modal-scrollable">
                 <input type="hidden" id="form-combo-id">
-                <div class="admin-form-group">
-                    <label>Nombre del Combo</label>
-                    <input type="text" id="form-combo-name" placeholder="Ej: Combo pato / Combo pikachu">
+                <div class="admin-form-group"><label>Nombre</label><input type="text" id="form-combo-name"></div>
+                <div class="form-row">
+                    <div class="admin-form-group"><label>Precio ($ MXN)</label><input type="number" id="form-combo-price"></div>
+                    <div class="admin-form-group"><label>Garantía</label><input type="text" id="form-combo-desc"></div>
                 </div>
                 <div class="form-row">
-                    <div class="admin-form-group">
-                        <label>Precio del Combo ($ MXN)</label>
-                        <input type="number" id="form-combo-price" placeholder="70">
-                    </div>
-                    <div class="admin-form-group">
-                        <label>Garantía / Descripción</label>
-                        <input type="text" id="form-combo-desc" placeholder="25 dias de garantia">
-                    </div>
+                    <div class="admin-form-group"><label>Inicio</label><input type="date" id="form-combo-start"></div>
+                    <div class="admin-form-group"><label>Fin</label><input type="date" id="form-combo-end"></div>
                 </div>
-                <div class="form-row">
-                    <div class="admin-form-group">
-                        <label>Fecha de Inicio</label>
-                        <input type="date" id="form-combo-start">
-                    </div>
-                    <div class="admin-form-group">
-                        <label>Fecha Límite (se oculta al vencer)</label>
-                        <input type="date" id="form-combo-end">
-                    </div>
-                </div>
-                <div class="admin-form-group">
-                    <label>Imagen del Combo</label>
-                    <div class="image-uploader-box">
-                        <i class="fa-solid fa-image"></i>
-                        <span>Seleccionar Foto de tu Celular</span>
-                        <input type="file" id="form-combo-file" accept="image/*" onchange="handleImageBuffer(this, 'combo')">
-                    </div>
-                    <input type="text" id="form-combo-url" placeholder="O pega el enlace de la foto" style="margin-top:8px;">
-                </div>
+                <div class="admin-form-group"><label>Imagen</label><input type="text" id="form-combo-url"></div>
             </div>
             <button class="btn-full action" style="background:#10b981;" onclick="saveComboItem()">Guardar Combo</button>
             <button class="btn-full cancel" onclick="closeFormModal('modal-combo-form')">Cancelar</button>
         </div>
     </div>
 
-    <!-- MODAL PRODUCTO -->
     <div id="modal-product" class="modal-bg">
         <div class="modal-wrap">
             <h3 id="modal-product-title">Nueva Cuenta</h3>
             <div class="modal-scrollable">
                 <input type="hidden" id="form-p-id">
-                <div class="admin-form-group">
-                    <label>Nombre</label>
-                    <input type="text" id="form-p-name">
-                </div>
+                <div class="admin-form-group"><label>Nombre</label><input type="text" id="form-p-name"></div>
                 <div class="form-row">
-                    <div class="admin-form-group">
-                        <label>Precio ($ MXN)</label>
-                        <input type="number" id="form-p-price">
-                    </div>
-                    <div class="admin-form-group">
-                        <label>Categoría</label>
-                        <select id="form-p-cat"></select>
-                    </div>
+                    <div class="admin-form-group"><label>Precio</label><input type="number" id="form-p-price"></div>
+                    <div class="admin-form-group"><label>Categoría</label><select id="form-p-cat"></select></div>
                 </div>
-                <div class="admin-form-group">
-                    <label>Garantía</label>
-                    <input type="text" id="form-p-warranty">
-                </div>
-                <div class="admin-form-group">
-                    <label>Imagen</label>
-                    <input type="text" id="form-p-img">
-                </div>
+                <div class="admin-form-group"><label>Garantía</label><input type="text" id="form-p-warranty"></div>
+                <div class="admin-form-group"><label>Imagen</label><input type="text" id="form-p-img"></div>
             </div>
             <button class="btn-full action" onclick="saveProductForm()">Guardar</button>
             <button class="btn-full cancel" onclick="closeFormModal('modal-product')">Cancelar</button>
         </div>
     </div>
 
-    <!-- MODAL DETALLES DEL CARRITO -->
     <div id="modal-cart-details" class="modal-bg">
         <div class="modal-wrap">
             <h3>Tu Carrito</h3>
@@ -1275,9 +1671,8 @@
         </div>
     </div>
 
-    <!-- SCRIPT PRINCIPAL -->
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        // CONFIGURACIÓN DEL NEGOCIO (CON HORARIO DE 9:00 A 23:00)
         let business = JSON.parse(localStorage.getItem('streaming_biz')) || {
             name: "MICHELLE777",
             whatsapp: "525523676793",
@@ -1288,52 +1683,29 @@
             scheduleDays: "Lunes a Domingo"
         };
 
-        // PROMOCIONES
-        let promotions = JSON.parse(localStorage.getItem('streaming_promos_table')) || [
-            {
-                id: 101,
-                type: 'POPUP',
-                title: 'Combos',
-                desc: 'Comos solo por hallowen.',
-                startDate: '2026-10-23',
-                endDate: '2026-12-31',
-                duration: 6,
-                img: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800',
-                status: 'ACTIVA'
-            },
-            {
-                id: 102,
-                type: 'COMBO',
-                title: 'Combo pato',
-                desc: '25 dias de garantia',
-                price: 80.00,
-                startDate: '2026-10-23',
-                endDate: '2026-11-07',
-                img: 'https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=500',
-                status: 'ACTIVA'
-            },
-            {
-                id: 103,
-                type: 'COMBO',
-                title: 'Combo snorlax',
-                desc: '25 dias de garantia',
-                price: 90.00,
-                startDate: '2026-10-23',
-                endDate: '2026-11-07',
-                img: 'https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?w=500',
-                status: 'ACTIVA'
-            },
-            {
-                id: 104,
-                type: 'COMBO',
-                title: 'Combo pikachu',
-                desc: '25 dias de garantia',
-                price: 75.00,
-                startDate: '2026-10-23',
-                endDate: '2026-11-07',
-                img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500',
-                status: 'ACTIVA'
+        // AJUSTES VISUALES COMPLETOS
+        let themeSettings = JSON.parse(localStorage.getItem('streaming_design_config')) || {
+            activeTemplate: 'minimalista',
+            fontFamily: "'Poppins', sans-serif",
+            cardStyle: 'modern-rounded',
+            bgImage: '',
+            colors: {
+                primary: '#7c3aed',
+                accent: '#a855f7',
+                bg: '#0c0c0e',
+                panel: '#16161a',
+                title: '#ffffff',
+                secondary: '#c4b5fd',
+                floatCart: '#7c3aed',
+                burbuja: '#9333ea',
+                btnPrincipal: '#6d28d9'
             }
+        };
+
+        let promotions = JSON.parse(localStorage.getItem('streaming_promos_table')) || [
+            { id: 101, type: 'POPUP', title: 'Combos Halloween', desc: 'Combos de temporada', startDate: '2026-10-23', endDate: '2026-12-31', duration: 6, img: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800', status: 'ACTIVA' },
+            { id: 102, type: 'COMBO', title: 'Combo Pato', desc: '25 días de garantía', price: 80.00, startDate: '2026-10-23', endDate: '2026-11-07', img: 'https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=500', status: 'ACTIVA' },
+            { id: 103, type: 'COMBO', title: 'Combo Snorlax', desc: '25 días de garantía', price: 90.00, startDate: '2026-10-23', endDate: '2026-11-07', img: 'https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?w=500', status: 'ACTIVA' }
         ];
 
         let categories = JSON.parse(localStorage.getItem('streaming_cats')) || [
@@ -1356,10 +1728,11 @@
 
         let cart = [];
         let activeClientCat = "todos";
-        let tempUploadBuffer = "";
+        let tempUploadBgBuffer = "";
         let popupCountdownTimer = null;
 
         window.onload = function() {
+            applyLoadedDesign();
             checkAndRunViews();
         };
 
@@ -1379,7 +1752,69 @@
             }
         }
 
-        /* ================= VISTA CLIENTE ================= */
+        /* APLICAR ESTILOS DINÁMICOS */
+        function applyLoadedDesign() {
+            const root = document.documentElement;
+            const c = themeSettings.colors;
+
+            root.style.setProperty('--primary-color', c.primary);
+            root.style.setProperty('--accent-color', c.accent);
+            root.style.setProperty('--bg-color', c.bg);
+            root.style.setProperty('--panel-color', c.panel);
+            root.style.setProperty('--title-color', c.title);
+            root.style.setProperty('--secondary-text-color', c.secondary);
+            root.style.setProperty('--float-cart-color', c.floatCart);
+            root.style.setProperty('--burbuja-color', c.burbuja);
+            root.style.setProperty('--btn-principal-color', c.btnPrincipal);
+
+            root.style.setProperty('--main-font', themeSettings.fontFamily || "'Poppins', sans-serif");
+            document.body.style.fontFamily = themeSettings.fontFamily || "'Poppins', sans-serif";
+
+            // Imagen de fondo
+            if (themeSettings.bgImage) {
+                document.body.style.backgroundImage = `url('${themeSettings.bgImage}')`;
+                document.querySelector('.bg-overlay').style.display = 'block';
+            } else {
+                document.body.style.backgroundImage = 'none';
+                document.querySelector('.bg-overlay').style.display = 'none';
+            }
+
+            // Aplicar estilo de recuadros
+            applyCardStyleToRoot(themeSettings.cardStyle || 'modern-rounded');
+        }
+
+        function applyCardStyleToRoot(style) {
+            const root = document.documentElement;
+            if (style === 'glassmorphism') {
+                root.style.setProperty('--card-radius', '16px');
+                root.style.setProperty('--card-border', '1px solid rgba(255, 255, 255, 0.2)');
+                root.style.setProperty('--card-backdrop', 'blur(12px)');
+                root.style.setProperty('--card-shadow', '0 8px 32px 0 rgba(0, 0, 0, 0.37)');
+            } else if (style === 'neon-glow') {
+                root.style.setProperty('--card-radius', '14px');
+                root.style.setProperty('--card-border', '2px solid var(--accent-color)');
+                root.style.setProperty('--card-backdrop', 'none');
+                root.style.setProperty('--card-shadow', '0 0 15px rgba(168, 85, 247, 0.4)');
+            } else if (style === 'sharp-future') {
+                root.style.setProperty('--card-radius', '4px');
+                root.style.setProperty('--card-border', '1.5px solid rgba(255, 255, 255, 0.15)');
+                root.style.setProperty('--card-backdrop', 'none');
+                root.style.setProperty('--card-shadow', 'none');
+            } else if (style === 'subtle-border') {
+                root.style.setProperty('--card-radius', '12px');
+                root.style.setProperty('--card-border', '1px solid rgba(255, 255, 255, 0.04)');
+                root.style.setProperty('--card-backdrop', 'none');
+                root.style.setProperty('--card-shadow', 'none');
+            } else {
+                // modern-rounded
+                root.style.setProperty('--card-radius', '18px');
+                root.style.setProperty('--card-border', '1px solid rgba(255, 255, 255, 0.06)');
+                root.style.setProperty('--card-backdrop', 'none');
+                root.style.setProperty('--card-shadow', 'none');
+            }
+        }
+
+        /* CLIENT VIEW */
         function initClientShop() {
             document.getElementById('client-brand-name').innerText = business.name;
             document.getElementById('client-header-logo').src = business.logo || "https://via.placeholder.com/100";
@@ -1395,7 +1830,6 @@
             updateCartSummary();
         }
 
-        /* GESTIÓN Y CÁLCULO DE HORARIO EN TIEMPO REAL */
         function renderScheduleBanner() {
             const openTime = business.scheduleOpen || "09:00";
             const closeTime = business.scheduleClose || "23:00";
@@ -1404,17 +1838,14 @@
             document.getElementById('display-schedule-hours').innerText = `${formatTo12H(openTime)} - ${formatTo12H(closeTime)}`;
             document.getElementById('display-schedule-days').innerText = daysText;
 
-            // Determinar si está abierto en este momento
             const now = new Date();
             const currentMinutes = now.getHours() * 60 + now.getMinutes();
-
             const [openH, openM] = openTime.split(':').map(Number);
             const [closeH, closeM] = closeTime.split(':').map(Number);
             const openMinutes = openH * 60 + openM;
             const closeMinutes = closeH * 60 + closeM;
 
             const isOpen = currentMinutes >= openMinutes && currentMinutes <= closeMinutes;
-
             const badge = document.getElementById('schedule-status-badge');
             const statusText = document.getElementById('schedule-status-text');
 
@@ -1443,7 +1874,6 @@
             return true;
         }
 
-        /* CONTROL POPUP */
         function checkAndTriggerPopup() {
             const activePopup = promotions.find(p => p.type === 'POPUP' && isItemActiveAndValid(p));
             if (!activePopup) return;
@@ -1468,16 +1898,13 @@
             document.getElementById('promo-popup').classList.remove('active');
         }
 
-        /* CONTROL CAJÓN COMBOS */
         function openCombosDrawer() {
             renderCombosDrawerItems();
             document.getElementById('combos-drawer').classList.add('active');
         }
 
         function closeCombosDrawer(e) {
-            if (e.target.id === 'combos-drawer') {
-                document.getElementById('combos-drawer').classList.remove('active');
-            }
+            if (e.target.id === 'combos-drawer') document.getElementById('combos-drawer').classList.remove('active');
         }
 
         function closeCombosDrawerDirect() {
@@ -1487,7 +1914,6 @@
         function renderCombosDrawerItems() {
             const list = document.getElementById('combos-drawer-list');
             list.innerHTML = '';
-
             const validCombos = promotions.filter(p => p.type === 'COMBO' && isItemActiveAndValid(p));
 
             if (validCombos.length === 0) {
@@ -1516,16 +1942,11 @@
         function addComboToCart(id) {
             const combo = promotions.find(p => p.id === id);
             if (!combo) return;
-            cart.push({
-                id: combo.id,
-                name: `[COMBO] ${combo.title}`,
-                price: combo.price
-            });
+            cart.push({ id: combo.id, name: `[COMBO] ${combo.title}`, price: combo.price });
             updateCartSummary();
             alert(`Añadido: ${combo.title}`);
         }
 
-        /* RENDER CATÁLOGO CLIENTE */
         function renderCategoriesPills() {
             const container = document.getElementById('categories-container');
             let html = `<div class="category-pill ${activeClientCat === 'todos' ? 'active' : ''}" onclick="selectCategory('todos')">Todos</div>`;
@@ -1544,7 +1965,6 @@
         function renderCatalogItems() {
             const container = document.getElementById('catalog-container');
             container.innerHTML = '';
-
             const filtered = products.filter(p => activeClientCat === 'todos' || p.catId == activeClientCat);
 
             filtered.forEach(p => {
@@ -1635,23 +2055,22 @@
                 message += `${idx + 1}. *${i.name}* - $${parseFloat(i.price).toFixed(2)} MXN\n`;
             });
             message += `\n💵 *Total:* $${total.toFixed(2)} MXN\n`;
-            message += `⏰ *Horario de atención:* ${openTime} a ${closeTime} (${daysText})\n\n`;
+            message += `⏰ *Horario:* ${openTime} a ${closeTime} (${daysText})\n\n`;
             message += `_Hola, quiero concretar la compra de estos servicios._`;
 
             window.open(`https://wa.me/${business.whatsapp}?text=${encodeURIComponent(message)}`, '_blank');
         }
 
-        /* ================= VISTA ADMINISTRADOR ================= */
+        /* ADMIN INIT & CUSTOMIZER */
         function initAdminSystem() {
             document.getElementById('admin-sidebar-name').innerText = business.name;
             loadBusinessAdminForm();
             renderAdminPromotionsTable();
             renderAdminProductsTable();
+            populateCustomizerInputs();
         }
 
-        function toggleSidebarDrawer() {
-            document.getElementById('admin-sidebar').classList.toggle('show');
-        }
+        function toggleSidebarDrawer() { document.getElementById('admin-sidebar').classList.toggle('show'); }
 
         function switchAdminSection(secId, menuElem) {
             document.querySelectorAll('.admin-menu-item').forEach(li => li.classList.remove('active'));
@@ -1662,179 +2081,191 @@
             document.getElementById('admin-sidebar').classList.remove('show');
         }
 
+        /* LOGICA DEL PERSONALIZADOR (image_20.png) */
+        function populateCustomizerInputs() {
+            const c = themeSettings.colors;
+            updatePaletteField('c-primary', c.primary);
+            updatePaletteField('c-accent', c.accent);
+            updatePaletteField('c-bg', c.bg);
+            updatePaletteField('c-panel', c.panel);
+            updatePaletteField('c-title', c.title);
+            updatePaletteField('c-secondary', c.secondary);
+            updatePaletteField('c-float-cart', c.floatCart);
+            updatePaletteField('c-burbuja', c.burbuja);
+            updatePaletteField('c-btn-principal', c.btnPrincipal);
+
+            document.getElementById('select-font-family').value = themeSettings.fontFamily || "'Poppins', sans-serif";
+            document.getElementById('select-card-style').value = themeSettings.cardStyle || "modern-rounded";
+            document.getElementById('bg-image-url').value = themeSettings.bgImage || "";
+        }
+
+        function updatePaletteField(id, val) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.value = val;
+                document.getElementById(`lbl-${id}`).innerText = val;
+            }
+        }
+
+        function syncColorInput(id, val) {
+            document.getElementById(`lbl-${id}`).innerText = val;
+            // Vista previa en vivo
+            const root = document.documentElement;
+            const map = {
+                'c-primary': '--primary-color', 'c-accent': '--accent-color', 'c-bg': '--bg-color',
+                'c-panel': '--panel-color', 'c-title': '--title-color', 'c-secondary': '--secondary-text-color',
+                'c-float-cart': '--float-cart-color', 'c-burbuja': '--burbuja-color', 'c-btn-principal': '--btn-principal-color'
+            };
+            if (map[id]) root.style.setProperty(map[id], val);
+        }
+
+        function selectTemplate(tplName, cardElem) {
+            document.querySelectorAll('.theme-card-option').forEach(c => c.classList.remove('active'));
+            if (cardElem) cardElem.classList.add('active');
+            themeSettings.activeTemplate = tplName;
+
+            let c = themeSettings.colors;
+
+            if (tplName === 'minimalista') {
+                c.primary = "#00f2fe"; c.accent = "#4facfe"; c.bg = "#0c0c0e"; c.panel = "#16161a";
+                c.title = "#ffffff"; c.secondary = "#93c5fd"; c.floatCart = "#00f2fe"; c.burbuja = "#2563eb"; c.btnPrincipal = "#0284c7";
+                themeSettings.fontFamily = "'Inter', sans-serif";
+                themeSettings.cardStyle = "modern-rounded";
+            } else if (tplName === 'premium') {
+                c.primary = "#7c3aed"; c.accent = "#a855f7"; c.bg = "#090514"; c.panel = "#150b28";
+                c.title = "#ffffff"; c.secondary = "#c4b5fd"; c.floatCart = "#7c3aed"; c.burbuja = "#9333ea"; c.btnPrincipal = "#6d28d9";
+                themeSettings.fontFamily = "'Poppins', sans-serif";
+                themeSettings.cardStyle = "modern-rounded";
+            } else if (tplName === 'neon-glass') {
+                c.primary = "#ec4899"; c.accent = "#8b5cf6"; c.bg = "#050508"; c.panel = "rgba(22, 22, 30, 0.7)";
+                c.title = "#ffffff"; c.secondary = "#f472b6"; c.floatCart = "#ec4899"; c.burbuja = "#db2777"; c.btnPrincipal = "#d946ef";
+                themeSettings.fontFamily = "'Orbitron', sans-serif";
+                themeSettings.cardStyle = "glassmorphism";
+            } else if (tplName === 'aurora-luxe') {
+                c.primary = "#06b6d4"; c.accent = "#3b82f6"; c.bg = "#040d1a"; c.panel = "#0d1f38";
+                c.title = "#ffffff"; c.secondary = "#67e8f9"; c.floatCart = "#06b6d4"; c.burbuja = "#0284c7"; c.btnPrincipal = "#0ea5e9";
+                themeSettings.fontFamily = "'Outfit', sans-serif";
+                themeSettings.cardStyle = "neon-glow";
+            } else if (tplName === 'cyberpunk') {
+                c.primary = "#facc15"; c.accent = "#ef4444"; c.bg = "#000000"; c.panel = "#141416";
+                c.title = "#ffffff"; c.secondary = "#fde047"; c.floatCart = "#facc15"; c.burbuja = "#dc2626"; c.btnPrincipal = "#eab308";
+                themeSettings.fontFamily = "'Orbitron', sans-serif";
+                themeSettings.cardStyle = "sharp-future";
+            } else if (tplName === 'emerald') {
+                c.primary = "#10b981"; c.accent = "#34d399"; c.bg = "#06130d"; c.panel = "#0c2419";
+                c.title = "#ffffff"; c.secondary = "#a7f3d0"; c.floatCart = "#10b981"; c.burbuja = "#059669"; c.btnPrincipal = "#059669";
+                themeSettings.fontFamily = "'Montserrat', sans-serif";
+                themeSettings.cardStyle = "modern-rounded";
+            } else if (tplName === 'sunset') {
+                c.primary = "#f97316"; c.accent = "#e11d48"; c.bg = "#120707"; c.panel = "#240e13";
+                c.title = "#ffffff"; c.secondary = "#fdba74"; c.floatCart = "#f97316"; c.burbuja = "#c026d3"; c.btnPrincipal = "#ea580c";
+                themeSettings.fontFamily = "'Poppins', sans-serif";
+                themeSettings.cardStyle = "modern-rounded";
+            }
+
+            populateCustomizerInputs();
+            applyLoadedDesign();
+        }
+
+        function previewFontFamily(val) {
+            themeSettings.fontFamily = val;
+            document.documentElement.style.setProperty('--main-font', val);
+            document.body.style.fontFamily = val;
+        }
+
+        function previewCardStyle(val) {
+            themeSettings.cardStyle = val;
+            applyCardStyleToRoot(val);
+        }
+
+        function handleBgImageUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    tempUploadBgBuffer = e.target.result;
+                    document.getElementById('bg-image-url').value = "Imagen subida lista";
+                    document.body.style.backgroundImage = `url('${tempUploadBgBuffer}')`;
+                    document.querySelector('.bg-overlay').style.display = 'block';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function removeBgImage() {
+            tempUploadBgBuffer = "";
+            themeSettings.bgImage = "";
+            document.getElementById('bg-image-url').value = "";
+            document.body.style.backgroundImage = 'none';
+            document.querySelector('.bg-overlay').style.display = 'none';
+            alert("Fondo removido. Presiona Guardar Cambios para confirmar.");
+        }
+
+        function saveAllCustomizationSettings() {
+            themeSettings.colors.primary = document.getElementById('c-primary').value;
+            themeSettings.colors.accent = document.getElementById('c-accent').value;
+            themeSettings.colors.bg = document.getElementById('c-bg').value;
+            themeSettings.colors.panel = document.getElementById('c-panel').value;
+            themeSettings.colors.title = document.getElementById('c-title').value;
+            themeSettings.colors.secondary = document.getElementById('c-secondary').value;
+            themeSettings.colors.floatCart = document.getElementById('c-float-cart').value;
+            themeSettings.colors.burbuja = document.getElementById('c-burbuja').value;
+            themeSettings.colors.btnPrincipal = document.getElementById('c-btn-principal').value;
+
+            themeSettings.fontFamily = document.getElementById('select-font-family').value;
+            themeSettings.cardStyle = document.getElementById('select-card-style').value;
+
+            const urlInput = document.getElementById('bg-image-url').value.trim();
+            if (tempUploadBgBuffer) {
+                themeSettings.bgImage = tempUploadBuffer;
+            } else if (urlInput && urlInput !== "Imagen subida lista") {
+                themeSettings.bgImage = urlInput;
+            }
+
+            localStorage.setItem('streaming_design_config', JSON.stringify(themeSettings));
+            applyLoadedDesign();
+            alert("¡Diseño, colores, fuentes y recuadros guardados con éxito!");
+        }
+
+        /* RESTO DE GESTIÓN ADMIN */
+        function loadBusinessAdminForm() {
+            document.getElementById('biz-name').value = business.name || "MICHELLE777";
+            document.getElementById('biz-whatsapp').value = business.whatsapp || "525523676793";
+            document.getElementById('biz-schedule-open').value = business.scheduleOpen || "09:00";
+            document.getElementById('biz-schedule-close').value = business.scheduleClose || "23:00";
+            document.getElementById('biz-schedule-days').value = business.scheduleDays || "Lunes a Domingo";
+        }
+
+        function saveBusinessConfig() {
+            business.name = document.getElementById('biz-name').value;
+            business.whatsapp = document.getElementById('biz-whatsapp').value;
+            business.scheduleOpen = document.getElementById('biz-schedule-open').value;
+            business.scheduleClose = document.getElementById('biz-schedule-close').value;
+            business.scheduleDays = document.getElementById('biz-schedule-days').value;
+            localStorage.setItem('streaming_biz', JSON.stringify(business));
+            alert("Perfil guardado");
+        }
+
         function renderAdminPromotionsTable() {
             const tbody = document.getElementById('admin-promos-tbody');
             tbody.innerHTML = '';
-
             promotions.forEach(p => {
-                const isPopup = p.type === 'POPUP';
-                const badgeClass = isPopup ? 'popup-badge' : 'combo-badge';
-                const vigenciaStr = `${formatDate(p.startDate)} - ${formatDate(p.endDate)}`;
-
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td><span class="admin-table-badge ${badgeClass}">${p.type}</span></td>
+                    <td><span class="admin-table-badge ${p.type === 'POPUP' ? 'popup-badge' : 'combo-badge'}">${p.type}</span></td>
                     <td><strong>${p.title}</strong></td>
                     <td>${p.desc}</td>
-                    <td>${vigenciaStr}</td>
+                    <td>${p.startDate} - ${p.endDate}</td>
                     <td><span class="admin-table-badge ${p.status === 'ACTIVA' ? 'active' : 'inactive'}">${p.status}</span></td>
-                    <td>
-                        <div class="table-action-row">
-                            <button class="table-action-btn edit" onclick="editPromoItem(${p.id})">✏️</button>
-                            <button class="table-action-btn del" onclick="deletePromoItem(${p.id})">🗑️</button>
-                        </div>
-                    </td>
+                    <td><button class="table-action-btn del" onclick="deletePromoItem(${p.id})">🗑️</button></td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
-        function formatDate(dStr) {
-            if (!dStr) return '';
-            const parts = dStr.split('-');
-            return `${parts[2]}/${parts[1]}/${parts[0]}`;
-        }
-
-        function filterPromosTable() {
-            const q = document.getElementById('search-promos-input').value.toLowerCase();
-            const rows = document.querySelectorAll('#admin-promos-tbody tr');
-            rows.forEach(r => {
-                const text = r.innerText.toLowerCase();
-                r.style.display = text.includes(q) ? '' : 'none';
-            });
-        }
-
-        function openNewPopupModal() {
-            document.getElementById('modal-popup-title').innerText = "Crear Popup Promocional";
-            document.getElementById('form-pop-id').value = "";
-            document.getElementById('form-pop-title').value = "Combos";
-            document.getElementById('form-pop-desc').value = "Combos solo por temporada";
-            document.getElementById('form-pop-duration').value = "6";
-            document.getElementById('form-pop-start').value = new Date().toISOString().slice(0, 10);
-            document.getElementById('form-pop-end').value = new Date(Date.now() + 15 * 86400000).toISOString().slice(0, 10);
-            document.getElementById('form-pop-url').value = "";
-            tempUploadBuffer = "";
-            document.getElementById('modal-popup-form').style.display = 'flex';
-        }
-
-        function openNewComboModal() {
-            document.getElementById('modal-combo-title').innerText = "Crear Nuevo Combo";
-            document.getElementById('form-combo-id').value = "";
-            document.getElementById('form-combo-name').value = "";
-            document.getElementById('form-combo-price').value = "";
-            document.getElementById('form-combo-desc').value = "25 dias de garantia";
-            document.getElementById('form-combo-start').value = new Date().toISOString().slice(0, 10);
-            document.getElementById('form-combo-end').value = new Date(Date.now() + 15 * 86400000).toISOString().slice(0, 10);
-            document.getElementById('form-combo-url').value = "";
-            tempUploadBuffer = "";
-            document.getElementById('modal-combo-form').style.display = 'flex';
-        }
-
-        function editPromoItem(id) {
-            const item = promotions.find(p => p.id === id);
-            if (!item) return;
-
-            if (item.type === 'POPUP') {
-                document.getElementById('modal-popup-title').innerText = "Editar Popup";
-                document.getElementById('form-pop-id').value = item.id;
-                document.getElementById('form-pop-title').value = item.title;
-                document.getElementById('form-pop-desc').value = item.desc;
-                document.getElementById('form-pop-duration').value = item.duration || 6;
-                document.getElementById('form-pop-start').value = item.startDate;
-                document.getElementById('form-pop-end').value = item.endDate;
-                document.getElementById('form-pop-url').value = item.img.startsWith('data:') ? '' : item.img;
-                tempUploadBuffer = item.img.startsWith('data:') ? item.img : '';
-                document.getElementById('modal-popup-form').style.display = 'flex';
-            } else {
-                document.getElementById('modal-combo-title').innerText = "Editar Combo";
-                document.getElementById('form-combo-id').value = item.id;
-                document.getElementById('form-combo-name').value = item.title;
-                document.getElementById('form-combo-price').value = item.price;
-                document.getElementById('form-combo-desc').value = item.desc;
-                document.getElementById('form-combo-start').value = item.startDate;
-                document.getElementById('form-combo-end').value = item.endDate;
-                document.getElementById('form-combo-url').value = item.img.startsWith('data:') ? '' : item.img;
-                tempUploadBuffer = item.img.startsWith('data:') ? item.img : '';
-                document.getElementById('modal-combo-form').style.display = 'flex';
-            }
-        }
-
-        function handleImageBuffer(input, type) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = e => { tempUploadBuffer = e.target.result; };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function savePopupItem() {
-            const id = document.getElementById('form-pop-id').value;
-            const title = document.getElementById('form-pop-title').value.trim();
-            const desc = document.getElementById('form-pop-desc').value.trim();
-            const duration = parseInt(document.getElementById('form-pop-duration').value) || 5;
-            const startDate = document.getElementById('form-pop-start').value;
-            const endDate = document.getElementById('form-pop-end').value;
-            const url = document.getElementById('form-pop-url').value.trim();
-            const img = tempUploadBuffer || url || "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800";
-
-            if (!title) { alert("Indica el título del Popup."); return; }
-
-            if (id) {
-                const p = promotions.find(x => x.id == id);
-                if (p) {
-                    p.title = title; p.desc = desc; p.duration = duration;
-                    p.startDate = startDate; p.endDate = endDate; p.img = img;
-                }
-            } else {
-                promotions.push({
-                    id: Date.now(),
-                    type: 'POPUP',
-                    title, desc, duration, startDate, endDate, img, status: 'ACTIVA'
-                });
-            }
-
-            localStorage.setItem('streaming_promos_table', JSON.stringify(promotions));
-            closeFormModal('modal-popup-form');
-            renderAdminPromotionsTable();
-        }
-
-        function saveComboItem() {
-            const id = document.getElementById('form-combo-id').value;
-            const title = document.getElementById('form-combo-name').value.trim();
-            const price = parseFloat(document.getElementById('form-combo-price').value) || 0;
-            const desc = document.getElementById('form-combo-desc').value.trim();
-            const startDate = document.getElementById('form-combo-start').value;
-            const endDate = document.getElementById('form-combo-end').value;
-            const url = document.getElementById('form-combo-url').value.trim();
-            const img = tempUploadBuffer || url || "https://via.placeholder.com/300";
-
-            if (!title || price <= 0) { alert("Completa nombre y precio del combo."); return; }
-
-            if (id) {
-                const c = promotions.find(x => x.id == id);
-                if (c) {
-                    c.title = title; c.price = price; c.desc = desc;
-                    c.startDate = startDate; c.endDate = endDate; c.img = img;
-                }
-            } else {
-                promotions.push({
-                    id: Date.now(),
-                    type: 'COMBO',
-                    title, price, desc, startDate, endDate, img, status: 'ACTIVA'
-                });
-            }
-
-            localStorage.setItem('streaming_promos_table', JSON.stringify(promotions));
-            closeFormModal('modal-combo-form');
-            renderAdminPromotionsTable();
-        }
-
         function deletePromoItem(id) {
-            if (confirm("¿Eliminar esta promoción?")) {
-                promotions = promotions.filter(p => p.id !== id);
-                localStorage.setItem('streaming_promos_table', JSON.stringify(promotions));
-                renderAdminPromotionsTable();
-            }
+            promotions = promotions.filter(p => p.id !== id);
+            localStorage.setItem('streaming_promos_table', JSON.stringify(promotions));
+            renderAdminPromotionsTable();
         }
 
         function renderAdminProductsTable() {
@@ -1881,23 +2312,37 @@
             renderAdminProductsTable();
         }
 
-        function loadBusinessAdminForm() {
-            document.getElementById('biz-name').value = business.name || "MICHELLE777";
-            document.getElementById('biz-whatsapp').value = business.whatsapp || "525523676793";
-            document.getElementById('biz-schedule-open').value = business.scheduleOpen || "09:00";
-            document.getElementById('biz-schedule-close').value = business.scheduleClose || "23:00";
-            document.getElementById('biz-schedule-days').value = business.scheduleDays || "Lunes a Domingo";
+        function openNewPopupModal() { document.getElementById('modal-popup-form').style.display = 'flex'; }
+        function openNewComboModal() { document.getElementById('modal-combo-form').style.display = 'flex'; }
+
+        function savePopupItem() {
+            const title = document.getElementById('form-pop-title').value.trim();
+            const desc = document.getElementById('form-pop-desc').value.trim();
+            const duration = parseInt(document.getElementById('form-pop-duration').value) || 6;
+            const startDate = document.getElementById('form-pop-start').value || new Date().toISOString().slice(0, 10);
+            const endDate = document.getElementById('form-pop-end').value || '2026-12-31';
+            const img = document.getElementById('form-pop-url').value.trim() || "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800";
+
+            if(!title) return;
+            promotions.push({ id: Date.now(), type: 'POPUP', title, desc, duration, startDate, endDate, img, status: 'ACTIVA' });
+            localStorage.setItem('streaming_promos_table', JSON.stringify(promotions));
+            closeFormModal('modal-popup-form');
+            renderAdminPromotionsTable();
         }
 
-        function saveBusinessConfig() {
-            business.name = document.getElementById('biz-name').value;
-            business.whatsapp = document.getElementById('biz-whatsapp').value;
-            business.scheduleOpen = document.getElementById('biz-schedule-open').value;
-            business.scheduleClose = document.getElementById('biz-schedule-close').value;
-            business.scheduleDays = document.getElementById('biz-schedule-days').value;
+        function saveComboItem() {
+            const title = document.getElementById('form-combo-name').value.trim();
+            const price = parseFloat(document.getElementById('form-combo-price').value) || 0;
+            const desc = document.getElementById('form-combo-desc').value.trim();
+            const startDate = document.getElementById('form-combo-start').value || new Date().toISOString().slice(0, 10);
+            const endDate = document.getElementById('form-combo-end').value || '2026-12-31';
+            const img = document.getElementById('form-combo-url').value.trim() || "https://via.placeholder.com/300";
 
-            localStorage.setItem('streaming_biz', JSON.stringify(business));
-            alert("Perfil de negocio y horario de atención guardados correctamente.");
+            if(!title || price <= 0) return;
+            promotions.push({ id: Date.now(), type: 'COMBO', title, price, desc, startDate, endDate, img, status: 'ACTIVA' });
+            localStorage.setItem('streaming_promos_table', JSON.stringify(promotions));
+            closeFormModal('modal-combo-form');
+            renderAdminPromotionsTable();
         }
 
         function tryEnterAdmin() {
@@ -1920,9 +2365,7 @@
             checkAndRunViews();
         }
 
-        function closeFormModal(id) {
-            document.getElementById(id).style.display = 'none';
-        }
+        function closeFormModal(id) { document.getElementById(id).style.display = 'none'; }
     </script>
 </body>
-                                                                                                     </html>
+    </html>
