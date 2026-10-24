@@ -3,875 +3,1926 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Streaming Store - Mi Catálogo</title>
+    <title>MICHELLE777 - Streaming Store</title>
+    <!-- Iconos FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --bg-color: #0c0c0e;
             --card-bg: #16161a;
-            --primary-color: #a855f7;
-            --text-color: #ffffff;
+            --primary-color: #7c3aed;
+            --accent-color: #a855f7;
+            --base-theme-color: #9f00f5;
+            --panel-color: #5b21b6;
+            --title-color: #ffffff;
+            --secondary-text-color: #c4b5fd;
+            --burbuja-color: #7c3aed;
+            --btn-principal-color: #6d28d9;
+            --promo-color: #f59e0b;
             --text-muted: #9ca3af;
-            --success-color: #22c55e;
+            --success-color: #10b981;
             --danger-color: #ef4444;
         }
 
         body {
             background-color: var(--bg-color);
-            color: var(--text-color);
+            color: var(--title-color);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            padding-bottom: 90px;
-            transition: background-color 0.3s, color 0.3s;
+            padding-bottom: 95px;
+            overflow-x: hidden;
+            transition: background-color 0.3s;
         }
 
-        /* BARRA SUPERIOR DE ADMINISTRADOR */
-        .admin-top-bar {
-            display: none;
-            background: linear-gradient(90deg, #3b0764, #1e1b4b);
-            border-bottom: 2px solid var(--primary-color);
-            padding: 10px 15px;
-            text-align: center;
-            font-size: 0.85rem;
-            color: #fff;
+        /* ================= VISTA CLIENTE ================= */
+        .client-view { display: block; }
+
+        header.client-header {
+            display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .admin-top-bar.active {
-            display: flex;
-        }
-
-        .admin-top-btn {
-            background-color: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 5px 12px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .admin-top-btn:hover {
-            background-color: var(--primary-color);
-        }
-
-        header {
-            text-align: center;
-            padding: 25px 20px 15px;
-            background: linear-gradient(180deg, rgba(30, 17, 53, 0.5) 0%, var(--bg-color) 100%);
-        }
-
-        #store-logo {
-            max-width: 140px;
-            max-height: 140px;
-            margin: 0 auto 12px auto;
-            object-fit: contain;
-            display: none;
-        }
-
-        header h1 {
-            margin: 0;
-            color: var(--primary-color);
-            font-size: 2.1rem;
-            letter-spacing: 1px;
-        }
-
-        header p {
-            color: var(--text-muted);
-            margin-top: 8px;
-            margin-bottom: 15px;
-            font-size: 0.95rem;
-        }
-
-        .admin-controls {
-            display: none;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-        }
-
-        .admin-controls.active {
-            display: flex;
-        }
-
-        .admin-btn {
-            background-color: transparent;
-            color: var(--primary-color);
-            border: 1px solid var(--primary-color);
-            padding: 7px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: bold;
-            transition: all 0.2s;
-        }
-
-        .admin-btn:hover {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        /* FILTROS / CATEGORÍAS */
-        .categories {
-            display: flex;
-            justify-content: flex-start;
-            gap: 8px;
-            padding: 10px 20px 20px;
-            overflow-x: auto;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .category-btn {
-            background-color: var(--card-bg);
-            color: var(--text-color);
-            border: 1px solid #2e2e38;
-            padding: 7px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.85rem;
-            transition: all 0.2s ease;
-            flex-shrink: 0;
-        }
-
-        .category-btn.active, .category-btn:hover {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            color: white;
-            box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
-        }
-
-        /* CATÁLOGO */
-        .catalog {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 18px;
-            padding: 0 16px 20px;
-        }
-
-        .product-card {
-            background-color: var(--card-bg);
-            border-radius: 14px;
-            padding: 22px 18px;
-            text-align: center;
-            border: 1px solid #22222a;
-            display: flex;
-            flex-direction: column;
             justify-content: space-between;
-            transition: transform 0.2s ease, border-color 0.2s ease;
+            padding: 15px 20px;
+            background: linear-gradient(180deg, rgba(30, 17, 53, 0.4) 0%, var(--bg-color) 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .product-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--primary-color);
+        .header-brand { display: flex; align-items: center; gap: 12px; }
+        .header-logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+            background-color: #1a1a21;
         }
 
-        .product-card img {
-            width: 65px;
-            height: 65px;
-            object-fit: contain;
-            margin: 0 auto 12px auto;
-            border-radius: 8px;
-        }
-
-        .product-card h3 {
-            margin: 6px 0;
-            font-size: 1.05rem;
+        .header-title {
+            font-weight: 800;
+            font-size: 1.25rem;
+            letter-spacing: 0.5px;
+            background: linear-gradient(90deg, #ffffff, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
             text-transform: uppercase;
         }
 
-        .product-card .warranty {
-            color: var(--success-color);
-            font-size: 0.85rem;
-            font-weight: 500;
-            margin-bottom: 10px;
-        }
-
-        .product-card .price {
-            font-size: 1.45rem;
-            font-weight: 700;
-            color: var(--text-color);
-            margin-bottom: 14px;
-        }
-
-        .add-to-cart-btn {
-            background-color: var(--primary-color);
+        .ws-link-btn {
+            background-color: #25d366;
             color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+        }
+
+        /* CINTILLO DE HORARIO DE ATENCIÓN */
+        .schedule-banner {
+            background: linear-gradient(90deg, rgba(124, 58, 237, 0.15), rgba(22, 22, 26, 0.8));
+            border-bottom: 1px solid rgba(124, 58, 237, 0.3);
+            padding: 8px 16px;
+            font-size: 0.78rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .schedule-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--secondary-text-color);
+            font-weight: 600;
+        }
+
+        .schedule-status-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .schedule-status-badge.open {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+        }
+
+        .schedule-status-badge.closed {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+        }
+
+        /* CARRUSEL DE CATEGORÍAS */
+        .categories-carousel {
+            display: flex;
+            gap: 10px;
+            padding: 15px 20px;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        .categories-carousel::-webkit-scrollbar { display: none; }
+
+        .category-pill {
+            background-color: var(--card-bg);
+            color: var(--secondary-text-color);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.25s ease;
+            flex-shrink: 0;
+        }
+
+        .category-pill.active {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(124, 58, 237, 0.4);
+        }
+
+        /* CATÁLOGO DE PRODUCTOS */
+        .catalog-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+            gap: 12px;
+            padding: 0 16px;
+        }
+
+        @media (max-width: 480px) {
+            .catalog-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                padding: 0 10px;
+            }
+        }
+
+        .client-card {
+            background-color: #000000;
+            border-radius: 18px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.25s, border-color 0.25s;
+        }
+
+        .client-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-color);
+        }
+
+        .card-image-wrap {
+            height: 150px;
+            width: 100%;
+            position: relative;
+            background-color: #000000;
+        }
+
+        .card-image-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-info-wrap {
+            background: linear-gradient(180deg, var(--panel-color) 0%, #1e1b4b 100%);
+            padding: 12px 10px 14px 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .card-info-wrap h3 {
+            margin: 0 0 4px 0;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 1.25;
+            height: 32px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .card-info-wrap .warranty-label {
+            font-size: 0.75rem;
+            color: var(--secondary-text-color);
+            margin-bottom: 8px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .card-info-wrap .price-row {
+            font-weight: 800;
+            font-size: 1.15rem;
+            color: var(--title-color);
+            margin-bottom: 12px;
+        }
+
+        .card-buttons-row { display: flex; gap: 6px; }
+
+        .card-action-btn {
             border: none;
-            padding: 11px;
-            border-radius: 8px;
+            border-radius: 10px;
             font-weight: 600;
             cursor: pointer;
-            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
             transition: all 0.2s;
+            height: 36px;
         }
 
-        .add-to-cart-btn:hover {
-            opacity: 0.9;
+        .card-action-btn.cart-add {
+            background-color: var(--btn-principal-color);
+            color: white;
+            flex-grow: 2;
+            gap: 4px;
         }
-        
-        .delete-product-btn {
+
+        .card-action-btn.details-view {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            flex-grow: 1;
+            width: 38px;
+        }
+
+        /* BOTÓN FLOTANTE LATERAL IZQUIERDO CON FLECHA A LA DERECHA */
+        .combos-drawer-btn {
+            position: fixed;
+            left: 0;
+            top: 45%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+            color: #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-left: none;
+            padding: 12px 10px 12px 12px;
+            border-radius: 0 16px 16px 0;
+            cursor: pointer;
+            z-index: 1200;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 4px 0 18px rgba(124, 58, 237, 0.5);
+            font-weight: 800;
+            font-size: 0.78rem;
+            letter-spacing: 0.5px;
+            transition: all 0.25s ease;
+        }
+
+        .combos-drawer-btn i.fa-arrow-right {
+            font-size: 1rem;
+            animation: bounceRight 1.5s infinite;
+        }
+
+        @keyframes bounceRight {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(4px); }
+        }
+
+        /* CAJÓN LATERAL DE COMBOS */
+        .combos-drawer-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            z-index: 2500;
             display: none;
+            justify-content: flex-start;
+        }
+
+        .combos-drawer-overlay.active { display: flex; }
+
+        .combos-drawer-panel {
+            width: 85%;
+            max-width: 340px;
+            height: 100%;
+            background: linear-gradient(180deg, #13111c 0%, #0c0c0e 100%);
+            border-right: 2px solid var(--accent-color);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.8);
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .combos-drawer-overlay.active .combos-drawer-panel { transform: translateX(0); }
+
+        .combos-drawer-header {
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(124, 58, 237, 0.1);
+        }
+
+        .combos-drawer-header h3 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .combos-drawer-close {
             background: none;
             border: none;
-            color: var(--danger-color);
+            color: #ffffff;
+            font-size: 1.2rem;
             cursor: pointer;
-            margin-top: 10px;
-            font-size: 0.8rem;
-            text-decoration: underline;
         }
 
-        /* BARRA FLOTANTE DEL CARRITO */
-        .cart-bar-container {
+        .combos-drawer-content {
+            padding: 16px;
+            overflow-y: auto;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .combo-item-card {
+            background: #16161a;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border-top: 3px solid #10b981;
+        }
+
+        .combo-item-img {
+            height: 120px;
+            width: 100%;
+            object-fit: cover;
+            background-color: #000;
+        }
+
+        .combo-item-body {
+            padding: 12px;
+            text-align: left;
+        }
+
+        .combo-item-body h4 {
+            margin: 0 0 4px 0;
+            font-size: 0.95rem;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .combo-item-body p {
+            margin: 0 0 8px 0;
+            font-size: 0.78rem;
+            color: var(--secondary-text-color);
+        }
+
+        .combo-item-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 8px;
+        }
+
+        .combo-item-price {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #10b981;
+        }
+
+        .combo-add-btn {
+            background-color: #10b981;
+            color: #000;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.78rem;
+            cursor: pointer;
+        }
+
+        /* POPUP PUBLICITARIO */
+        .popup-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(6px);
+            z-index: 3000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+
+        .popup-modal-overlay.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .popup-card-content {
+            position: relative;
+            max-width: 380px;
+            width: 100%;
+            background-color: #16161a;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.9);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .popup-card-content img {
+            width: 100%;
+            height: auto;
+            max-height: 400px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .popup-close-circle {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            z-index: 10;
+        }
+
+        .popup-timer-bar {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fbbf24;
+            font-size: 0.75rem;
+            padding: 6px;
+            font-weight: 700;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* FAB Y BARRA DEL CARRITO */
+        .whatsapp-fab {
+            position: fixed;
+            bottom: 80px;
+            right: 15px;
+            background-color: #25d366;
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+            z-index: 100;
+            text-decoration: none;
+        }
+
+        .client-cart-bar {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             background-color: var(--card-bg);
-            border-top: 2px solid var(--primary-color);
-            box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.6);
-            z-index: 1000;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 -4px 18px rgba(0,0,0,0.5);
+            z-index: 999;
         }
 
-        .cart-bar {
+        .cart-bar-content {
             max-width: 1100px;
             margin: 0 auto;
             padding: 10px 16px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .cart-data-summary { display: flex; flex-direction: column; text-align: left; }
+        .cart-data-summary span { font-size: 0.72rem; color: var(--secondary-text-color); }
+        .cart-data-summary strong { font-size: 1.1rem; color: var(--title-color); }
+
+        .cart-ui-actions { display: flex; align-items: center; gap: 8px; }
+        .cart-text-btn {
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            font-size: 0.8rem;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .checkout-submit-btn {
+            background-color: #25d366;
+            color: #ffffff;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 10px 20px;
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            margin-top: 40px;
+        }
+        footer a { color: var(--secondary-text-color); text-decoration: none; margin-top: 8px; display: inline-block; }
+
+        /* ================= VISTA ADMINISTRADOR ================= */
+        .admin-view {
+            display: none;
+            min-height: 100vh;
+            background-color: #0c0c0e;
+        }
+        .admin-view.active { display: flex; flex-direction: column; }
+
+        .admin-mobile-nav {
+            background-color: #16161a;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1100;
+        }
+
+        .admin-mobile-brand { display: flex; align-items: center; gap: 10px; }
+        .admin-mobile-brand i { color: var(--accent-color); font-size: 1.25rem; }
+        .admin-mobile-brand h2 { margin: 0; font-size: 1rem; font-weight: 800; color: #fff; }
+        .admin-mobile-menu-btn { background: none; border: none; color: #fff; font-size: 1.25rem; cursor: pointer; }
+
+        .admin-layout-container { display: flex; flex-grow: 1; position: relative; }
+
+        .admin-sidebar {
+            width: 250px;
+            background-color: #121216;
+            border-right: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-shrink: 0;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                position: absolute;
+                top: 0; bottom: 0; left: 0;
+                transform: translateX(-100%);
+                box-shadow: 6px 0 20px rgba(0,0,0,0.8);
+            }
+            .admin-sidebar.show { transform: translateX(0); }
+        }
+
+        .admin-sidebar-header { padding: 24px 18px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); text-align: left; }
+        .admin-sidebar-header-top { display: flex; align-items: center; gap: 10px; }
+        .admin-sidebar-header h2 { margin: 0; font-size: 1.15rem; font-weight: 800; color: #fff; }
+        .admin-sidebar-header-sub { font-size: 0.72rem; color: var(--text-muted); margin-top: 4px; }
+
+        .admin-menu-list { list-style: none; padding: 0; margin: 15px 0; display: flex; flex-direction: column; gap: 4px; }
+        .admin-menu-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            color: var(--secondary-text-color);
+            cursor: pointer;
+            transition: all 0.25s;
+            border-left: 3px solid transparent;
+        }
+        .admin-menu-item:hover { background-color: rgba(255, 255, 255, 0.04); color: #ffffff; }
+        .admin-menu-item.active {
+            background: linear-gradient(90deg, rgba(124, 58, 237, 0.15), rgba(124, 58, 237, 0.02));
+            color: #ffffff;
+            border-left-color: var(--primary-color);
+        }
+        .admin-menu-item i { font-size: 1rem; width: 20px; text-align: center; }
+
+        .admin-sidebar-footer { padding: 15px; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+        .admin-exit-btn {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.82rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .admin-content-view {
+            flex-grow: 1;
+            padding: 24px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            max-height: calc(100vh - 65px);
+            text-align: left;
+        }
+
+        @media (max-width: 480px) { .admin-content-view { padding: 14px; } }
+
+        .admin-section { display: none; }
+        .admin-section.active { display: block; }
+
+        .admin-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .admin-section-header h3 { margin: 0; font-size: 1.45rem; font-weight: 800; color: #ffffff; }
+
+        .admin-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 9px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.82rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .admin-btn.popup { background: linear-gradient(135deg, #a855f7, #6366f1); }
+        .admin-btn.combo { background: linear-gradient(135deg, #10b981, #059669); }
+
+        .admin-table-container {
+            background-color: #121215;
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            overflow-x: auto;
+        }
+
+        .admin-search-row {
+            padding: 14px 18px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
             gap: 10px;
         }
 
-        .cart-info {
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .action-links {
-            display: flex;
-            gap: 8px;
-        }
-
-        .text-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 0.82rem;
-            text-decoration: underline;
-            padding: 0;
-        }
-
-        .text-btn.view { color: var(--primary-color); }
-        .text-btn.clear { color: var(--danger-color); }
-
-        .checkout-btn {
-            background-color: #25d366;
-            color: white;
-            border: none;
-            padding: 11px 18px;
+        .admin-search-input {
+            background-color: #16161a;
+            border: 1px solid rgba(255,255,255,0.08);
             border-radius: 8px;
-            font-weight: 700;
-            cursor: pointer;
-            text-decoration: none;
-            white-space: nowrap;
-            font-size: 0.9rem;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            color: #ffffff;
+            width: 220px;
         }
 
-        /* FOOTER CON ACCESO ADMIN */
-        footer {
-            text-align: center;
-            padding: 20px 10px 40px;
-            color: var(--text-muted);
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
             font-size: 0.8rem;
         }
 
-        footer a {
-            color: #4b5563;
-            text-decoration: none;
-            margin-top: 10px;
+        .admin-table th {
+            background-color: rgba(255,255,255,0.01);
+            padding: 12px 16px;
+            text-align: left;
+            color: var(--secondary-text-color);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-weight: 700;
+        }
+
+        .admin-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            color: #ffffff;
+            vertical-align: middle;
+        }
+
+        .admin-table-badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
             display: inline-block;
         }
 
+        .admin-table-badge.active { background-color: rgba(16, 185, 129, 0.15); color: #10b981; }
+        .admin-table-badge.inactive { background-color: rgba(239, 68, 68, 0.15); color: #ef4444; }
+        .admin-table-badge.popup-badge { background-color: rgba(168, 85, 247, 0.15); color: #c084fc; }
+        .admin-table-badge.combo-badge { background-color: rgba(16, 185, 129, 0.15); color: #34d399; }
+
+        .table-action-row { display: flex; align-items: center; gap: 8px; }
+        .table-action-btn { background: none; border: none; font-size: 0.85rem; cursor: pointer; padding: 4px; }
+        .table-action-btn.edit { color: var(--accent-color); }
+        .table-action-btn.del { color: var(--danger-color); }
+
+        /* FORMULARIOS Y CONTROLES */
+        .admin-form-box {
+            background-color: #121215;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .admin-form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+        .admin-form-group label { font-size: 0.8rem; font-weight: 600; color: var(--secondary-text-color); }
+        .admin-form-group input, .admin-form-group textarea, .admin-form-group select {
+            background-color: #16161a;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: #ffffff;
+            font-size: 0.88rem;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+
+        .image-uploader-box {
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 18px;
+            text-align: center;
+            cursor: pointer;
+            background-color: rgba(255, 255, 255, 0.01);
+            position: relative;
+        }
+        .image-uploader-box input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+
         /* MODALES */
-        .modal-overlay {
+        .modal-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.85);
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 2000;
+            z-index: 3500;
+            padding: 12px;
+            box-sizing: border-box;
         }
 
-        .modal-content {
-            background-color: var(--card-bg);
-            width: 90%;
-            max-width: 400px;
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid var(--primary-color);
-            max-height: 85vh;
+        .modal-wrap {
+            background-color: #121215;
+            width: 100%;
+            max-width: 440px;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1.5px solid var(--primary-color);
+            max-height: 90vh;
             display: flex;
             flex-direction: column;
-            color: var(--text-color);
-        }
-
-        .modal-content h2 { margin-top: 0; color: var(--primary-color); text-align: center; font-size: 1.3rem; }
-
-        .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; margin-bottom: 5px; font-size: 0.85rem; }
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 9px;
-            border-radius: 6px;
-            border: 1px solid #3b3b48;
-            background-color: #1a1a21;
-            color: white;
+            color: #ffffff;
             box-sizing: border-box;
-            font-size: 0.9rem;
-        }
-        
-        .form-group input[type="color"] {
-            padding: 2px 5px;
-            height: 38px;
-            cursor: pointer;
         }
 
-        .modal-items { overflow-y: auto; flex-grow: 1; margin-bottom: 15px; }
-        
-        .cart-item-row {
+        .modal-wrap h3 { margin-top: 0; color: var(--accent-color); text-align: center; font-size: 1.15rem; margin-bottom: 16px; }
+        .modal-scrollable { overflow-y: auto; flex-grow: 1; margin-bottom: 16px; text-align: left; }
+
+        .btn-full {
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 6px;
+            font-size: 0.85rem;
+        }
+        .btn-full.action { background-color: var(--primary-color); color: white; }
+        .btn-full.cancel { background-color: rgba(255, 255, 255, 0.1); color: white; }
+
+        .item-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: rgba(0,0,0,0.25);
-            padding: 10px 12px;
-            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.02);
+            padding: 10px 14px;
+            border-radius: 10px;
             margin-bottom: 8px;
-            border: 1px solid #2e2e38;
+            border: 1px solid rgba(255, 255, 255, 0.04);
         }
-        .cart-item-info strong { display: block; font-size: 0.95rem; margin-bottom: 2px; }
-        .cart-item-info span { color: var(--text-muted); font-size: 0.85rem; }
-        .remove-btn {
-            background-color: var(--danger-color); color: white;
-            border: none; padding: 5px 9px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;
-        }
-
-        .btn-full {
-            background-color: var(--primary-color); color: white;
-            border: none; padding: 11px; border-radius: 8px;
-            font-weight: 600; cursor: pointer; width: 100%; margin-top: 8px;
-        }
-        .btn-full.cancel { background-color: #3b3b48; }
     </style>
 </head>
 <body>
 
-    <!-- BARRA EXCLUSIVA PARA CUANDO ESTÉS EN MODO ADMINISTRADOR -->
-    <div id="admin-bar" class="admin-top-bar">
-        <span>👑 <strong>Panel de Administrador</strong></span>
-        <button class="admin-top-btn" onclick="toggleViewMode()">👁️ Ver como cliente</button>
-        <button class="admin-top-btn" onclick="copyClientLink()">📋 Copiar enlace público</button>
-    </div>
+    <!-- ==================== PANTALLA CLIENTE ==================== -->
+    <div id="screen-client" class="client-view">
+        <header class="client-header">
+            <div class="header-brand">
+                <img id="client-header-logo" class="header-logo" src="https://via.placeholder.com/100" alt="Avatar MICHELLE777">
+                <h1 id="client-brand-name" class="header-title">MICHELLE777</h1>
+            </div>
+            <a href="#" id="client-top-whatsapp" target="_blank" class="ws-link-btn">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+        </header>
 
-    <header>
-        <img id="store-logo" src="" alt="Logo de la Tienda">
-        <h1>STREAMING STORE</h1>
-        <p>Cuentas premium, perfiles y suscripciones inmediatas</p>
-        
-        <!-- Botones de administración -->
-        <div id="admin-buttons" class="admin-controls">
-            <button class="admin-btn" onclick="openProductModal()">➕ Agregar Servicio</button>
-            <button class="admin-btn" onclick="openThemeModal()">🎨 Personalizar Diseño</button>
+        <!-- CINTILLO DINÁMICO DE HORARIO DE ATENCIÓN -->
+        <div class="schedule-banner">
+            <div class="schedule-info">
+                <i class="fa-regular fa-clock" style="color:var(--accent-color);"></i>
+                <span>Horario de atención: <strong id="display-schedule-hours">9:00 AM - 11:00 PM</strong> (<span id="display-schedule-days">Lun a Dom</span>)</span>
+            </div>
+            <div id="schedule-status-badge" class="schedule-status-badge open">
+                <i class="fa-solid fa-circle" style="font-size:0.5rem;"></i>
+                <span id="schedule-status-text">Abierto ahora</span>
+            </div>
         </div>
-    </header>
 
-    <div class="categories" id="categories-container"></div>
+        <!-- BOTÓN LATERAL IZQUIERDO CON FLECHA A LA DERECHA (COMBOS) -->
+        <button class="combos-drawer-btn" onclick="openCombosDrawer()">
+            <i class="fa-solid fa-fire"></i>
+            <span>COMBOS</span>
+            <i class="fa-solid fa-arrow-right"></i>
+        </button>
 
-    <main class="catalog" id="catalog-container"></main>
+        <!-- CAJÓN OFFCANVAS DE COMBOS -->
+        <div id="combos-drawer" class="combos-drawer-overlay" onclick="closeCombosDrawer(event)">
+            <div class="combos-drawer-panel">
+                <div class="combos-drawer-header">
+                    <h3><i class="fa-solid fa-layer-group" style="color:#10b981;"></i> Combos Especiales</h3>
+                    <button class="combos-drawer-close" onclick="closeCombosDrawerDirect()"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="combos-drawer-content" id="combos-drawer-list"></div>
+            </div>
+        </div>
 
-    <div class="cart-bar-container">
-        <div class="cart-bar">
-            <div class="cart-info">
-                <span>Items: <strong id="cart-count">0</strong> | Total: <strong id="cart-total">$0.00</strong></span>
-                <div class="action-links">
-                    <button class="text-btn view" onclick="openCartModal()">Ver detalles</button>
-                    <button class="text-btn clear" onclick="clearCart()">Vaciar</button>
+        <!-- POPUP PUBLICITARIO AUTOMÁTICO -->
+        <div id="promo-popup" class="popup-modal-overlay">
+            <div class="popup-card-content">
+                <button class="popup-close-circle" onclick="closePromoPopup()"><i class="fa-solid fa-xmark"></i></button>
+                <img id="popup-display-img" src="" alt="Promoción">
+                <div class="popup-timer-bar">
+                    <i class="fa-regular fa-clock"></i> Cierra automáticamente en <span id="popup-seconds-countdown">0</span>s
                 </div>
             </div>
-            <button class="checkout-btn" onclick="sendOrder()">Pedir por WhatsApp</button>
         </div>
-    </div>
 
-    <footer>
-        <p>© Streaming Store - Entregas inmediatas</p>
-        <a href="javascript:void(0)" onclick="promptAdminLogin()">⚙️ Acceso Administrador</a>
-    </footer>
+        <div class="categories-carousel" id="categories-container"></div>
+        <main class="catalog-grid" id="catalog-container"></main>
 
-    <!-- MODAL: VER/EDITAR CARRITO -->
-    <div id="cart-modal" class="modal-overlay">
-        <div class="modal-content">
-            <h2>Tu Pedido</h2>
-            <div id="modal-cart-items" class="modal-items"></div>
-            <button class="btn-full cancel" onclick="closeModal('cart-modal')">Cerrar</button>
-        </div>
-    </div>
+        <a href="#" id="whatsapp-float" target="_blank" class="whatsapp-fab">
+            <i class="fab fa-whatsapp"></i>
+        </a>
 
-    <!-- MODAL: AGREGAR PRODUCTO -->
-    <div id="add-product-modal" class="modal-overlay">
-        <div class="modal-content">
-            <h2>Agregar Nuevo Servicio</h2>
-            <div class="modal-items">
-                <div class="form-group">
-                    <label>Nombre del servicio</label>
-                    <input type="text" id="new-name" placeholder="Ej: Max Estándar">
+        <!-- BARRA FLOTANTE DE COMPRAS -->
+        <div class="client-cart-bar" id="cart-float-bar">
+            <div class="cart-bar-content">
+                <div class="cart-data-summary">
+                    <span>Items elegidos: <strong id="cart-items-count">0</strong></span>
+                    <strong>Total: <span id="cart-total-price">$0.00</span></strong>
                 </div>
-                <div class="form-group">
-                    <label>Precio (MXN)</label>
-                    <input type="number" id="new-price" placeholder="50">
-                </div>
-                <div class="form-group">
-                    <label>Garantía / Descripción</label>
-                    <input type="text" id="new-desc" placeholder="✓ garantía de 25 días">
-                </div>
-                <div class="form-group">
-                    <label>Categoría</label>
-                    <input type="text" id="new-cat" placeholder="netflix, vix, disney...">
-                </div>
-                <div class="form-group">
-                    <label>Subir Imagen o Logo</label>
-                    <input type="file" id="new-img" accept="image/*">
+                <div class="cart-ui-actions">
+                    <button class="cart-text-btn" onclick="openCartDetailsModal()">Ver Detalles</button>
+                    <button class="checkout-submit-btn" onclick="submitWhatsappOrder()">
+                        Pedir por WhatsApp <i class="fab fa-whatsapp"></i>
+                    </button>
                 </div>
             </div>
-            <button class="btn-full" onclick="saveNewProduct()">Guardar Servicio</button>
-            <button class="btn-full cancel" onclick="closeModal('add-product-modal')">Cancelar</button>
+        </div>
+
+        <footer>
+            <p>© MICHELLE777 - Todos los derechos reservados</p>
+            <p>Horario de atención: 9:00 AM a 11:00 PM de Lunes a Domingo</p>
+            <p>Soporte y entregas inmediatas dentro del horario de atención.</p>
+            <a href="javascript:void(0)" onclick="tryEnterAdmin()"><i class="fa-solid fa-user-lock"></i> Acceso Admin</a>
+        </footer>
+    </div>
+
+    <!-- ==================== PANTALLA ADMINISTRADOR ==================== -->
+    <div id="screen-admin" class="admin-view">
+        <div class="admin-mobile-nav">
+            <div class="admin-mobile-brand">
+                <i class="fa-solid fa-circle-nodes"></i>
+                <h2>Admin Dashboard</h2>
+            </div>
+            <button class="admin-mobile-menu-btn" onclick="toggleSidebarDrawer()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <div class="admin-layout-container">
+            <aside class="admin-sidebar" id="admin-sidebar">
+                <div>
+                    <div class="admin-sidebar-header">
+                        <div class="admin-sidebar-header-top">
+                            <i class="fa-solid fa-rocket"></i>
+                            <h2 id="admin-sidebar-name">MICHELLE777</h2>
+                        </div>
+                        <div class="admin-sidebar-header-sub">Panel de Administración</div>
+                    </div>
+                    <ul class="admin-menu-list">
+                        <li class="admin-menu-item active" onclick="switchAdminSection('dashboard', this)">
+                            <i class="fa-solid fa-chart-line"></i> Dashboard
+                        </li>
+                        <li class="admin-menu-item" onclick="switchAdminSection('business', this)">
+                            <i class="fa-solid fa-building"></i> Mi Negocio
+                        </li>
+                        <li class="admin-menu-item" onclick="switchAdminSection('products', this)">
+                            <i class="fa-solid fa-box-open"></i> Productos
+                        </li>
+                        <li class="admin-menu-item" onclick="switchAdminSection('promotions', this)">
+                            <i class="fa-solid fa-fire"></i> Promociones
+                        </li>
+                        <li class="admin-menu-item" onclick="switchAdminSection('categories', this)">
+                            <i class="fa-solid fa-tags"></i> Categorías
+                        </li>
+                        <li class="admin-menu-item" onclick="switchAdminSection('design', this)">
+                            <i class="fa-solid fa-palette"></i> Personalizar
+                        </li>
+                        <li class="admin-menu-item" style="color: #c084fc;" onclick="exitAdminToClient()">
+                            <i class="fa-solid fa-eye"></i> Ver Catálogo
+                        </li>
+                    </ul>
+                </div>
+                <div class="admin-sidebar-footer">
+                    <button class="admin-exit-btn" onclick="logoutAdminSession()">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar Sesión
+                    </button>
+                </div>
+            </aside>
+
+            <main class="admin-content-view">
+                
+                <!-- SECCIÓN DASHBOARD -->
+                <section id="sec-dashboard" class="admin-section active">
+                    <div style="background: linear-gradient(135deg, #1e1b4b, #111015); padding:20px; border-radius:14px; margin-bottom:20px;">
+                        <h4 style="margin:0 0 6px 0; color:#fff;">👋 ¡Bienvenida Administradora!</h4>
+                        <p style="margin:0; font-size:0.85rem; color:var(--text-muted);">Gestiona tus cuentas, modifica tu horario de atención, crea popups temporales y combos con vigencia automática.</p>
+                    </div>
+                </section>
+
+                <!-- SECCIÓN GESTIÓN DE PROMOCIONES -->
+                <section id="sec-promotions" class="admin-section">
+                    <div class="admin-section-header">
+                        <div>
+                            <h3 style="margin:0 0 4px 0;">Promociones</h3>
+                            <span style="font-size:0.75rem; color:var(--text-muted);">Crea popups promocionales y combos con descuento para tu catálogo</span>
+                        </div>
+                        <div style="display:flex; gap:8px;">
+                            <button class="admin-btn popup" onclick="openNewPopupModal()"><i class="fa-solid fa-image"></i> Crear Popup</button>
+                            <button class="admin-btn combo" onclick="openNewComboModal()"><i class="fa-solid fa-plus"></i> Crear Combo</button>
+                        </div>
+                    </div>
+
+                    <div class="admin-table-container">
+                        <div class="admin-search-row">
+                            <input type="text" id="search-promos-input" class="admin-search-input" placeholder="🔍 Buscar promociones..." oninput="filterPromosTable()">
+                        </div>
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>TIPO</th>
+                                    <th>TÍTULO</th>
+                                    <th>DESCRIPCIÓN</th>
+                                    <th>VIGENCIA</th>
+                                    <th>ESTADO</th>
+                                    <th>ACCIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-promos-tbody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SECCIÓN PRODUCTOS -->
+                <section id="sec-products" class="admin-section">
+                    <div class="admin-section-header">
+                        <h3>Mis Cuentas de Streaming</h3>
+                        <button class="admin-btn" onclick="openNewProductModal()"><i class="fa-solid fa-plus"></i> Nueva Cuenta</button>
+                    </div>
+                    <div class="admin-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Precio</th>
+                                    <th>Stock</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-products-tbody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SECCIÓN MI NEGOCIO (CON CONFIGURACIÓN DE HORARIOS) -->
+                <section id="sec-business" class="admin-section">
+                    <div class="admin-section-header">
+                        <h3>Perfil del Negocio</h3>
+                    </div>
+                    <div class="admin-form-box">
+                        <div class="form-row">
+                            <div class="admin-form-group">
+                                <label>Nombre del Negocio</label>
+                                <input type="text" id="biz-name">
+                            </div>
+                            <div class="admin-form-group">
+                                <label>WhatsApp (con código de país)</label>
+                                <input type="text" id="biz-whatsapp">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="admin-form-group">
+                                <label>Hora de Apertura</label>
+                                <input type="time" id="biz-schedule-open" value="09:00">
+                            </div>
+                            <div class="admin-form-group">
+                                <label>Hora de Cierre</label>
+                                <input type="time" id="biz-schedule-close" value="23:00">
+                            </div>
+                            <div class="admin-form-group">
+                                <label>Días de Atención</label>
+                                <input type="text" id="biz-schedule-days" value="Lunes a Domingo">
+                            </div>
+                        </div>
+
+                        <button class="admin-btn" onclick="saveBusinessConfig()">Guardar Perfil y Horarios</button>
+                    </div>
+                </section>
+
+                <!-- SECCIÓN CATEGORÍAS -->
+                <section id="sec-categories" class="admin-section">
+                    <div class="admin-section-header">
+                        <h3>Categorías del Menú</h3>
+                    </div>
+                    <div class="admin-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-categories-tbody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SECCIÓN PERSONALIZAR -->
+                <section id="sec-design" class="admin-section">
+                    <div class="admin-section-header">
+                        <h3>Diseño y Paletas</h3>
+                    </div>
+                    <div class="admin-form-box">
+                        <p style="font-size:0.85rem; color:var(--text-muted);">Estilo morado Neón activo para MICHELLE777.</p>
+                    </div>
+                </section>
+
+            </main>
         </div>
     </div>
 
-    <!-- MODAL: PERSONALIZAR COLORES Y LOGO -->
-    <div id="theme-modal" class="modal-overlay">
-        <div class="modal-content">
-            <h2>Personalizar Diseño</h2>
-            <div class="modal-items">
-                <div class="form-group">
-                    <label>Color de Acento (Botones y Títulos)</label>
-                    <input type="color" id="color-primary" value="#a855f7">
+    <!-- ==================== MODALES ==================== -->
+
+    <!-- MODAL POPUP -->
+    <div id="modal-popup-form" class="modal-bg">
+        <div class="modal-wrap">
+            <h3 id="modal-popup-title">Crear Popup Promocional</h3>
+            <div class="modal-scrollable">
+                <input type="hidden" id="form-pop-id">
+                <div class="admin-form-group">
+                    <label>Título del Popup</label>
+                    <input type="text" id="form-pop-title" placeholder="Ej: Combos Especiales de Halloween">
                 </div>
-                <div class="form-group">
-                    <label>Fondo de la Página</label>
-                    <input type="color" id="color-bg" value="#0c0c0e">
+                <div class="admin-form-group">
+                    <label>Descripción corta</label>
+                    <input type="text" id="form-pop-desc" placeholder="Ej: Combos solo por halloween">
                 </div>
-                <div class="form-group">
-                    <label>Fondo de Tarjetas</label>
-                    <input type="color" id="color-card" value="#16161a">
+                <div class="admin-form-group">
+                    <label>Duración visible en pantalla (Segundos)</label>
+                    <input type="number" id="form-pop-duration" placeholder="Ej: 6">
                 </div>
-                <div class="form-group">
-                    <label>Texto Principal</label>
-                    <input type="color" id="color-text" value="#ffffff">
+                <div class="form-row">
+                    <div class="admin-form-group">
+                        <label>Fecha de Inicio</label>
+                        <input type="date" id="form-pop-start">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Fecha Límite</label>
+                        <input type="date" id="form-pop-end">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Subir Logotipo</label>
-                    <input type="file" id="new-logo" accept="image/*">
+                <div class="admin-form-group">
+                    <label>Imagen o Banner del Popup</label>
+                    <div class="image-uploader-box">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <span>Seleccionar Foto de tu Celular</span>
+                        <input type="file" id="form-pop-file" accept="image/*" onchange="handleImageBuffer(this, 'pop')">
+                    </div>
+                    <input type="text" id="form-pop-url" placeholder="O pega el enlace de la imagen" style="margin-top:8px;">
                 </div>
             </div>
-            <button class="btn-full" onclick="saveTheme()">Aplicar y Guardar</button>
-            <button class="btn-full cancel" onclick="resetTheme()">Volver al Original</button>
-            <button class="btn-full cancel" style="margin-top: 8px;" onclick="closeModal('theme-modal')">Cerrar</button>
+            <button class="btn-full action" onclick="savePopupItem()">Guardar Popup</button>
+            <button class="btn-full cancel" onclick="closeFormModal('modal-popup-form')">Cancelar</button>
         </div>
     </div>
 
+    <!-- MODAL COMBO -->
+    <div id="modal-combo-form" class="modal-bg">
+        <div class="modal-wrap">
+            <h3 id="modal-combo-title">Crear Combo</h3>
+            <div class="modal-scrollable">
+                <input type="hidden" id="form-combo-id">
+                <div class="admin-form-group">
+                    <label>Nombre del Combo</label>
+                    <input type="text" id="form-combo-name" placeholder="Ej: Combo pato / Combo pikachu">
+                </div>
+                <div class="form-row">
+                    <div class="admin-form-group">
+                        <label>Precio del Combo ($ MXN)</label>
+                        <input type="number" id="form-combo-price" placeholder="70">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Garantía / Descripción</label>
+                        <input type="text" id="form-combo-desc" placeholder="25 dias de garantia">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="admin-form-group">
+                        <label>Fecha de Inicio</label>
+                        <input type="date" id="form-combo-start">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Fecha Límite (se oculta al vencer)</label>
+                        <input type="date" id="form-combo-end">
+                    </div>
+                </div>
+                <div class="admin-form-group">
+                    <label>Imagen del Combo</label>
+                    <div class="image-uploader-box">
+                        <i class="fa-solid fa-image"></i>
+                        <span>Seleccionar Foto de tu Celular</span>
+                        <input type="file" id="form-combo-file" accept="image/*" onchange="handleImageBuffer(this, 'combo')">
+                    </div>
+                    <input type="text" id="form-combo-url" placeholder="O pega el enlace de la foto" style="margin-top:8px;">
+                </div>
+            </div>
+            <button class="btn-full action" style="background:#10b981;" onclick="saveComboItem()">Guardar Combo</button>
+            <button class="btn-full cancel" onclick="closeFormModal('modal-combo-form')">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- MODAL PRODUCTO -->
+    <div id="modal-product" class="modal-bg">
+        <div class="modal-wrap">
+            <h3 id="modal-product-title">Nueva Cuenta</h3>
+            <div class="modal-scrollable">
+                <input type="hidden" id="form-p-id">
+                <div class="admin-form-group">
+                    <label>Nombre</label>
+                    <input type="text" id="form-p-name">
+                </div>
+                <div class="form-row">
+                    <div class="admin-form-group">
+                        <label>Precio ($ MXN)</label>
+                        <input type="number" id="form-p-price">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Categoría</label>
+                        <select id="form-p-cat"></select>
+                    </div>
+                </div>
+                <div class="admin-form-group">
+                    <label>Garantía</label>
+                    <input type="text" id="form-p-warranty">
+                </div>
+                <div class="admin-form-group">
+                    <label>Imagen</label>
+                    <input type="text" id="form-p-img">
+                </div>
+            </div>
+            <button class="btn-full action" onclick="saveProductForm()">Guardar</button>
+            <button class="btn-full cancel" onclick="closeFormModal('modal-product')">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- MODAL DETALLES DEL CARRITO -->
+    <div id="modal-cart-details" class="modal-bg">
+        <div class="modal-wrap">
+            <h3>Tu Carrito</h3>
+            <div id="modal-cart-items-wrap" class="modal-scrollable"></div>
+            <button class="btn-full action" style="background-color: #25d366;" onclick="submitWhatsappOrder()">Enviar Pedido</button>
+            <button class="btn-full cancel" onclick="closeFormModal('modal-cart-details')">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- SCRIPT PRINCIPAL -->
     <script>
-        const MY_PHONE_NUMBER = "525523676793"; 
-
-        /* ================= LISTA DE TUS 26 PRODUCTOS CON LOGOS OFICIALES ================= */
-        const defaultProducts = [
-            { id: 1, name: "Netflix 1 perfil", price: 50.0, desc: "✓ garantía de 25 días", cat: "netflix", img: "https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg" },
-            { id: 2, name: "Disney ESPN 1 perfil", price: 40.0, desc: "✓ garantía de 25 días", cat: "disney", img: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg" },
-            { id: 3, name: "vix 1 mes", price: 20.0, desc: "✓ garantía de 25 días", cat: "vix", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/ViX_Logo.svg" },
-            { id: 4, name: "vix 2mes", price: 30.0, desc: "✓ garantía de 25 días", cat: "vix", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/ViX_Logo.svg" },
-            { id: 5, name: "vix 3mes", price: 40.0, desc: "✓ garantía de 25 días", cat: "vix", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/ViX_Logo.svg" },
-            { id: 6, name: "vix 4meses", price: 50.0, desc: "✓ garantía de 25 días", cat: "vix", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/ViX_Logo.svg" },
-            { id: 7, name: "vix 5meses", price: 60.0, desc: "✓ garantía de 25 días", cat: "vix", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/ViX_Logo.svg" },
-            { id: 8, name: "vix 6 meses", price: 70.0, desc: "✓ garantía de 25 días", cat: "vix", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/ViX_Logo.svg" },
-            { id: 9, name: "vix 8meses", price: 80.0, desc: "✓ garantía de 25 días", cat: "vix", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/ViX_Logo.svg" },
-            { id: 10, name: "vix 10meses", price: 100.0, desc: "✓ garantía de 25 días", cat: "vix", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/ViX_Logo.svg" },
-            { id: 11, name: "vix 12meses", price: 115.0, desc: "✓ garantía de 185 días", cat: "vix", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/ViX_Logo.svg" },
-            { id: 12, name: "Netflix cuenta completa", price: 220.0, desc: "✓ garantía de 25 días", cat: "netflix", img: "https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg" },
-            { id: 13, name: "Disney cuenta completa", price: 120.0, desc: "✓ garantía de 25 días", cat: "disney", img: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg" },
-            { id: 14, name: "Duolingo 1 mes", price: 30.0, desc: "✓ garantía de 25 días", cat: "duolingo", img: "https://upload.wikimedia.org/wikipedia/commons/1/15/Duolingo_logo.svg" },
-            { id: 15, name: "Duolingo 2 meses", price: 50.0, desc: "✓ garantía de 25 días", cat: "duolingo", img: "https://upload.wikimedia.org/wikipedia/commons/1/15/Duolingo_logo.svg" },
-            { id: 16, name: "Duolingo 12 meses", price: 150.0, desc: "✓ garantía de 25 días", cat: "duolingo", img: "https://upload.wikimedia.org/wikipedia/commons/1/15/Duolingo_logo.svg" },
-            { id: 17, name: "Spotify 1 mes inv", price: 70.0, desc: "✓ garantía de 25 días", cat: "spotify", img: "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" },
-            { id: 18, name: "Spotify 2 meses", price: 110.0, desc: "✓ garantía de 25 días", cat: "spotify", img: "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" },
-            { id: 19, name: "Google gemini 18 meses", price: 100.0, desc: "✓ garantía de 185 días", cat: "google", img: "https://upload.wikimedia.org/wikipedia/commons/8/8a/Google_Gemini_logo.svg" },
-            { id: 20, name: "Youtube premium 1 mes invitación", price: 40.0, desc: "✓ garantía de 25 días", cat: "youtube", img: "https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" },
-            { id: 21, name: "Apple music", price: 40.0, desc: "✓ garantía de 25 días", cat: "apple", img: "https://upload.wikimedia.org/wikipedia/commons/2/2a/Apple_Music_logo.svg" },
-            { id: 22, name: "Crunchyroll 1 mes", price: 40.0, desc: "✓ garantía de 25 días", cat: "crunchyroll", img: "https://upload.wikimedia.org/wikipedia/commons/0/08/Crunchyroll_Logo.png" },
-            { id: 24, name: "Hbo max 1 mes", price: 30.0, desc: "✓ garantía de 25 días", cat: "hbo", img: "https://upload.wikimedia.org/wikipedia/commons/1/17/HBO_Max_Logo.svg" },
-            { id: 25, name: "prime Video 1 mes", price: 30.0, desc: "✓ garantía de 25 días", cat: "prime", img: "https://upload.wikimedia.org/wikipedia/commons/1/11/Amazon_Prime_Video_logo.svg" },
-            { id: 26, name: "viky 1 mes", price: 35.0, desc: "✓ garantía de 25 días", cat: "viki", img: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Rakuten_Viki_Logo_2019.svg" },
-            { id: 27, name: "paramunt", price: 35.0, desc: "✓ garantía de 25 días", cat: "paramount", img: "https://upload.wikimedia.org/wikipedia/commons/a/a5/Paramount_Plus.svg" }
-        ];
-
-        /* NOMBRES LIMPIOS PARA LAS CATEGORÍAS */
-        const catNames = {
-            'todos': 'Todos',
-            'netflix': 'Netflix',
-            'disney': 'Disney+',
-            'vix': 'ViX',
-            'duolingo': 'Duolingo',
-            'spotify': 'Spotify',
-            'youtube': 'YouTube',
-            'google': 'Google',
-            'apple': 'Apple Music',
-            'crunchyroll': 'Crunchyroll',
-            'hbo': 'HBO Max',
-            'prime': 'Prime Video',
-            'viki': 'Viki',
-            'paramount': 'Paramount+'
+        // CONFIGURACIÓN DEL NEGOCIO (CON HORARIO DE 9:00 A 23:00)
+        let business = JSON.parse(localStorage.getItem('streaming_biz')) || {
+            name: "MICHELLE777",
+            whatsapp: "525523676793",
+            description: "Tu tienda de streaming favorita",
+            logo: "https://via.placeholder.com/150",
+            scheduleOpen: "09:00",
+            scheduleClose: "23:00",
+            scheduleDays: "Lunes a Domingo"
         };
 
-        let products = JSON.parse(localStorage.getItem('streaming_products')) || defaultProducts;
-        let cart = JSON.parse(localStorage.getItem('streaming_cart')) || [];
-        
-        // Control de modo Administrador
-        const urlParams = new URLSearchParams(window.location.search);
-        let isAdmin = urlParams.get('admin') === '1' || sessionStorage.getItem('is_admin') === 'true';
+        // PROMOCIONES
+        let promotions = JSON.parse(localStorage.getItem('streaming_promos_table')) || [
+            {
+                id: 101,
+                type: 'POPUP',
+                title: 'Combos',
+                desc: 'Comos solo por hallowen.',
+                startDate: '2026-10-23',
+                endDate: '2026-12-31',
+                duration: 6,
+                img: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800',
+                status: 'ACTIVA'
+            },
+            {
+                id: 102,
+                type: 'COMBO',
+                title: 'Combo pato',
+                desc: '25 dias de garantia',
+                price: 80.00,
+                startDate: '2026-10-23',
+                endDate: '2026-11-07',
+                img: 'https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=500',
+                status: 'ACTIVA'
+            },
+            {
+                id: 103,
+                type: 'COMBO',
+                title: 'Combo snorlax',
+                desc: '25 dias de garantia',
+                price: 90.00,
+                startDate: '2026-10-23',
+                endDate: '2026-11-07',
+                img: 'https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?w=500',
+                status: 'ACTIVA'
+            },
+            {
+                id: 104,
+                type: 'COMBO',
+                title: 'Combo pikachu',
+                desc: '25 dias de garantia',
+                price: 75.00,
+                startDate: '2026-10-23',
+                endDate: '2026-11-07',
+                img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500',
+                status: 'ACTIVA'
+            }
+        ];
 
-        // Iniciar
-        loadTheme();
-        loadLogo();
-        checkAdminMode();
-        renderCategories();
-        renderProducts('todos');
-        updateCartUI();
+        let categories = JSON.parse(localStorage.getItem('streaming_cats')) || [
+            { id: 1, name: "Netflix", status: "activo" },
+            { id: 2, name: "Disney+", status: "activo" },
+            { id: 3, name: "HBO Max", status: "activo" },
+            { id: 4, name: "Amazon Prime", status: "activo" },
+            { id: 5, name: "Spotify", status: "activo" },
+            { id: 6, name: "YouTube Premium", status: "activo" },
+            { id: 18, name: "Vix", status: "activo" }
+        ];
 
-        /* ================= SISTEMA DE MODOS (ADMIN VS CLIENTE) ================= */
-        function checkAdminMode() {
-            const adminBar = document.getElementById('admin-bar');
-            const adminBtns = document.getElementById('admin-buttons');
-            const deleteBtns = document.querySelectorAll('.delete-product-btn');
+        let products = JSON.parse(localStorage.getItem('streaming_prods')) || [
+            { id: 20, name: "NETFLIX PERFIL 1 MES", price: 50.00, catId: 1, warranty: "25 días de garantía.", stock: "disponible", status: "activo", img: "https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg" },
+            { id: 21, name: "DISNEY PREMIUN PERFIL 1 MES", price: 30.00, catId: 2, warranty: "PERFIL DISNEY PREMIUM para cualquier dispositivo.", stock: "disponible", status: "activo", img: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg" },
+            { id: 22, name: "YOUTUBE PREMIUM 1 MES", price: 35.00, catId: 6, warranty: "YouTube Premium invitación a tu correo.", stock: "disponible", status: "activo", img: "https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" },
+            { id: 23, name: "SPOTIFY PREMIUN 1 MES", price: 50.00, catId: 5, warranty: "Spotify Premium invitación.", stock: "disponible", status: "activo", img: "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" },
+            { id: 36, name: "Vix 1 mes", price: 20.00, catId: 18, warranty: "Perfil 1 mes 25 días de garantía.", stock: "limitado", status: "activo", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/ViX_Logo.svg" }
+        ];
 
-            if (isAdmin) {
-                adminBar.classList.add('active');
-                adminBtns.classList.add('active');
-                deleteBtns.forEach(b => b.style.display = 'inline-block');
+        let cart = [];
+        let activeClientCat = "todos";
+        let tempUploadBuffer = "";
+        let popupCountdownTimer = null;
+
+        window.onload = function() {
+            checkAndRunViews();
+        };
+
+        function checkAndRunViews() {
+            const params = new URLSearchParams(window.location.search);
+            const isSessionAdmin = sessionStorage.getItem('is_admin_active') === 'true';
+
+            if (params.get('admin') === '1' || isSessionAdmin) {
+                document.getElementById('screen-client').style.display = 'none';
+                document.getElementById('screen-admin').classList.add('active');
+                initAdminSystem();
             } else {
-                adminBar.classList.remove('active');
-                adminBtns.classList.remove('active');
-                deleteBtns.forEach(b => b.style.display = 'none');
+                document.getElementById('screen-client').style.display = 'block';
+                document.getElementById('screen-admin').classList.remove('active');
+                initClientShop();
+                checkAndTriggerPopup();
             }
         }
 
-        function toggleViewMode() {
-            isAdmin = !isAdmin;
-            sessionStorage.setItem('is_admin', isAdmin ? 'true' : 'false');
-            checkAdminMode();
-            renderProducts('todos');
+        /* ================= VISTA CLIENTE ================= */
+        function initClientShop() {
+            document.getElementById('client-brand-name').innerText = business.name;
+            document.getElementById('client-header-logo').src = business.logo || "https://via.placeholder.com/100";
+            
+            const wsLink = `https://wa.me/${business.whatsapp}`;
+            document.getElementById('client-top-whatsapp').href = wsLink;
+            document.getElementById('whatsapp-float').href = wsLink;
+
+            renderScheduleBanner();
+            renderCategoriesPills();
+            renderCatalogItems();
+            renderCombosDrawerItems();
+            updateCartSummary();
         }
 
-        function promptAdminLogin() {
-            const pass = prompt("Ingresa la clave de administrador (por defecto: 1234):");
-            if (pass === "1234") {
-                isAdmin = true;
-                sessionStorage.setItem('is_admin', 'true');
-                checkAdminMode();
-                renderProducts('todos');
-                alert("¡Modo Administrador activado!");
-            } else if (pass !== null) {
-                alert("Clave incorrecta.");
+        /* GESTIÓN Y CÁLCULO DE HORARIO EN TIEMPO REAL */
+        function renderScheduleBanner() {
+            const openTime = business.scheduleOpen || "09:00";
+            const closeTime = business.scheduleClose || "23:00";
+            const daysText = business.scheduleDays || "Lunes a Domingo";
+
+            document.getElementById('display-schedule-hours').innerText = `${formatTo12H(openTime)} - ${formatTo12H(closeTime)}`;
+            document.getElementById('display-schedule-days').innerText = daysText;
+
+            // Determinar si está abierto en este momento
+            const now = new Date();
+            const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+            const [openH, openM] = openTime.split(':').map(Number);
+            const [closeH, closeM] = closeTime.split(':').map(Number);
+            const openMinutes = openH * 60 + openM;
+            const closeMinutes = closeH * 60 + closeM;
+
+            const isOpen = currentMinutes >= openMinutes && currentMinutes <= closeMinutes;
+
+            const badge = document.getElementById('schedule-status-badge');
+            const statusText = document.getElementById('schedule-status-text');
+
+            if (isOpen) {
+                badge.className = "schedule-status-badge open";
+                statusText.innerText = "Abierto ahora · Entregas inmediatas";
+            } else {
+                badge.className = "schedule-status-badge closed";
+                statusText.innerText = `Fuera de horario · Atendemos a las ${formatTo12H(openTime)}`;
             }
         }
 
-        function copyClientLink() {
-            const cleanUrl = window.location.origin + window.location.pathname;
-            navigator.clipboard.writeText(cleanUrl).then(() => {
-                alert("¡Enlace para clientes copiado al portapapeles!\n\n" + cleanUrl);
+        function formatTo12H(timeStr) {
+            if (!timeStr) return "";
+            const [h, m] = timeStr.split(':').map(Number);
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            const h12 = h % 12 || 12;
+            return `${h12}:${m < 10 ? '0' + m : m} ${ampm}`;
+        }
+
+        function isItemActiveAndValid(item) {
+            if (item.status !== 'ACTIVA') return false;
+            const today = new Date().toISOString().slice(0, 10);
+            if (item.startDate && today < item.startDate) return false;
+            if (item.endDate && today > item.endDate) return false;
+            return true;
+        }
+
+        /* CONTROL POPUP */
+        function checkAndTriggerPopup() {
+            const activePopup = promotions.find(p => p.type === 'POPUP' && isItemActiveAndValid(p));
+            if (!activePopup) return;
+
+            const modal = document.getElementById('promo-popup');
+            document.getElementById('popup-display-img').src = activePopup.img;
+            
+            let secondsLeft = parseInt(activePopup.duration) || 6;
+            document.getElementById('popup-seconds-countdown').innerText = secondsLeft;
+            modal.classList.add('active');
+
+            if (popupCountdownTimer) clearInterval(popupCountdownTimer);
+            popupCountdownTimer = setInterval(() => {
+                secondsLeft--;
+                document.getElementById('popup-seconds-countdown').innerText = secondsLeft;
+                if (secondsLeft <= 0) closePromoPopup();
+            }, 1000);
+        }
+
+        function closePromoPopup() {
+            if (popupCountdownTimer) clearInterval(popupCountdownTimer);
+            document.getElementById('promo-popup').classList.remove('active');
+        }
+
+        /* CONTROL CAJÓN COMBOS */
+        function openCombosDrawer() {
+            renderCombosDrawerItems();
+            document.getElementById('combos-drawer').classList.add('active');
+        }
+
+        function closeCombosDrawer(e) {
+            if (e.target.id === 'combos-drawer') {
+                document.getElementById('combos-drawer').classList.remove('active');
+            }
+        }
+
+        function closeCombosDrawerDirect() {
+            document.getElementById('combos-drawer').classList.remove('active');
+        }
+
+        function renderCombosDrawerItems() {
+            const list = document.getElementById('combos-drawer-list');
+            list.innerHTML = '';
+
+            const validCombos = promotions.filter(p => p.type === 'COMBO' && isItemActiveAndValid(p));
+
+            if (validCombos.length === 0) {
+                list.innerHTML = '<p style="color:var(--text-muted); font-size:0.85rem; text-align:center;">No hay combos disponibles en este momento.</p>';
+                return;
+            }
+
+            validCombos.forEach(c => {
+                const card = document.createElement('div');
+                card.className = 'combo-item-card';
+                card.innerHTML = `
+                    <img class="combo-item-img" src="${c.img || 'https://via.placeholder.com/300'}" alt="${c.title}">
+                    <div class="combo-item-body">
+                        <h4>${c.title}</h4>
+                        <p>${c.desc}</p>
+                        <div class="combo-item-footer">
+                            <span class="combo-item-price">$ ${parseFloat(c.price).toFixed(2)} MXN</span>
+                            <button class="combo-add-btn" onclick="addComboToCart(${c.id})">+ Agregar</button>
+                        </div>
+                    </div>
+                `;
+                list.appendChild(card);
             });
         }
 
-        /* ================= RENDERIZADO ================= */
-        function renderCategories() {
+        function addComboToCart(id) {
+            const combo = promotions.find(p => p.id === id);
+            if (!combo) return;
+            cart.push({
+                id: combo.id,
+                name: `[COMBO] ${combo.title}`,
+                price: combo.price
+            });
+            updateCartSummary();
+            alert(`Añadido: ${combo.title}`);
+        }
+
+        /* RENDER CATÁLOGO CLIENTE */
+        function renderCategoriesPills() {
             const container = document.getElementById('categories-container');
-            const uniqueCats = ['todos', ...new Set(products.map(p => p.cat))];
-            
-            let html = '';
-            uniqueCats.forEach(cat => {
-                const label = catNames[cat] || (cat.charAt(0).toUpperCase() + cat.slice(1));
-                html += `<button class="category-btn ${cat === 'todos' ? 'active' : ''}" onclick="filterCategory('${cat}', event)">${label}</button>`;
+            let html = `<div class="category-pill ${activeClientCat === 'todos' ? 'active' : ''}" onclick="selectCategory('todos')">Todos</div>`;
+            categories.forEach(c => {
+                html += `<div class="category-pill ${activeClientCat == c.id ? 'active' : ''}" onclick="selectCategory(${c.id})">${c.name}</div>`;
             });
             container.innerHTML = html;
         }
 
-        function renderProducts(filterCat) {
+        function selectCategory(id) {
+            activeClientCat = id;
+            renderCategoriesPills();
+            renderCatalogItems();
+        }
+
+        function renderCatalogItems() {
             const container = document.getElementById('catalog-container');
             container.innerHTML = '';
 
-            products.forEach(p => {
-                if (filterCat !== 'todos' && p.cat !== filterCat) return;
+            const filtered = products.filter(p => activeClientCat === 'todos' || p.catId == activeClientCat);
 
+            filtered.forEach(p => {
                 const card = document.createElement('div');
-                card.className = 'product-card';
+                card.className = "client-card";
                 card.innerHTML = `
-                    <div>
-                        <img src="${p.img}" alt="${p.name}" onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/1038/1038100.png';">
-                        <h3>${p.name}</h3>
-                        <div class="warranty">${p.desc}</div>
-                        <div class="price">$${parseFloat(p.price).toFixed(2)} MXN</div>
+                    <div class="card-image-wrap">
+                        <img src="${p.img || 'https://via.placeholder.com/180'}" alt="${p.name}">
                     </div>
-                    <div>
-                        <button class="add-to-cart-btn" onclick="addToCart('${p.name}', ${p.price}, this)">Agregar al carrito</button>
-                        <button class="delete-product-btn" style="display: ${isAdmin ? 'inline-block' : 'none'};" onclick="deleteProduct(${p.id})">Eliminar Producto</button>
+                    <div class="card-info-wrap">
+                        <div>
+                            <h3>${p.name}</h3>
+                            <div class="warranty-label">${p.warranty}</div>
+                        </div>
+                        <div>
+                            <div class="price-row">$ ${parseFloat(p.price).toFixed(2)}</div>
+                            <div class="card-buttons-row">
+                                <button class="card-action-btn cart-add" onclick="addItemToCart(${p.id})">
+                                    <i class="fa-solid fa-shopping-cart"></i> Agregar
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 `;
                 container.appendChild(card);
             });
         }
 
-        function filterCategory(category, event) {
-            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            renderProducts(category);
+        function addItemToCart(id) {
+            const p = products.find(prod => prod.id === id);
+            if (!p) return;
+            cart.push(p);
+            updateCartSummary();
+            alert(`Añadido: ${p.name}`);
         }
 
-        /* ================= LOGO Y TEMA ================= */
-        function loadLogo() {
-            const savedLogo = localStorage.getItem('streaming_logo');
-            const logoImg = document.getElementById('store-logo');
-            if(savedLogo) {
-                logoImg.src = savedLogo;
-                logoImg.style.display = 'block';
-            } else {
-                logoImg.style.display = 'none';
-            }
+        function removeOneItemFromCart(idx) {
+            cart.splice(idx, 1);
+            updateCartSummary();
+            renderCartListModal();
         }
 
-        function openThemeModal() {
-            document.getElementById('theme-modal').style.display = 'flex';
-            const root = getComputedStyle(document.documentElement);
-            document.getElementById('color-primary').value = root.getPropertyValue('--primary-color').trim();
-            document.getElementById('color-bg').value = root.getPropertyValue('--bg-color').trim();
-            document.getElementById('color-card').value = root.getPropertyValue('--card-bg').trim();
-            document.getElementById('color-text').value = root.getPropertyValue('--text-color').trim();
-            document.getElementById('new-logo').value = '';
-        }
-
-        function saveTheme() {
-            const theme = {
-                primary: document.getElementById('color-primary').value,
-                bg: document.getElementById('color-bg').value,
-                card: document.getElementById('color-card').value,
-                text: document.getElementById('color-text').value
-            };
-            localStorage.setItem('streaming_theme', JSON.stringify(theme));
-            applyTheme(theme);
-
-            const logoInput = document.getElementById('new-logo');
-            if (logoInput.files && logoInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    localStorage.setItem('streaming_logo', e.target.result);
-                    loadLogo();
-                    closeModal('theme-modal');
-                };
-                reader.readAsDataURL(logoInput.files[0]);
-            } else {
-                closeModal('theme-modal');
-            }
-        }
-
-        function loadTheme() {
-            const savedTheme = JSON.parse(localStorage.getItem('streaming_theme'));
-            if(savedTheme) applyTheme(savedTheme);
-        }
-
-        function applyTheme(theme) {
-            document.documentElement.style.setProperty('--primary-color', theme.primary);
-            document.documentElement.style.setProperty('--bg-color', theme.bg);
-            document.documentElement.style.setProperty('--card-bg', theme.card);
-            document.documentElement.style.setProperty('--text-color', theme.text);
-        }
-
-        function resetTheme() {
-            localStorage.removeItem('streaming_theme');
-            localStorage.removeItem('streaming_logo');
-            location.reload(); 
-        }
-
-        /* ================= GESTIÓN DE PRODUCTOS ================= */
-        function openProductModal() {
-            document.getElementById('add-product-modal').style.display = 'flex';
-        }
-
-        function saveNewProduct() {
-            const name = document.getElementById('new-name').value;
-            const price = parseFloat(document.getElementById('new-price').value);
-            const desc = document.getElementById('new-desc').value;
-            let cat = document.getElementById('new-cat').value.toLowerCase().trim();
-            const fileInput = document.getElementById('new-img');
-
-            if(!name || !price || !cat) {
-                alert("Por favor completa nombre, precio y categoría.");
+        function updateCartSummary() {
+            const floatBar = document.getElementById('cart-float-bar');
+            if (cart.length === 0) {
+                floatBar.style.display = 'none';
                 return;
             }
+            floatBar.style.display = 'block';
+            document.getElementById('cart-items-count').innerText = cart.length;
+            const total = cart.reduce((acc, c) => acc + parseFloat(c.price), 0);
+            document.getElementById('cart-total-price').innerText = `$ ${total.toFixed(2)}`;
+        }
 
-            if (fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    addProductToArray(name, price, desc, cat, e.target.result);
-                };
-                reader.readAsDataURL(fileInput.files[0]);
+        function openCartDetailsModal() {
+            document.getElementById('modal-cart-details').style.display = 'flex';
+            renderCartListModal();
+        }
+
+        function renderCartListModal() {
+            const container = document.getElementById('modal-cart-items-wrap');
+            container.innerHTML = '';
+            if (cart.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:var(--text-muted);">Carrito vacío.</p>';
+                return;
+            }
+            cart.forEach((item, index) => {
+                const row = document.createElement('div');
+                row.className = "item-row";
+                row.innerHTML = `
+                    <div><strong>${item.name}</strong><br><small>$ ${parseFloat(item.price).toFixed(2)} MXN</small></div>
+                    <button class="table-action-btn del" onclick="removeOneItemFromCart(${index})"><i class="fa-solid fa-trash"></i></button>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function submitWhatsappOrder() {
+            if (cart.length === 0) return;
+            const openTime = formatTo12H(business.scheduleOpen || "09:00");
+            const closeTime = formatTo12H(business.scheduleClose || "23:00");
+            const daysText = business.scheduleDays || "Lunes a Domingo";
+
+            let message = `🛒 *PEDIDO STREAMING - ${business.name}*\n\n`;
+            let total = 0;
+            cart.forEach((i, idx) => {
+                total += parseFloat(i.price);
+                message += `${idx + 1}. *${i.name}* - $${parseFloat(i.price).toFixed(2)} MXN\n`;
+            });
+            message += `\n💵 *Total:* $${total.toFixed(2)} MXN\n`;
+            message += `⏰ *Horario de atención:* ${openTime} a ${closeTime} (${daysText})\n\n`;
+            message += `_Hola, quiero concretar la compra de estos servicios._`;
+
+            window.open(`https://wa.me/${business.whatsapp}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        /* ================= VISTA ADMINISTRADOR ================= */
+        function initAdminSystem() {
+            document.getElementById('admin-sidebar-name').innerText = business.name;
+            loadBusinessAdminForm();
+            renderAdminPromotionsTable();
+            renderAdminProductsTable();
+        }
+
+        function toggleSidebarDrawer() {
+            document.getElementById('admin-sidebar').classList.toggle('show');
+        }
+
+        function switchAdminSection(secId, menuElem) {
+            document.querySelectorAll('.admin-menu-item').forEach(li => li.classList.remove('active'));
+            menuElem.classList.add('active');
+            document.querySelectorAll('.admin-section').forEach(sec => sec.classList.remove('active'));
+            const matched = document.getElementById(`sec-${secId}`);
+            if (matched) matched.classList.add('active');
+            document.getElementById('admin-sidebar').classList.remove('show');
+        }
+
+        function renderAdminPromotionsTable() {
+            const tbody = document.getElementById('admin-promos-tbody');
+            tbody.innerHTML = '';
+
+            promotions.forEach(p => {
+                const isPopup = p.type === 'POPUP';
+                const badgeClass = isPopup ? 'popup-badge' : 'combo-badge';
+                const vigenciaStr = `${formatDate(p.startDate)} - ${formatDate(p.endDate)}`;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><span class="admin-table-badge ${badgeClass}">${p.type}</span></td>
+                    <td><strong>${p.title}</strong></td>
+                    <td>${p.desc}</td>
+                    <td>${vigenciaStr}</td>
+                    <td><span class="admin-table-badge ${p.status === 'ACTIVA' ? 'active' : 'inactive'}">${p.status}</span></td>
+                    <td>
+                        <div class="table-action-row">
+                            <button class="table-action-btn edit" onclick="editPromoItem(${p.id})">✏️</button>
+                            <button class="table-action-btn del" onclick="deletePromoItem(${p.id})">🗑️</button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function formatDate(dStr) {
+            if (!dStr) return '';
+            const parts = dStr.split('-');
+            return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
+
+        function filterPromosTable() {
+            const q = document.getElementById('search-promos-input').value.toLowerCase();
+            const rows = document.querySelectorAll('#admin-promos-tbody tr');
+            rows.forEach(r => {
+                const text = r.innerText.toLowerCase();
+                r.style.display = text.includes(q) ? '' : 'none';
+            });
+        }
+
+        function openNewPopupModal() {
+            document.getElementById('modal-popup-title').innerText = "Crear Popup Promocional";
+            document.getElementById('form-pop-id').value = "";
+            document.getElementById('form-pop-title').value = "Combos";
+            document.getElementById('form-pop-desc').value = "Combos solo por temporada";
+            document.getElementById('form-pop-duration').value = "6";
+            document.getElementById('form-pop-start').value = new Date().toISOString().slice(0, 10);
+            document.getElementById('form-pop-end').value = new Date(Date.now() + 15 * 86400000).toISOString().slice(0, 10);
+            document.getElementById('form-pop-url').value = "";
+            tempUploadBuffer = "";
+            document.getElementById('modal-popup-form').style.display = 'flex';
+        }
+
+        function openNewComboModal() {
+            document.getElementById('modal-combo-title').innerText = "Crear Nuevo Combo";
+            document.getElementById('form-combo-id').value = "";
+            document.getElementById('form-combo-name').value = "";
+            document.getElementById('form-combo-price').value = "";
+            document.getElementById('form-combo-desc').value = "25 dias de garantia";
+            document.getElementById('form-combo-start').value = new Date().toISOString().slice(0, 10);
+            document.getElementById('form-combo-end').value = new Date(Date.now() + 15 * 86400000).toISOString().slice(0, 10);
+            document.getElementById('form-combo-url').value = "";
+            tempUploadBuffer = "";
+            document.getElementById('modal-combo-form').style.display = 'flex';
+        }
+
+        function editPromoItem(id) {
+            const item = promotions.find(p => p.id === id);
+            if (!item) return;
+
+            if (item.type === 'POPUP') {
+                document.getElementById('modal-popup-title').innerText = "Editar Popup";
+                document.getElementById('form-pop-id').value = item.id;
+                document.getElementById('form-pop-title').value = item.title;
+                document.getElementById('form-pop-desc').value = item.desc;
+                document.getElementById('form-pop-duration').value = item.duration || 6;
+                document.getElementById('form-pop-start').value = item.startDate;
+                document.getElementById('form-pop-end').value = item.endDate;
+                document.getElementById('form-pop-url').value = item.img.startsWith('data:') ? '' : item.img;
+                tempUploadBuffer = item.img.startsWith('data:') ? item.img : '';
+                document.getElementById('modal-popup-form').style.display = 'flex';
             } else {
-                const defaultImg = "https://cdn-icons-png.flaticon.com/512/1038/1038100.png";
-                addProductToArray(name, price, desc, cat, defaultImg);
+                document.getElementById('modal-combo-title').innerText = "Editar Combo";
+                document.getElementById('form-combo-id').value = item.id;
+                document.getElementById('form-combo-name').value = item.title;
+                document.getElementById('form-combo-price').value = item.price;
+                document.getElementById('form-combo-desc').value = item.desc;
+                document.getElementById('form-combo-start').value = item.startDate;
+                document.getElementById('form-combo-end').value = item.endDate;
+                document.getElementById('form-combo-url').value = item.img.startsWith('data:') ? '' : item.img;
+                tempUploadBuffer = item.img.startsWith('data:') ? item.img : '';
+                document.getElementById('modal-combo-form').style.display = 'flex';
             }
         }
 
-        function addProductToArray(name, price, desc, cat, imgBase64) {
-            products.push({
-                id: Date.now(),
-                name: name,
-                price: price,
-                desc: desc || '✓ Garantía 25 días',
-                cat: cat,
-                img: imgBase64
+        function handleImageBuffer(input, type) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => { tempUploadBuffer = e.target.result; };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function savePopupItem() {
+            const id = document.getElementById('form-pop-id').value;
+            const title = document.getElementById('form-pop-title').value.trim();
+            const desc = document.getElementById('form-pop-desc').value.trim();
+            const duration = parseInt(document.getElementById('form-pop-duration').value) || 5;
+            const startDate = document.getElementById('form-pop-start').value;
+            const endDate = document.getElementById('form-pop-end').value;
+            const url = document.getElementById('form-pop-url').value.trim();
+            const img = tempUploadBuffer || url || "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800";
+
+            if (!title) { alert("Indica el título del Popup."); return; }
+
+            if (id) {
+                const p = promotions.find(x => x.id == id);
+                if (p) {
+                    p.title = title; p.desc = desc; p.duration = duration;
+                    p.startDate = startDate; p.endDate = endDate; p.img = img;
+                }
+            } else {
+                promotions.push({
+                    id: Date.now(),
+                    type: 'POPUP',
+                    title, desc, duration, startDate, endDate, img, status: 'ACTIVA'
+                });
+            }
+
+            localStorage.setItem('streaming_promos_table', JSON.stringify(promotions));
+            closeFormModal('modal-popup-form');
+            renderAdminPromotionsTable();
+        }
+
+        function saveComboItem() {
+            const id = document.getElementById('form-combo-id').value;
+            const title = document.getElementById('form-combo-name').value.trim();
+            const price = parseFloat(document.getElementById('form-combo-price').value) || 0;
+            const desc = document.getElementById('form-combo-desc').value.trim();
+            const startDate = document.getElementById('form-combo-start').value;
+            const endDate = document.getElementById('form-combo-end').value;
+            const url = document.getElementById('form-combo-url').value.trim();
+            const img = tempUploadBuffer || url || "https://via.placeholder.com/300";
+
+            if (!title || price <= 0) { alert("Completa nombre y precio del combo."); return; }
+
+            if (id) {
+                const c = promotions.find(x => x.id == id);
+                if (c) {
+                    c.title = title; c.price = price; c.desc = desc;
+                    c.startDate = startDate; c.endDate = endDate; c.img = img;
+                }
+            } else {
+                promotions.push({
+                    id: Date.now(),
+                    type: 'COMBO',
+                    title, price, desc, startDate, endDate, img, status: 'ACTIVA'
+                });
+            }
+
+            localStorage.setItem('streaming_promos_table', JSON.stringify(promotions));
+            closeFormModal('modal-combo-form');
+            renderAdminPromotionsTable();
+        }
+
+        function deletePromoItem(id) {
+            if (confirm("¿Eliminar esta promoción?")) {
+                promotions = promotions.filter(p => p.id !== id);
+                localStorage.setItem('streaming_promos_table', JSON.stringify(promotions));
+                renderAdminPromotionsTable();
+            }
+        }
+
+        function renderAdminProductsTable() {
+            const tbody = document.getElementById('admin-products-tbody');
+            tbody.innerHTML = '';
+            products.forEach(p => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${p.id}</td>
+                    <td><strong>${p.name}</strong></td>
+                    <td>$ ${parseFloat(p.price).toFixed(2)}</td>
+                    <td>${p.stock}</td>
+                    <td>${p.status}</td>
+                    <td><button class="table-action-btn del" onclick="deleteProduct(${p.id})">🗑️</button></td>
+                `;
+                tbody.appendChild(tr);
             });
-            localStorage.setItem('streaming_products', JSON.stringify(products));
-            
-            document.getElementById('new-name').value = '';
-            document.getElementById('new-price').value = '';
-            document.getElementById('new-desc').value = '';
-            document.getElementById('new-cat').value = '';
-            document.getElementById('new-img').value = '';
-            
-            closeModal('add-product-modal');
-            renderCategories();
-            renderProducts('todos');
+        }
+
+        function openNewProductModal() {
+            const sel = document.getElementById('form-p-cat');
+            sel.innerHTML = '';
+            categories.forEach(c => sel.innerHTML += `<option value="${c.id}">${c.name}</option>`);
+            document.getElementById('modal-product').style.display = 'flex';
+        }
+
+        function saveProductForm() {
+            const name = document.getElementById('form-p-name').value.trim();
+            const price = parseFloat(document.getElementById('form-p-price').value);
+            const catId = parseInt(document.getElementById('form-p-cat').value);
+            const warranty = document.getElementById('form-p-warranty').value;
+            const img = document.getElementById('form-p-img').value || "https://via.placeholder.com/150";
+
+            if (!name || isNaN(price)) return;
+            products.push({ id: Date.now(), name, price, catId, warranty, img, stock: 'disponible', status: 'activo' });
+            localStorage.setItem('streaming_prods', JSON.stringify(products));
+            closeFormModal('modal-product');
+            renderAdminProductsTable();
         }
 
         function deleteProduct(id) {
-            if(confirm("¿Eliminar este servicio del catálogo?")) {
-                products = products.filter(p => p.id !== id);
-                localStorage.setItem('streaming_products', JSON.stringify(products));
-                renderCategories();
-                renderProducts('todos');
+            products = products.filter(p => p.id !== id);
+            localStorage.setItem('streaming_prods', JSON.stringify(products));
+            renderAdminProductsTable();
+        }
+
+        function loadBusinessAdminForm() {
+            document.getElementById('biz-name').value = business.name || "MICHELLE777";
+            document.getElementById('biz-whatsapp').value = business.whatsapp || "525523676793";
+            document.getElementById('biz-schedule-open').value = business.scheduleOpen || "09:00";
+            document.getElementById('biz-schedule-close').value = business.scheduleClose || "23:00";
+            document.getElementById('biz-schedule-days').value = business.scheduleDays || "Lunes a Domingo";
+        }
+
+        function saveBusinessConfig() {
+            business.name = document.getElementById('biz-name').value;
+            business.whatsapp = document.getElementById('biz-whatsapp').value;
+            business.scheduleOpen = document.getElementById('biz-schedule-open').value;
+            business.scheduleClose = document.getElementById('biz-schedule-close').value;
+            business.scheduleDays = document.getElementById('biz-schedule-days').value;
+
+            localStorage.setItem('streaming_biz', JSON.stringify(business));
+            alert("Perfil de negocio y horario de atención guardados correctamente.");
+        }
+
+        function tryEnterAdmin() {
+            const pass = prompt("Contraseña admin (1234):");
+            if (pass === "1234") {
+                sessionStorage.setItem('is_admin_active', 'true');
+                checkAndRunViews();
             }
         }
 
-        /* ================= CARRITO Y WHATSAPP ================= */
-        function addToCart(name, price, btnElement) {
-            cart.push({ name, price });
-            updateCartUI();
-
-            const originalText = btnElement.innerText;
-            btnElement.innerText = "¡Agregado!";
-            btnElement.style.backgroundColor = "var(--primary-color)"; 
-            
-            setTimeout(() => {
-                btnElement.innerText = originalText;
-                btnElement.style.backgroundColor = ""; 
-            }, 1000);
+        function logoutAdminSession() {
+            sessionStorage.removeItem('is_admin_active');
+            window.location.search = "";
+            checkAndRunViews();
         }
 
-        function clearCart() {
-            if(confirm("¿Vaciar todo el carrito?")) {
-                cart = [];
-                updateCartUI();
-                closeModal('cart-modal');
-            }
+        function exitAdminToClient() {
+            sessionStorage.removeItem('is_admin_active');
+            window.location.search = "";
+            checkAndRunViews();
         }
 
-        function removeOneItem(index) {
-            cart.splice(index, 1);
-            updateCartUI();
-        }
-
-        function updateCartUI() {
-            localStorage.setItem('streaming_cart', JSON.stringify(cart));
-            document.getElementById('cart-count').innerText = cart.length;
-            const total = cart.reduce((sum, item) => sum + item.price, 0);
-            document.getElementById('cart-total').innerText = `$${total.toFixed(2)}`;
-            
-            if (document.getElementById('cart-modal').style.display === 'flex') {
-                renderModalItems();
-            }
-        }
-
-        function openCartModal() {
-            document.getElementById('cart-modal').style.display = 'flex';
-            renderModalItems();
-        }
-
-        function renderModalItems() {
-            const container = document.getElementById('modal-cart-items');
-            if (cart.length === 0) {
-                container.innerHTML = '<p style="text-align:center; color:#9ca3af;">Tu carrito está vacío.</p>';
-                return;
-            }
-
-            const summary = {};
-            cart.forEach((item, index) => {
-                if (!summary[item.name]) summary[item.name] = { price: item.price, qty: 0, lastIndex: index };
-                summary[item.name].qty++;
-                summary[item.name].lastIndex = index;
-            });
-
-            let html = '';
-            for (const [name, data] of Object.entries(summary)) {
-                html += `
-                <div class="cart-item-row">
-                    <div class="cart-item-info">
-                        <strong>${name}</strong>
-                        <span>Cant: ${data.qty} | Subtotal: $${(data.price * data.qty).toFixed(2)}</span>
-                    </div>
-                    <button class="remove-btn" onclick="removeOneItem(${data.lastIndex})">- Quitar 1</button>
-                </div>
-                `;
-            }
-            container.innerHTML = html;
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
-        function sendOrder() {
-            if (cart.length === 0) {
-                alert("Tu carrito está vacío.");
-                return;
-            }
-
-            const summary = {};
-            cart.forEach(item => { summary[item.name] = (summary[item.name] || 0) + 1; });
-
-            let message = "🤖 *NUEVO PEDIDO DE STREAMING*\n\n";
-            let total = 0;
-
-            for (const [name, qty] of Object.entries(summary)) {
-                const priceEach = cart.find(i => i.name === name).price;
-                const subtotal = priceEach * qty;
-                total += subtotal;
-                message += `• ${qty}x *${name}* - ($${subtotal.toFixed(2)})\n`;
-            }
-
-            message += `\n💵 *Total a pagar:* $${total.toFixed(2)}\n`;
-            message += `⚡ _Hola, me gustaría concretar el pago de estos servicios._`;
-
-            const whatsappURL = `https://wa.me/${MY_PHONE_NUMBER}?text=${encodeURIComponent(message)}`;
-            window.location.href = whatsappURL;
+        function closeFormModal(id) {
+            document.getElementById(id).style.display = 'none';
         }
     </script>
 </body>
-</html>
+                                                                                                     </html>
