@@ -6,10 +6,9 @@
     <title>Streaming Store - Mi Catálogo</title>
     <style>
         :root {
-            /* Colores por defecto, ahora modificables vía JS */
             --bg-color: #0c0c0e;
             --card-bg: #16161a;
-            --primary-color: #a855f7; /* Morado */
+            --primary-color: #a855f7;
             --text-color: #ffffff;
             --text-muted: #9ca3af;
             --success-color: #22c55e;
@@ -26,16 +25,59 @@
             transition: background-color 0.3s, color 0.3s;
         }
 
+        /* BARRA SUPERIOR DE ADMINISTRADOR */
+        .admin-top-bar {
+            display: none;
+            background: linear-gradient(90deg, #3b0764, #1e1b4b);
+            border-bottom: 2px solid var(--primary-color);
+            padding: 10px 15px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #fff;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .admin-top-bar.active {
+            display: flex;
+        }
+
+        .admin-top-btn {
+            background-color: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .admin-top-btn:hover {
+            background-color: var(--primary-color);
+        }
+
         header {
             text-align: center;
-            padding: 30px 20px 20px;
+            padding: 25px 20px 15px;
             background: linear-gradient(180deg, rgba(30, 17, 53, 0.5) 0%, var(--bg-color) 100%);
+        }
+
+        #store-logo {
+            max-width: 140px;
+            max-height: 140px;
+            margin: 0 auto 12px auto;
+            object-fit: contain;
+            display: none;
         }
 
         header h1 {
             margin: 0;
             color: var(--primary-color);
-            font-size: 2.3rem;
+            font-size: 2.1rem;
             letter-spacing: 1px;
         }
 
@@ -43,21 +85,26 @@
             color: var(--text-muted);
             margin-top: 8px;
             margin-bottom: 15px;
+            font-size: 0.95rem;
         }
 
         .admin-controls {
-            display: flex;
+            display: none;
             justify-content: center;
             gap: 10px;
             margin-bottom: 10px;
             flex-wrap: wrap;
         }
 
+        .admin-controls.active {
+            display: flex;
+        }
+
         .admin-btn {
             background-color: transparent;
             color: var(--primary-color);
             border: 1px solid var(--primary-color);
-            padding: 6px 12px;
+            padding: 7px 14px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 0.85rem;
@@ -73,30 +120,32 @@
         /* FILTROS / CATEGORÍAS */
         .categories {
             display: flex;
-            justify-content: center;
-            gap: 10px;
+            justify-content: flex-start;
+            gap: 8px;
             padding: 10px 20px 20px;
             overflow-x: auto;
             white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
         }
 
         .category-btn {
             background-color: var(--card-bg);
             color: var(--text-color);
             border: 1px solid #2e2e38;
-            padding: 8px 18px;
+            padding: 7px 16px;
             border-radius: 20px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.25s ease;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
         }
 
         .category-btn.active, .category-btn:hover {
             background-color: var(--primary-color);
             border-color: var(--primary-color);
             color: white;
-            box-shadow: 0 0 12px rgba(0,0,0, 0.3);
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
         }
 
         /* CATÁLOGO */
@@ -104,21 +153,21 @@
             max-width: 1100px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-            padding: 0 20px 20px;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 18px;
+            padding: 0 16px 20px;
         }
 
         .product-card {
             background-color: var(--card-bg);
             border-radius: 14px;
-            padding: 24px 20px;
+            padding: 22px 18px;
             text-align: center;
             border: 1px solid #22222a;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.3s;
+            transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
         .product-card:hover {
@@ -127,41 +176,43 @@
         }
 
         .product-card img {
-            width: 70px;
-            height: 70px;
+            width: 65px;
+            height: 65px;
             object-fit: contain;
-            margin: 0 auto 15px auto;
+            margin: 0 auto 12px auto;
             border-radius: 8px;
         }
 
         .product-card h3 {
-            margin: 8px 0;
-            font-size: 1.15rem;
+            margin: 6px 0;
+            font-size: 1.05rem;
+            text-transform: uppercase;
         }
 
         .product-card .warranty {
             color: var(--success-color);
             font-size: 0.85rem;
             font-weight: 500;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .product-card .price {
-            font-size: 1.5rem;
+            font-size: 1.45rem;
             font-weight: 700;
             color: var(--text-color);
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .add-to-cart-btn {
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 12px;
+            padding: 11px;
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s, background-color 0.2s;
+            width: 100%;
+            transition: all 0.2s;
         }
 
         .add-to-cart-btn:hover {
@@ -169,6 +220,7 @@
         }
         
         .delete-product-btn {
+            display: none;
             background: none;
             border: none;
             color: var(--danger-color);
@@ -178,7 +230,7 @@
             text-decoration: underline;
         }
 
-        /* BARRA FLOTANTE */
+        /* BARRA FLOTANTE DEL CARRITO */
         .cart-bar-container {
             position: fixed;
             bottom: 0;
@@ -193,7 +245,7 @@
         .cart-bar {
             max-width: 1100px;
             margin: 0 auto;
-            padding: 12px 20px;
+            padding: 10px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -201,23 +253,23 @@
         }
 
         .cart-info {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
         .action-links {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
 
         .text-btn {
             background: none;
             border: none;
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             text-decoration: underline;
             padding: 0;
         }
@@ -229,13 +281,28 @@
             background-color: #25d366;
             color: white;
             border: none;
-            padding: 12px 20px;
+            padding: 11px 18px;
             border-radius: 8px;
             font-weight: 700;
             cursor: pointer;
             text-decoration: none;
             white-space: nowrap;
-            transition: background-color 0.2s;
+            font-size: 0.9rem;
+        }
+
+        /* FOOTER CON ACCESO ADMIN */
+        footer {
+            text-align: center;
+            padding: 20px 10px 40px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        footer a {
+            color: #4b5563;
+            text-decoration: none;
+            margin-top: 10px;
+            display: inline-block;
         }
 
         /* MODALES */
@@ -262,78 +329,78 @@
             color: var(--text-color);
         }
 
-        .modal-content h2 { margin-top: 0; color: var(--primary-color); text-align: center; }
+        .modal-content h2 { margin-top: 0; color: var(--primary-color); text-align: center; font-size: 1.3rem; }
 
-        /* Formularios */
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-size: 0.9rem; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; margin-bottom: 5px; font-size: 0.85rem; }
         .form-group input, .form-group select {
             width: 100%;
-            padding: 10px;
+            padding: 9px;
             border-radius: 6px;
             border: 1px solid #3b3b48;
             background-color: #1a1a21;
             color: white;
             box-sizing: border-box;
+            font-size: 0.9rem;
         }
         
         .form-group input[type="color"] {
             padding: 2px 5px;
-            height: 40px;
+            height: 38px;
             cursor: pointer;
         }
 
-        .modal-items { overflow-y: auto; flex-grow: 1; margin-bottom: 20px; }
+        .modal-items { overflow-y: auto; flex-grow: 1; margin-bottom: 15px; }
         
-        /* Lista carrito en modal */
         .cart-item-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: rgba(0,0,0,0.2);
-            padding: 12px;
+            background-color: rgba(0,0,0,0.25);
+            padding: 10px 12px;
             border-radius: 8px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             border: 1px solid #2e2e38;
         }
-        .cart-item-info strong { display: block; font-size: 1rem; margin-bottom: 4px; }
-        .cart-item-info span { color: var(--text-muted); font-size: 0.9rem; }
+        .cart-item-info strong { display: block; font-size: 0.95rem; margin-bottom: 2px; }
+        .cart-item-info span { color: var(--text-muted); font-size: 0.85rem; }
         .remove-btn {
             background-color: var(--danger-color); color: white;
-            border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer;
+            border: none; padding: 5px 9px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;
         }
 
         .btn-full {
             background-color: var(--primary-color); color: white;
-            border: none; padding: 12px; border-radius: 8px;
-            font-weight: 600; cursor: pointer; width: 100%; margin-top: 10px;
+            border: none; padding: 11px; border-radius: 8px;
+            font-weight: 600; cursor: pointer; width: 100%; margin-top: 8px;
         }
         .btn-full.cancel { background-color: #3b3b48; }
     </style>
 </head>
 <body>
 
+    <!-- BARRA EXCLUSIVA PARA CUANDO ESTÉS EN MODO ADMINISTRADOR -->
+    <div id="admin-bar" class="admin-top-bar">
+        <span>👑 <strong>Panel de Administrador</strong></span>
+        <button class="admin-top-btn" onclick="toggleViewMode()">👁️ Ver como cliente</button>
+        <button class="admin-top-btn" onclick="copyClientLink()">📋 Copiar enlace público</button>
+    </div>
+
     <header>
-        <!-- Contenedor del Logo -->
-        <img id="store-logo" src="" alt="Logo de la Tienda" style="display: none; max-width: 160px; max-height: 160px; margin: 0 auto 15px auto; object-fit: contain;">
-        
+        <img id="store-logo" src="" alt="Logo de la Tienda">
         <h1>STREAMING STORE</h1>
         <p>Cuentas premium, perfiles y suscripciones inmediatas</p>
         
         <!-- Botones de administración -->
-        <div class="admin-controls">
+        <div id="admin-buttons" class="admin-controls">
             <button class="admin-btn" onclick="openProductModal()">➕ Agregar Servicio</button>
             <button class="admin-btn" onclick="openThemeModal()">🎨 Personalizar Diseño</button>
         </div>
     </header>
 
-    <div class="categories" id="categories-container">
-        <!-- Las categorías se generarán dinámicamente aquí -->
-    </div>
+    <div class="categories" id="categories-container"></div>
 
-    <main class="catalog" id="catalog-container">
-        <!-- Los productos se cargarán aquí con JS -->
-    </main>
+    <main class="catalog" id="catalog-container"></main>
 
     <div class="cart-bar-container">
         <div class="cart-bar">
@@ -341,14 +408,17 @@
                 <span>Items: <strong id="cart-count">0</strong> | Total: <strong id="cart-total">$0.00</strong></span>
                 <div class="action-links">
                     <button class="text-btn view" onclick="openCartModal()">Ver detalles</button>
-                    <button class="text-btn clear" onclick="clearCart()">Vaciar todo</button>
+                    <button class="text-btn clear" onclick="clearCart()">Vaciar</button>
                 </div>
             </div>
-            <button class="checkout-btn" onclick="sendOrder()">
-                Pedir por WhatsApp
-            </button>
+            <button class="checkout-btn" onclick="sendOrder()">Pedir por WhatsApp</button>
         </div>
     </div>
+
+    <footer>
+        <p>© Streaming Store - Entregas inmediatas</p>
+        <a href="javascript:void(0)" onclick="promptAdminLogin()">⚙️ Acceso Administrador</a>
+    </footer>
 
     <!-- MODAL: VER/EDITAR CARRITO -->
     <div id="cart-modal" class="modal-overlay">
@@ -365,23 +435,23 @@
             <h2>Agregar Nuevo Servicio</h2>
             <div class="modal-items">
                 <div class="form-group">
-                    <label>Nombre del servicio (Ej: HBO Max)</label>
-                    <input type="text" id="new-name" placeholder="HBO Max 1 Mes">
+                    <label>Nombre del servicio</label>
+                    <input type="text" id="new-name" placeholder="Ej: Max Estándar">
                 </div>
                 <div class="form-group">
                     <label>Precio (MXN)</label>
-                    <input type="number" id="new-price" placeholder="40">
+                    <input type="number" id="new-price" placeholder="50">
                 </div>
                 <div class="form-group">
-                    <label>Descripción / Garantía</label>
-                    <input type="text" id="new-desc" placeholder="✓ 30 días de garantía">
+                    <label>Garantía / Descripción</label>
+                    <input type="text" id="new-desc" placeholder="✓ garantía de 25 días">
                 </div>
                 <div class="form-group">
-                    <label>Categoría (minúsculas, sin espacios)</label>
-                    <input type="text" id="new-cat" placeholder="hbo">
+                    <label>Categoría</label>
+                    <input type="text" id="new-cat" placeholder="netflix, vix, disney...">
                 </div>
                 <div class="form-group">
-                    <label>Subir Imagen</label>
+                    <label>Subir Imagen o Logo</label>
                     <input type="file" id="new-img" accept="image/*">
                 </div>
             </div>
@@ -400,15 +470,15 @@
                     <input type="color" id="color-primary" value="#a855f7">
                 </div>
                 <div class="form-group">
-                    <label>Color de Fondo de la Página</label>
+                    <label>Fondo de la Página</label>
                     <input type="color" id="color-bg" value="#0c0c0e">
                 </div>
                 <div class="form-group">
-                    <label>Color de Fondo de Tarjetas</label>
+                    <label>Fondo de Tarjetas</label>
                     <input type="color" id="color-card" value="#16161a">
                 </div>
                 <div class="form-group">
-                    <label>Color de Texto Principal</label>
+                    <label>Texto Principal</label>
                     <input type="color" id="color-text" value="#ffffff">
                 </div>
                 <div class="form-group">
@@ -418,61 +488,187 @@
             </div>
             <button class="btn-full" onclick="saveTheme()">Aplicar y Guardar</button>
             <button class="btn-full cancel" onclick="resetTheme()">Volver al Original</button>
-            <button class="btn-full cancel" style="margin-top: 10px;" onclick="closeModal('theme-modal')">Cerrar</button>
+            <button class="btn-full cancel" style="margin-top: 8px;" onclick="closeModal('theme-modal')">Cerrar</button>
         </div>
     </div>
 
     <script>
         const MY_PHONE_NUMBER = "525523676793"; 
-        
-        /* ================= ESTADO Y DATOS ================= */
-        let cart = JSON.parse(localStorage.getItem('streaming_cart')) || [];
-        
-        // Productos por defecto si es la primera vez que entra
+
+        /* ================= LISTA DE TUS 26 PRODUCTOS CON LOGOS OFICIALES ================= */
         const defaultProducts = [
-            { id: 1, name: 'Netflix Perfil 1 Mes', desc: '✓ 25 días de garantía', price: 50, cat: 'netflix', img: 'https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg' },
-            { id: 2, name: 'Disney Premium Perfil', desc: '✓ 30 días de garantía', price: 30, cat: 'disney', img: 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg' },
-            { id: 3, name: 'Spotify Premium 1 Mes', desc: '✓ 25 días de garantía', price: 50, cat: 'spotify', img: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg' }
+            { id: 1, name: "Netflix 1 perfil", price: 50.0, desc: "✓ garantía de 25 días", cat: "netflix", img: "https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg" },
+            { id: 2, name: "Disney ESPN 1 perfil", price: 40.0, desc: "✓ garantía de 25 días", cat: "disney", img: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg" },
+            { id: 3, name: "vix 1 mes", price: 20.0, desc: "✓ garantía de 25 días", cat: "vix", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/ViX_Logo.svg" },
+            { id: 4, name: "vix 2mes", price: 30.0, desc: "✓ garantía de 25 días", cat: "vix", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/ViX_Logo.svg" },
+            { id: 5, name: "vix 3mes", price: 40.0, desc: "✓ garantía de 25 días", cat: "vix", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/ViX_Logo.svg" },
+            { id: 6, name: "vix 4meses", price: 50.0, desc: "✓ garantía de 25 días", cat: "vix", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/ViX_Logo.svg" },
+            { id: 7, name: "vix 5meses", price: 60.0, desc: "✓ garantía de 25 días", cat: "vix", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/ViX_Logo.svg" },
+            { id: 8, name: "vix 6 meses", price: 70.0, desc: "✓ garantía de 25 días", cat: "vix", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/ViX_Logo.svg" },
+            { id: 9, name: "vix 8meses", price: 80.0, desc: "✓ garantía de 25 días", cat: "vix", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/ViX_Logo.svg" },
+            { id: 10, name: "vix 10meses", price: 100.0, desc: "✓ garantía de 25 días", cat: "vix", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/ViX_Logo.svg" },
+            { id: 11, name: "vix 12meses", price: 115.0, desc: "✓ garantía de 185 días", cat: "vix", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/ViX_Logo.svg" },
+            { id: 12, name: "Netflix cuenta completa", price: 220.0, desc: "✓ garantía de 25 días", cat: "netflix", img: "https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg" },
+            { id: 13, name: "Disney cuenta completa", price: 120.0, desc: "✓ garantía de 25 días", cat: "disney", img: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg" },
+            { id: 14, name: "Duolingo 1 mes", price: 30.0, desc: "✓ garantía de 25 días", cat: "duolingo", img: "https://upload.wikimedia.org/wikipedia/commons/1/15/Duolingo_logo.svg" },
+            { id: 15, name: "Duolingo 2 meses", price: 50.0, desc: "✓ garantía de 25 días", cat: "duolingo", img: "https://upload.wikimedia.org/wikipedia/commons/1/15/Duolingo_logo.svg" },
+            { id: 16, name: "Duolingo 12 meses", price: 150.0, desc: "✓ garantía de 25 días", cat: "duolingo", img: "https://upload.wikimedia.org/wikipedia/commons/1/15/Duolingo_logo.svg" },
+            { id: 17, name: "Spotify 1 mes inv", price: 70.0, desc: "✓ garantía de 25 días", cat: "spotify", img: "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" },
+            { id: 18, name: "Spotify 2 meses", price: 110.0, desc: "✓ garantía de 25 días", cat: "spotify", img: "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" },
+            { id: 19, name: "Google gemini 18 meses", price: 100.0, desc: "✓ garantía de 185 días", cat: "google", img: "https://upload.wikimedia.org/wikipedia/commons/8/8a/Google_Gemini_logo.svg" },
+            { id: 20, name: "Youtube premium 1 mes invitación", price: 40.0, desc: "✓ garantía de 25 días", cat: "youtube", img: "https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" },
+            { id: 21, name: "Apple music", price: 40.0, desc: "✓ garantía de 25 días", cat: "apple", img: "https://upload.wikimedia.org/wikipedia/commons/2/2a/Apple_Music_logo.svg" },
+            { id: 22, name: "Crunchyroll 1 mes", price: 40.0, desc: "✓ garantía de 25 días", cat: "crunchyroll", img: "https://upload.wikimedia.org/wikipedia/commons/0/08/Crunchyroll_Logo.png" },
+            { id: 24, name: "Hbo max 1 mes", price: 30.0, desc: "✓ garantía de 25 días", cat: "hbo", img: "https://upload.wikimedia.org/wikipedia/commons/1/17/HBO_Max_Logo.svg" },
+            { id: 25, name: "prime Video 1 mes", price: 30.0, desc: "✓ garantía de 25 días", cat: "prime", img: "https://upload.wikimedia.org/wikipedia/commons/1/11/Amazon_Prime_Video_logo.svg" },
+            { id: 26, name: "viky 1 mes", price: 35.0, desc: "✓ garantía de 25 días", cat: "viki", img: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Rakuten_Viki_Logo_2019.svg" },
+            { id: 27, name: "paramunt", price: 35.0, desc: "✓ garantía de 25 días", cat: "paramount", img: "https://upload.wikimedia.org/wikipedia/commons/a/a5/Paramount_Plus.svg" }
         ];
 
-        let products = JSON.parse(localStorage.getItem('streaming_products')) || defaultProducts;
+        /* NOMBRES LIMPIOS PARA LAS CATEGORÍAS */
+        const catNames = {
+            'todos': 'Todos',
+            'netflix': 'Netflix',
+            'disney': 'Disney+',
+            'vix': 'ViX',
+            'duolingo': 'Duolingo',
+            'spotify': 'Spotify',
+            'youtube': 'YouTube',
+            'google': 'Google',
+            'apple': 'Apple Music',
+            'crunchyroll': 'Crunchyroll',
+            'hbo': 'HBO Max',
+            'prime': 'Prime Video',
+            'viki': 'Viki',
+            'paramount': 'Paramount+'
+        };
 
-        // Iniciar la app
+        let products = JSON.parse(localStorage.getItem('streaming_products')) || defaultProducts;
+        let cart = JSON.parse(localStorage.getItem('streaming_cart')) || [];
+        
+        // Control de modo Administrador
+        const urlParams = new URLSearchParams(window.location.search);
+        let isAdmin = urlParams.get('admin') === '1' || sessionStorage.getItem('is_admin') === 'true';
+
+        // Iniciar
         loadTheme();
-        loadLogo(); // Cargar el logo al iniciar
+        loadLogo();
+        checkAdminMode();
         renderCategories();
         renderProducts('todos');
         updateCartUI();
 
-        /* ================= LOGO ================= */
+        /* ================= SISTEMA DE MODOS (ADMIN VS CLIENTE) ================= */
+        function checkAdminMode() {
+            const adminBar = document.getElementById('admin-bar');
+            const adminBtns = document.getElementById('admin-buttons');
+            const deleteBtns = document.querySelectorAll('.delete-product-btn');
+
+            if (isAdmin) {
+                adminBar.classList.add('active');
+                adminBtns.classList.add('active');
+                deleteBtns.forEach(b => b.style.display = 'inline-block');
+            } else {
+                adminBar.classList.remove('active');
+                adminBtns.classList.remove('active');
+                deleteBtns.forEach(b => b.style.display = 'none');
+            }
+        }
+
+        function toggleViewMode() {
+            isAdmin = !isAdmin;
+            sessionStorage.setItem('is_admin', isAdmin ? 'true' : 'false');
+            checkAdminMode();
+            renderProducts('todos');
+        }
+
+        function promptAdminLogin() {
+            const pass = prompt("Ingresa la clave de administrador (por defecto: 1234):");
+            if (pass === "1234") {
+                isAdmin = true;
+                sessionStorage.setItem('is_admin', 'true');
+                checkAdminMode();
+                renderProducts('todos');
+                alert("¡Modo Administrador activado!");
+            } else if (pass !== null) {
+                alert("Clave incorrecta.");
+            }
+        }
+
+        function copyClientLink() {
+            const cleanUrl = window.location.origin + window.location.pathname;
+            navigator.clipboard.writeText(cleanUrl).then(() => {
+                alert("¡Enlace para clientes copiado al portapapeles!\n\n" + cleanUrl);
+            });
+        }
+
+        /* ================= RENDERIZADO ================= */
+        function renderCategories() {
+            const container = document.getElementById('categories-container');
+            const uniqueCats = ['todos', ...new Set(products.map(p => p.cat))];
+            
+            let html = '';
+            uniqueCats.forEach(cat => {
+                const label = catNames[cat] || (cat.charAt(0).toUpperCase() + cat.slice(1));
+                html += `<button class="category-btn ${cat === 'todos' ? 'active' : ''}" onclick="filterCategory('${cat}', event)">${label}</button>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function renderProducts(filterCat) {
+            const container = document.getElementById('catalog-container');
+            container.innerHTML = '';
+
+            products.forEach(p => {
+                if (filterCat !== 'todos' && p.cat !== filterCat) return;
+
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div>
+                        <img src="${p.img}" alt="${p.name}" onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/1038/1038100.png';">
+                        <h3>${p.name}</h3>
+                        <div class="warranty">${p.desc}</div>
+                        <div class="price">$${parseFloat(p.price).toFixed(2)} MXN</div>
+                    </div>
+                    <div>
+                        <button class="add-to-cart-btn" onclick="addToCart('${p.name}', ${p.price}, this)">Agregar al carrito</button>
+                        <button class="delete-product-btn" style="display: ${isAdmin ? 'inline-block' : 'none'};" onclick="deleteProduct(${p.id})">Eliminar Producto</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterCategory(category, event) {
+            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderProducts(category);
+        }
+
+        /* ================= LOGO Y TEMA ================= */
         function loadLogo() {
             const savedLogo = localStorage.getItem('streaming_logo');
             const logoImg = document.getElementById('store-logo');
             if(savedLogo) {
                 logoImg.src = savedLogo;
-                logoImg.style.display = 'block'; // Mostrar si existe
+                logoImg.style.display = 'block';
             } else {
-                logoImg.style.display = 'none'; // Ocultar si no hay logo
+                logoImg.style.display = 'none';
             }
         }
 
-        /* ================= PERSONALIZACIÓN DE COLORES Y LOGO ================= */
         function openThemeModal() {
             document.getElementById('theme-modal').style.display = 'flex';
-            
-            // Llenar inputs con los valores actuales del CSS
             const root = getComputedStyle(document.documentElement);
             document.getElementById('color-primary').value = root.getPropertyValue('--primary-color').trim();
             document.getElementById('color-bg').value = root.getPropertyValue('--bg-color').trim();
             document.getElementById('color-card').value = root.getPropertyValue('--card-bg').trim();
             document.getElementById('color-text').value = root.getPropertyValue('--text-color').trim();
-            
-            // Limpiar el input del logo cada vez que se abre
             document.getElementById('new-logo').value = '';
         }
 
         function saveTheme() {
-            // 1. Guardar Colores
             const theme = {
                 primary: document.getElementById('color-primary').value,
                 bg: document.getElementById('color-bg').value,
@@ -482,18 +678,16 @@
             localStorage.setItem('streaming_theme', JSON.stringify(theme));
             applyTheme(theme);
 
-            // 2. Procesar y guardar el Logo (si se subió uno)
             const logoInput = document.getElementById('new-logo');
             if (logoInput.files && logoInput.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    localStorage.setItem('streaming_logo', e.target.result); // Guardar en Base64
-                    loadLogo(); // Refrescar logo en pantalla
+                    localStorage.setItem('streaming_logo', e.target.result);
+                    loadLogo();
                     closeModal('theme-modal');
                 };
                 reader.readAsDataURL(logoInput.files[0]);
             } else {
-                // Si no subió foto nueva, simplemente cerramos el modal
                 closeModal('theme-modal');
             }
         }
@@ -512,55 +706,11 @@
 
         function resetTheme() {
             localStorage.removeItem('streaming_theme');
-            localStorage.removeItem('streaming_logo'); // Borrar también el logo
-            // Recargar para aplicar defaults
+            localStorage.removeItem('streaming_logo');
             location.reload(); 
         }
 
-        /* ================= SISTEMA DE PRODUCTOS ================= */
-        function renderCategories() {
-            const container = document.getElementById('categories-container');
-            const uniqueCats = ['todos', ...new Set(products.map(p => p.cat))];
-            
-            let html = '';
-            uniqueCats.forEach(cat => {
-                const displayName = cat.charAt(0).toUpperCase() + cat.slice(1);
-                html += `<button class="category-btn ${cat === 'todos' ? 'active' : ''}" onclick="filterCategory('${cat}', event)">${displayName}</button>`;
-            });
-            container.innerHTML = html;
-        }
-
-        function renderProducts(filterCat) {
-            const container = document.getElementById('catalog-container');
-            container.innerHTML = '';
-
-            products.forEach(p => {
-                if (filterCat !== 'todos' && p.cat !== filterCat) return;
-
-                const card = document.createElement('div');
-                card.className = 'product-card';
-                card.innerHTML = `
-                    <div>
-                        <img src="${p.img}" alt="${p.name}">
-                        <h3>${p.name.toUpperCase()}</h3>
-                        <div class="warranty">${p.desc}</div>
-                        <div class="price">$${parseFloat(p.price).toFixed(2)} MXN</div>
-                    </div>
-                    <div>
-                        <button class="add-to-cart-btn" onclick="addToCart('${p.name}', ${p.price}, this)">Agregar al carrito</button>
-                        <button class="delete-product-btn" onclick="deleteProduct(${p.id})">Eliminar Producto</button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function filterCategory(category, event) {
-            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            renderProducts(category);
-        }
-
+        /* ================= GESTIÓN DE PRODUCTOS ================= */
         function openProductModal() {
             document.getElementById('add-product-modal').style.display = 'flex';
         }
@@ -573,11 +723,10 @@
             const fileInput = document.getElementById('new-img');
 
             if(!name || !price || !cat) {
-                alert("Por favor llena Nombre, Precio y Categoría.");
+                alert("Por favor completa nombre, precio y categoría.");
                 return;
             }
 
-            // Procesar imagen a Base64 para guardarla en LocalStorage
             if (fileInput.files && fileInput.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -585,26 +734,22 @@
                 };
                 reader.readAsDataURL(fileInput.files[0]);
             } else {
-                // Imagen por defecto si no suben nada
                 const defaultImg = "https://cdn-icons-png.flaticon.com/512/1038/1038100.png";
                 addProductToArray(name, price, desc, cat, defaultImg);
             }
         }
 
         function addProductToArray(name, price, desc, cat, imgBase64) {
-            const newProduct = {
-                id: Date.now(), // ID único
+            products.push({
+                id: Date.now(),
                 name: name,
                 price: price,
-                desc: desc || '✓ Entrega inmediata',
+                desc: desc || '✓ Garantía 25 días',
                 cat: cat,
                 img: imgBase64
-            };
-            
-            products.push(newProduct);
+            });
             localStorage.setItem('streaming_products', JSON.stringify(products));
             
-            // Limpiar formulario y cerrar
             document.getElementById('new-name').value = '';
             document.getElementById('new-price').value = '';
             document.getElementById('new-desc').value = '';
@@ -617,7 +762,7 @@
         }
 
         function deleteProduct(id) {
-            if(confirm("¿Seguro que deseas eliminar este producto de la tienda?")) {
+            if(confirm("¿Eliminar este servicio del catálogo?")) {
                 products = products.filter(p => p.id !== id);
                 localStorage.setItem('streaming_products', JSON.stringify(products));
                 renderCategories();
@@ -625,7 +770,7 @@
             }
         }
 
-        /* ================= SISTEMA DE CARRITO ================= */
+        /* ================= CARRITO Y WHATSAPP ================= */
         function addToCart(name, price, btnElement) {
             cart.push({ name, price });
             updateCartUI();
@@ -637,11 +782,11 @@
             setTimeout(() => {
                 btnElement.innerText = originalText;
                 btnElement.style.backgroundColor = ""; 
-            }, 1200);
+            }, 1000);
         }
 
         function clearCart() {
-            if(confirm("¿Seguro que deseas vaciar todo el carrito?")) {
+            if(confirm("¿Vaciar todo el carrito?")) {
                 cart = [];
                 updateCartUI();
                 closeModal('cart-modal');
@@ -702,10 +847,9 @@
             document.getElementById(modalId).style.display = 'none';
         }
 
-        /* ================= WHATSAPP ================= */
         function sendOrder() {
             if (cart.length === 0) {
-                alert("Tu carrito está vacío. Agrega al menos un servicio antes de ordenar.");
+                alert("Tu carrito está vacío.");
                 return;
             }
 
@@ -731,4 +875,3 @@
     </script>
 </body>
 </html>
-
