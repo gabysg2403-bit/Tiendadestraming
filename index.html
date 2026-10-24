@@ -13,18 +13,16 @@
     
     <style>
         :root {
-            /* 9 Variables de color idénticas a la referencia */
-            --primary-color: #7c3aed;       /* Botones, enlaces, precios */
-            --accent-color: #a855f7;        /* Segundo tono para gradientes */
-            --bg-color: #0c0c0e;            /* Color base de toda la página */
-            --panel-color: #16161a;         /* Superficies y paneles del catálogo */
-            --title-color: #ffffff;         /* Títulos y textos claros */
-            --secondary-text-color: #c4b5fd;/* Descripciones y textos secundarios */
-            --float-cart-color: #7c3aed;    /* Botón flotante y acentos del carrito */
-            --burbuja-color: #9333ea;       /* Color de la burbuja con la cantidad */
-            --btn-principal-color: #6d28d9; /* Botones principales de acción */
+            --primary-color: #7c3aed;
+            --accent-color: #a855f7;
+            --bg-color: #0c0c0e;
+            --panel-color: #16161a;
+            --title-color: #ffffff;
+            --secondary-text-color: #c4b5fd;
+            --float-cart-color: #7c3aed;
+            --burbuja-color: #9333ea;
+            --btn-principal-color: #6d28d9;
             
-            /* Tipografía y bordes dinámicos */
             --main-font: 'Poppins', sans-serif;
             --card-radius: 18px;
             --card-border: 1px solid rgba(255, 255, 255, 0.06);
@@ -52,7 +50,6 @@
             transition: background-color 0.3s, color 0.3s;
         }
 
-        /* Capa oscura si hay imagen de fondo */
         .bg-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -336,7 +333,7 @@
             50% { transform: translateX(4px); }
         }
 
-        /* CAJÓN OFFCANVAS DE COMBOS */
+        /* CAJÓN OFFCANVAS COMBOS */
         .combos-drawer-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -631,7 +628,7 @@
             overflow-y: auto;
             max-height: calc(100vh - 65px);
             text-align: left;
-            padding-bottom: 110px; /* Espacio para barra flotante de guardar */
+            padding-bottom: 110px;
         }
 
         @media (max-width: 480px) { .admin-content-view { padding: 14px; padding-bottom: 110px; } }
@@ -665,7 +662,7 @@
         .admin-btn.popup { background: linear-gradient(135deg, #a855f7, #6366f1); }
         .admin-btn.combo { background: linear-gradient(135deg, #10b981, #059669); }
 
-        /* ================= PANTALLA PERSONALIZAR (image_20.png) ================= */
+        /* PERSONALIZAR */
         .customizer-box {
             background-color: #121215;
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -683,16 +680,10 @@
             padding-bottom: 12px;
         }
 
-        .customizer-icon {
-            color: #38bdf8;
-            font-size: 1.25rem;
-            margin-top: 2px;
-        }
-
+        .customizer-icon { color: #38bdf8; font-size: 1.25rem; margin-top: 2px; }
         .customizer-box-header h4 { margin: 0 0 4px 0; font-size: 1.05rem; color: #ffffff; }
         .customizer-box-header p { margin: 0; font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; }
 
-        /* GRID DE PLANTILLAS / ESTILOS */
         .templates-showcase-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -711,11 +702,7 @@
             text-align: left;
         }
 
-        .theme-card-option:hover {
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-
+        .theme-card-option:hover { border-color: rgba(255, 255, 255, 0.2); transform: translateY(-2px); }
         .theme-card-option.active {
             border-color: #38bdf8;
             background: rgba(56, 189, 248, 0.04);
@@ -738,22 +725,11 @@
 
         .theme-card-option.active .theme-card-badge { display: inline-block; }
 
-        .theme-preview-bars {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-
-        .theme-color-block {
-            height: 38px;
-            flex-grow: 1;
-            border-radius: 8px;
-        }
-
+        .theme-preview-bars { display: flex; gap: 8px; margin-bottom: 12px; }
+        .theme-color-block { height: 38px; flex-grow: 1; border-radius: 8px; }
         .theme-card-option h5 { margin: 0 0 6px 0; font-size: 0.95rem; color: #fff; }
         .theme-card-option p { margin: 0; font-size: 0.75rem; color: var(--text-muted); line-height: 1.35; }
 
-        /* SELECTORES DE FUENTE Y RECUADROS */
         .settings-selectors-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -768,14 +744,7 @@
             padding: 14px;
         }
 
-        .selector-field-card label {
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 8px;
-        }
-
+        .selector-field-card label { display: block; font-size: 0.8rem; font-weight: 700; color: #ffffff; margin-bottom: 8px; }
         .selector-field-card select {
             width: 100%;
             background: #121215;
@@ -787,7 +756,6 @@
             cursor: pointer;
         }
 
-        /* PALETA DE 9 COLORES (image_20.png) */
         .nine-colors-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -816,28 +784,10 @@
             flex-shrink: 0;
         }
 
-        .palette-item-details {
-            display: flex;
-            flex-direction: column;
-            text-align: left;
-            overflow: hidden;
-        }
+        .palette-item-details { display: flex; flex-direction: column; text-align: left; overflow: hidden; }
+        .palette-item-code { font-size: 0.85rem; font-weight: 700; color: #1e1b4b; font-family: monospace; }
+        .palette-item-desc { font-size: 0.7rem; color: #4b5563; line-height: 1.25; }
 
-        .palette-item-code {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #1e1b4b;
-            font-family: monospace;
-        }
-
-        .palette-item-desc {
-            font-size: 0.7rem;
-            color: #4b5563;
-            line-height: 1.25;
-            white-space: normal;
-        }
-
-        /* CARGA DE FONDO (image_20.png) */
         .bg-upload-panel {
             background: #ffffff;
             border-radius: 12px;
@@ -849,33 +799,11 @@
             margin-bottom: 15px;
         }
 
-        .bg-upload-panel i {
-            color: #38bdf8;
-            font-size: 2rem;
-            margin-bottom: 8px;
-        }
+        .bg-upload-panel i { color: #38bdf8; font-size: 2rem; margin-bottom: 8px; }
+        .bg-upload-panel h6 { margin: 0 0 4px 0; color: #1e293b; font-size: 0.95rem; font-weight: 700; }
+        .bg-upload-panel p { margin: 0; font-size: 0.75rem; color: #64748b; }
+        .bg-upload-panel input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
 
-        .bg-upload-panel h6 {
-            margin: 0 0 4px 0;
-            color: #1e293b;
-            font-size: 0.95rem;
-            font-weight: 700;
-        }
-
-        .bg-upload-panel p {
-            margin: 0;
-            font-size: 0.75rem;
-            color: #64748b;
-        }
-
-        .bg-upload-panel input[type="file"] {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        /* BARRA FLOTANTE DE ACCIONES ADMIN (image_20.png) */
         .admin-floating-actions {
             position: fixed;
             bottom: 0;
@@ -920,7 +848,6 @@
             gap: 8px;
         }
 
-        /* TABLAS Y FORMULARIOS */
         .admin-table-container {
             background-color: #121215;
             border: 1px solid rgba(255,255,255,0.05);
@@ -928,75 +855,20 @@
             overflow-x: auto;
         }
 
-        .admin-search-row {
-            padding: 14px 18px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+        .admin-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        .admin-table th { background-color: rgba(255,255,255,0.01); padding: 12px 16px; text-align: left; color: var(--secondary-text-color); border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: 700; }
+        .admin-table td { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.04); color: #ffffff; vertical-align: middle; }
 
-        .admin-search-input {
-            background-color: #16161a;
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 8px;
-            padding: 8px 12px;
-            font-size: 0.8rem;
-            color: #ffffff;
-            width: 220px;
-        }
-
-        .admin-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.8rem;
-        }
-
-        .admin-table th {
-            background-color: rgba(255,255,255,0.01);
-            padding: 12px 16px;
-            text-align: left;
-            color: var(--secondary-text-color);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            font-weight: 700;
-        }
-
-        .admin-table td {
-            padding: 12px 16px;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-            color: #ffffff;
-            vertical-align: middle;
-        }
-
-        .admin-table-badge {
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 0.72rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            display: inline-block;
-        }
-
+        .admin-table-badge { padding: 4px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; display: inline-block; }
         .admin-table-badge.active { background-color: rgba(16, 185, 129, 0.15); color: #10b981; }
         .admin-table-badge.inactive { background-color: rgba(239, 68, 68, 0.15); color: #ef4444; }
         .admin-table-badge.popup-badge { background-color: rgba(168, 85, 247, 0.15); color: #c084fc; }
         .admin-table-badge.combo-badge { background-color: rgba(16, 185, 129, 0.15); color: #34d399; }
 
-        .table-action-row { display: flex; align-items: center; gap: 8px; }
         .table-action-btn { background: none; border: none; font-size: 0.85rem; cursor: pointer; padding: 4px; }
-        .table-action-btn.edit { color: var(--accent-color); }
         .table-action-btn.del { color: var(--danger-color); }
 
-        .admin-form-box {
-            background-color: #121215;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 24px;
-        }
-
+        .admin-form-box { background-color: #121215; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 24px; margin-bottom: 24px; }
         .admin-form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
         .admin-form-group label { font-size: 0.8rem; font-weight: 600; color: var(--secondary-text-color); }
         .admin-form-group input, .admin-form-group textarea, .admin-form-group select {
@@ -1011,17 +883,6 @@
         }
 
         .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
-
-        .image-uploader-box {
-            border: 1px dashed rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            padding: 18px;
-            text-align: center;
-            cursor: pointer;
-            background-color: rgba(255, 255, 255, 0.01);
-            position: relative;
-        }
-        .image-uploader-box input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
 
         /* MODALES */
         .modal-bg {
@@ -1162,7 +1023,7 @@
             <p>© MICHELLE777 - Todos los derechos reservados</p>
             <p>Horario de atención: 9:00 AM a 11:00 PM de Lunes a Domingo</p>
             <p>Entregas y garantías inmediatas.</p>
-            <a href="javascript:void(0)" onclick="tryEnterAdmin()"><i class="fa-solid fa-user-lock"></i> Acceso Admin</a>
+            <a href="javascript:void(0)" onclick="openAdminLoginModal()"><i class="fa-solid fa-user-lock"></i> Acceso Admin</a>
         </footer>
     </div>
 
@@ -1220,7 +1081,6 @@
             </aside>
 
             <main class="admin-content-view">
-                
                 <!-- SECCIÓN DASHBOARD -->
                 <section id="sec-dashboard" class="admin-section">
                     <div style="background: linear-gradient(135deg, #1e1b4b, #111015); padding:20px; border-radius:14px; margin-bottom:20px;">
@@ -1229,7 +1089,7 @@
                     </div>
                 </section>
 
-                <!-- SECCIÓN PERSONALIZAR (image_20.png MEJORADA) -->
+                <!-- SECCIÓN PERSONALIZAR -->
                 <section id="sec-design" class="admin-section active">
                     <div class="admin-section-header">
                         <div>
@@ -1238,7 +1098,6 @@
                         </div>
                     </div>
 
-                    <!-- CAJA 1: PLANTILLAS Y ESTILOS -->
                     <div class="customizer-box">
                         <div class="customizer-box-header">
                             <i class="fa-solid fa-cubes customizer-icon"></i>
@@ -1249,7 +1108,6 @@
                         </div>
 
                         <div class="templates-showcase-grid">
-                            <!-- Minimalista -->
                             <div class="theme-card-option active" onclick="selectTemplate('minimalista', this)">
                                 <span class="theme-card-badge">ACTIVO</span>
                                 <div class="theme-preview-bars">
@@ -1260,7 +1118,6 @@
                                 <p>Equilibrado, rápido y limpio. Grid de productos, búsqueda, filtros y carrito.</p>
                             </div>
 
-                            <!-- Premium -->
                             <div class="theme-card-option" onclick="selectTemplate('premium', this)">
                                 <span class="theme-card-badge">ACTIVO</span>
                                 <div class="theme-preview-bars">
@@ -1271,7 +1128,6 @@
                                 <p>Presentación de alta gama con navegación visual, fondos oscuros y filtros avanzados.</p>
                             </div>
 
-                            <!-- Neon Glass -->
                             <div class="theme-card-option" onclick="selectTemplate('neon-glass', this)">
                                 <span class="theme-card-badge">ACTIVO</span>
                                 <div class="theme-preview-bars">
@@ -1282,7 +1138,6 @@
                                 <p>Tarjetas de cristal translúcido, bordes luminosos y una estética tecnológica impactante.</p>
                             </div>
 
-                            <!-- Aurora Luxe -->
                             <div class="theme-card-option" onclick="selectTemplate('aurora-luxe', this)">
                                 <span class="theme-card-badge">ACTIVO</span>
                                 <div class="theme-preview-bars">
@@ -1293,7 +1148,6 @@
                                 <p>Estilo claro, elegante y vibrante, pensado para destacar productos y suscripciones.</p>
                             </div>
 
-                            <!-- Cyberpunk Gamer -->
                             <div class="theme-card-option" onclick="selectTemplate('cyberpunk', this)">
                                 <span class="theme-card-badge">ACTIVO</span>
                                 <div class="theme-preview-bars">
@@ -1304,7 +1158,6 @@
                                 <p>Colores amarillos y rojos de alto contraste con estética futurista gaming.</p>
                             </div>
 
-                            <!-- Esmeralda Luxury -->
                             <div class="theme-card-option" onclick="selectTemplate('emerald', this)">
                                 <span class="theme-card-badge">ACTIVO</span>
                                 <div class="theme-preview-bars">
@@ -1315,7 +1168,6 @@
                                 <p>Tonos esmeralda y menta que transmiten confianza, seguridad y rapidez.</p>
                             </div>
 
-                            <!-- Sunset Glow -->
                             <div class="theme-card-option" onclick="selectTemplate('sunset', this)">
                                 <span class="theme-card-badge">ACTIVO</span>
                                 <div class="theme-preview-bars">
@@ -1327,7 +1179,6 @@
                             </div>
                         </div>
 
-                        <!-- AJUSTES DE FUENTE Y RECUADROS -->
                         <div class="settings-selectors-row">
                             <div class="selector-field-card">
                                 <label><i class="fa-solid fa-font"></i> Fuente de la Letra (Tipografía)</label>
@@ -1354,7 +1205,6 @@
                         </div>
                     </div>
 
-                    <!-- CAJA 2: PALETA DE 9 COLORES PERSONALIZABLE -->
                     <div class="customizer-box">
                         <div class="customizer-box-header">
                             <i class="fa-solid fa-droplet customizer-icon"></i>
@@ -1365,7 +1215,6 @@
                         </div>
 
                         <div class="nine-colors-grid">
-                            <!-- 1. Color principal -->
                             <div class="palette-item-box">
                                 <input type="color" id="c-primary" onchange="syncColorInput('c-primary', this.value)">
                                 <div class="palette-item-details">
@@ -1373,8 +1222,6 @@
                                     <span class="palette-item-desc">Botones, enlaces, precios y elementos destacados</span>
                                 </div>
                             </div>
-
-                            <!-- 2. Color secundario -->
                             <div class="palette-item-box">
                                 <input type="color" id="c-accent" onchange="syncColorInput('c-accent', this.value)">
                                 <div class="palette-item-details">
@@ -1382,8 +1229,6 @@
                                     <span class="palette-item-desc">Segundo tono para gradientes y detalles</span>
                                 </div>
                             </div>
-
-                            <!-- 3. Color base página -->
                             <div class="palette-item-box">
                                 <input type="color" id="c-bg" onchange="syncColorInput('c-bg', this.value)">
                                 <div class="palette-item-details">
@@ -1391,8 +1236,6 @@
                                     <span class="palette-item-desc">Color base de toda la página</span>
                                 </div>
                             </div>
-
-                            <!-- 4. Superficies y paneles -->
                             <div class="palette-item-box">
                                 <input type="color" id="c-panel" onchange="syncColorInput('c-panel', this.value)">
                                 <div class="palette-item-details">
@@ -1400,8 +1243,6 @@
                                     <span class="palette-item-desc">Superficies y paneles del catálogo</span>
                                 </div>
                             </div>
-
-                            <!-- 5. Títulos -->
                             <div class="palette-item-box">
                                 <input type="color" id="c-title" onchange="syncColorInput('c-title', this.value)">
                                 <div class="palette-item-details">
@@ -1409,8 +1250,6 @@
                                     <span class="palette-item-desc">Títulos y textos claros</span>
                                 </div>
                             </div>
-
-                            <!-- 6. Textos secundarios -->
                             <div class="palette-item-box">
                                 <input type="color" id="c-secondary" onchange="syncColorInput('c-secondary', this.value)">
                                 <div class="palette-item-details">
@@ -1418,8 +1257,6 @@
                                     <span class="palette-item-desc">Descripciones y textos secundarios</span>
                                 </div>
                             </div>
-
-                            <!-- 7. Botón flotante -->
                             <div class="palette-item-box">
                                 <input type="color" id="c-float-cart" onchange="syncColorInput('c-float-cart', this.value)">
                                 <div class="palette-item-details">
@@ -1427,8 +1264,6 @@
                                     <span class="palette-item-desc">Botón flotante y acentos del carrito</span>
                                 </div>
                             </div>
-
-                            <!-- 8. Burbuja del carrito -->
                             <div class="palette-item-box">
                                 <input type="color" id="c-burbuja" onchange="syncColorInput('c-burbuja', this.value)">
                                 <div class="palette-item-details">
@@ -1436,8 +1271,6 @@
                                     <span class="palette-item-desc">Color de la burbuja con la cantidad</span>
                                 </div>
                             </div>
-
-                            <!-- 9. Botones principales de acción -->
                             <div class="palette-item-box">
                                 <input type="color" id="c-btn-principal" onchange="syncColorInput('c-btn-principal', this.value)">
                                 <div class="palette-item-details">
@@ -1448,7 +1281,6 @@
                         </div>
                     </div>
 
-                    <!-- CAJA 3: IMAGEN DE FONDO -->
                     <div class="customizer-box">
                         <div class="customizer-box-header">
                             <i class="fa-solid fa-image customizer-icon"></i>
@@ -1471,7 +1303,6 @@
                         </div>
                     </div>
 
-                    <!-- BARRA FLOTANTE DE ACCIONES -->
                     <div class="admin-floating-actions">
                         <button class="btn-action-save" onclick="saveAllCustomizationSettings()">
                             <i class="fa-solid fa-floppy-disk"></i> Guardar Cambios
@@ -1541,28 +1372,13 @@
                     </div>
                     <div class="admin-form-box">
                         <div class="form-row">
-                            <div class="admin-form-group">
-                                <label>Nombre del Negocio</label>
-                                <input type="text" id="biz-name">
-                            </div>
-                            <div class="admin-form-group">
-                                <label>WhatsApp</label>
-                                <input type="text" id="biz-whatsapp">
-                            </div>
+                            <div class="admin-form-group"><label>Nombre del Negocio</label><input type="text" id="biz-name"></div>
+                            <div class="admin-form-group"><label>WhatsApp</label><input type="text" id="biz-whatsapp"></div>
                         </div>
                         <div class="form-row">
-                            <div class="admin-form-group">
-                                <label>Hora de Apertura</label>
-                                <input type="time" id="biz-schedule-open" value="09:00">
-                            </div>
-                            <div class="admin-form-group">
-                                <label>Hora de Cierre</label>
-                                <input type="time" id="biz-schedule-close" value="23:00">
-                            </div>
-                            <div class="admin-form-group">
-                                <label>Días de Atención</label>
-                                <input type="text" id="biz-schedule-days" value="Lunes a Domingo">
-                            </div>
+                            <div class="admin-form-group"><label>Hora de Apertura</label><input type="time" id="biz-schedule-open" value="09:00"></div>
+                            <div class="admin-form-group"><label>Hora de Cierre</label><input type="time" id="biz-schedule-close" value="23:00"></div>
+                            <div class="admin-form-group"><label>Días de Atención</label><input type="text" id="biz-schedule-days" value="Lunes a Domingo"></div>
                         </div>
                         <button class="admin-btn" onclick="saveBusinessConfig()">Guardar Perfil</button>
                     </div>
@@ -1570,59 +1386,53 @@
 
                 <!-- SECCIÓN CATEGORÍAS -->
                 <section id="sec-categories" class="admin-section">
-                    <div class="admin-section-header">
-                        <h3>Categorías del Menú</h3>
-                    </div>
+                    <div class="admin-section-header"><h3>Categorías del Menú</h3></div>
                     <div class="admin-table-container">
                         <table class="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nombre</th>
-                                    <th>Estado</th>
-                                </tr>
-                            </thead>
+                            <thead><tr><th>ID</th><th>Nombre</th><th>Estado</th></tr></thead>
                             <tbody id="admin-categories-tbody"></tbody>
                         </table>
                     </div>
                 </section>
-
             </main>
         </div>
     </div>
 
-    <!-- ==================== MODALES ==================== -->
+    <!-- ==================== MODAL DE AUTENTICACIÓN ADMIN PRIVADA ==================== -->
+    <div id="modal-admin-login" class="modal-bg">
+        <div class="modal-wrap" style="max-width:320px; text-align:center;">
+            <div style="font-size:2rem; color:var(--accent-color); margin-bottom:10px;"><i class="fa-solid fa-lock"></i></div>
+            <h3 style="margin-bottom:8px;">Acceso Administrador</h3>
+            <p style="font-size:0.78rem; color:var(--text-muted); margin-top:0; margin-bottom:14px;">Ingresa tu clave de seguridad privada para continuar:</p>
+            <div class="admin-form-group" style="margin-bottom:14px;">
+                <input type="password" id="admin-login-pass" placeholder="••••••" style="text-align:center; font-size:1.2rem; letter-spacing:4px;" onkeydown="if(event.key==='Enter') verifyAdminPassword()">
+            </div>
+            <button class="btn-full action" onclick="verifyAdminPassword()">Ingresar al Panel</button>
+            <button class="btn-full cancel" onclick="closeFormModal('modal-admin-login')">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- MODAL POPUP -->
     <div id="modal-popup-form" class="modal-bg">
         <div class="modal-wrap">
             <h3 id="modal-popup-title">Crear Popup Promocional</h3>
             <div class="modal-scrollable">
                 <input type="hidden" id="form-pop-id">
-                <div class="admin-form-group">
-                    <label>Título del Popup</label>
-                    <input type="text" id="form-pop-title" placeholder="Ej: Combos Especiales de Halloween">
-                </div>
-                <div class="admin-form-group">
-                    <label>Descripción corta</label>
-                    <input type="text" id="form-pop-desc" placeholder="Ej: Combos solo por halloween">
-                </div>
-                <div class="admin-form-group">
-                    <label>Duración (Segundos)</label>
-                    <input type="number" id="form-pop-duration" placeholder="6">
-                </div>
+                <div class="admin-form-group"><label>Título del Popup</label><input type="text" id="form-pop-title" placeholder="Ej: Combos Halloween"></div>
+                <div class="admin-form-group"><label>Descripción corta</label><input type="text" id="form-pop-desc" placeholder="Ej: Combos solo por temporada"></div>
+                <div class="admin-form-group"><label>Duración (Segundos)</label><input type="number" id="form-pop-duration" placeholder="6"></div>
                 <div class="form-row">
                     <div class="admin-form-group"><label>Fecha Inicio</label><input type="date" id="form-pop-start"></div>
                     <div class="admin-form-group"><label>Fecha Fin</label><input type="date" id="form-pop-end"></div>
                 </div>
-                <div class="admin-form-group">
-                    <label>Imagen</label>
-                    <input type="text" id="form-pop-url" placeholder="https://...">
-                </div>
+                <div class="admin-form-group"><label>Imagen</label><input type="text" id="form-pop-url" placeholder="https://..."></div>
             </div>
             <button class="btn-full action" onclick="savePopupItem()">Guardar Popup</button>
             <button class="btn-full cancel" onclick="closeFormModal('modal-popup-form')">Cancelar</button>
         </div>
     </div>
 
+    <!-- MODAL COMBO -->
     <div id="modal-combo-form" class="modal-bg">
         <div class="modal-wrap">
             <h3 id="modal-combo-title">Crear Combo</h3>
@@ -1644,6 +1454,7 @@
         </div>
     </div>
 
+    <!-- MODAL PRODUCTO -->
     <div id="modal-product" class="modal-bg">
         <div class="modal-wrap">
             <h3 id="modal-product-title">Nueva Cuenta</h3>
@@ -1651,7 +1462,7 @@
                 <input type="hidden" id="form-p-id">
                 <div class="admin-form-group"><label>Nombre</label><input type="text" id="form-p-name"></div>
                 <div class="form-row">
-                    <div class="admin-form-group"><label>Precio</label><input type="number" id="form-p-price"></div>
+                    <div class="admin-form-group"><label>Precio ($ MXN)</label><input type="number" id="form-p-price"></div>
                     <div class="admin-form-group"><label>Categoría</label><select id="form-p-cat"></select></div>
                 </div>
                 <div class="admin-form-group"><label>Garantía</label><input type="text" id="form-p-warranty"></div>
@@ -1662,6 +1473,7 @@
         </div>
     </div>
 
+    <!-- MODAL DETALLES DEL CARRITO -->
     <div id="modal-cart-details" class="modal-bg">
         <div class="modal-wrap">
             <h3>Tu Carrito</h3>
@@ -1671,8 +1483,11 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- SCRIPT PRINCIPAL -->
     <script>
+        // CONTRASEÑA PRIVADA DEL ADMINISTRADOR
+        const ADMIN_SECRET_PIN = "426153";
+
         let business = JSON.parse(localStorage.getItem('streaming_biz')) || {
             name: "MICHELLE777",
             whatsapp: "525523676793",
@@ -1683,7 +1498,6 @@
             scheduleDays: "Lunes a Domingo"
         };
 
-        // AJUSTES VISUALES COMPLETOS
         let themeSettings = JSON.parse(localStorage.getItem('streaming_design_config')) || {
             activeTemplate: 'minimalista',
             fontFamily: "'Poppins', sans-serif",
@@ -1740,10 +1554,16 @@
             const params = new URLSearchParams(window.location.search);
             const isSessionAdmin = sessionStorage.getItem('is_admin_active') === 'true';
 
-            if (params.get('admin') === '1' || isSessionAdmin) {
+            if (isSessionAdmin) {
                 document.getElementById('screen-client').style.display = 'none';
                 document.getElementById('screen-admin').classList.add('active');
                 initAdminSystem();
+            } else if (params.get('admin') === '1') {
+                // Si alguien coloca ?admin=1 en el link pero no está autenticado, pide la clave
+                document.getElementById('screen-client').style.display = 'block';
+                document.getElementById('screen-admin').classList.remove('active');
+                initClientShop();
+                openAdminLoginModal();
             } else {
                 document.getElementById('screen-client').style.display = 'block';
                 document.getElementById('screen-admin').classList.remove('active');
@@ -1752,7 +1572,39 @@
             }
         }
 
-        /* APLICAR ESTILOS DINÁMICOS */
+        /* GESTIÓN DE ACCESO ADMINISTRADOR */
+        function openAdminLoginModal() {
+            const passInput = document.getElementById('admin-login-pass');
+            passInput.value = "";
+            document.getElementById('modal-admin-login').style.display = 'flex';
+            setTimeout(() => passInput.focus(), 150);
+        }
+
+        function verifyAdminPassword() {
+            const entered = document.getElementById('admin-login-pass').value.trim();
+            if (entered === ADMIN_SECRET_PIN) {
+                sessionStorage.setItem('is_admin_active', 'true');
+                closeFormModal('modal-admin-login');
+                checkAndRunViews();
+            } else {
+                alert("Contraseña incorrecta.");
+                document.getElementById('admin-login-pass').value = "";
+            }
+        }
+
+        function logoutAdminSession() {
+            sessionStorage.removeItem('is_admin_active');
+            window.location.search = "";
+            checkAndRunViews();
+        }
+
+        function exitAdminToClient() {
+            sessionStorage.removeItem('is_admin_active');
+            window.location.search = "";
+            checkAndRunViews();
+        }
+
+        /* APLICAR ESTILOS */
         function applyLoadedDesign() {
             const root = document.documentElement;
             const c = themeSettings.colors;
@@ -1770,7 +1622,6 @@
             root.style.setProperty('--main-font', themeSettings.fontFamily || "'Poppins', sans-serif");
             document.body.style.fontFamily = themeSettings.fontFamily || "'Poppins', sans-serif";
 
-            // Imagen de fondo
             if (themeSettings.bgImage) {
                 document.body.style.backgroundImage = `url('${themeSettings.bgImage}')`;
                 document.querySelector('.bg-overlay').style.display = 'block';
@@ -1779,7 +1630,6 @@
                 document.querySelector('.bg-overlay').style.display = 'none';
             }
 
-            // Aplicar estilo de recuadros
             applyCardStyleToRoot(themeSettings.cardStyle || 'modern-rounded');
         }
 
@@ -1806,7 +1656,6 @@
                 root.style.setProperty('--card-backdrop', 'none');
                 root.style.setProperty('--card-shadow', 'none');
             } else {
-                // modern-rounded
                 root.style.setProperty('--card-radius', '18px');
                 root.style.setProperty('--card-border', '1px solid rgba(255, 255, 255, 0.06)');
                 root.style.setProperty('--card-backdrop', 'none');
@@ -2081,7 +1930,6 @@
             document.getElementById('admin-sidebar').classList.remove('show');
         }
 
-        /* LOGICA DEL PERSONALIZADOR (image_20.png) */
         function populateCustomizerInputs() {
             const c = themeSettings.colors;
             updatePaletteField('c-primary', c.primary);
@@ -2109,7 +1957,6 @@
 
         function syncColorInput(id, val) {
             document.getElementById(`lbl-${id}`).innerText = val;
-            // Vista previa en vivo
             const root = document.documentElement;
             const map = {
                 'c-primary': '--primary-color', 'c-accent': '--accent-color', 'c-bg': '--bg-color',
@@ -2216,7 +2063,7 @@
 
             const urlInput = document.getElementById('bg-image-url').value.trim();
             if (tempUploadBgBuffer) {
-                themeSettings.bgImage = tempUploadBuffer;
+                themeSettings.bgImage = tempUploadBgBuffer;
             } else if (urlInput && urlInput !== "Imagen subida lista") {
                 themeSettings.bgImage = urlInput;
             }
@@ -2226,7 +2073,6 @@
             alert("¡Diseño, colores, fuentes y recuadros guardados con éxito!");
         }
 
-        /* RESTO DE GESTIÓN ADMIN */
         function loadBusinessAdminForm() {
             document.getElementById('biz-name').value = business.name || "MICHELLE777";
             document.getElementById('biz-whatsapp').value = business.whatsapp || "525523676793";
@@ -2343,26 +2189,6 @@
             localStorage.setItem('streaming_promos_table', JSON.stringify(promotions));
             closeFormModal('modal-combo-form');
             renderAdminPromotionsTable();
-        }
-
-        function tryEnterAdmin() {
-            const pass = prompt("Contraseña admin (1234):");
-            if (pass === "1234") {
-                sessionStorage.setItem('is_admin_active', 'true');
-                checkAndRunViews();
-            }
-        }
-
-        function logoutAdminSession() {
-            sessionStorage.removeItem('is_admin_active');
-            window.location.search = "";
-            checkAndRunViews();
-        }
-
-        function exitAdminToClient() {
-            sessionStorage.removeItem('is_admin_active');
-            window.location.search = "";
-            checkAndRunViews();
         }
 
         function closeFormModal(id) { document.getElementById(id).style.display = 'none'; }
