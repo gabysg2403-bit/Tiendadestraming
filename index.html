@@ -17,13 +17,13 @@
       --warning: #f59e0b;
       --danger: #ef4444;
       --overlay-opacity: 0.72;
-      /* Colores de la Muñequita Asistente */
-      --doll-hair: #ff4da6;
-      --doll-dress: #7c4dff;
-      --doll-accent: #00e5ff;
-      --doll-eyes: #00e5ff;
-      --doll-skin: #ffe0d2;
-      --doll-aura: rgba(255, 42, 133, 0.45);
+      /* Colores personalizables del Asistente Virtual (Chimmy Style) */
+      --doll-hoodie: #ffe135;
+      --doll-ears: #111111;
+      --doll-buttons: #f26d40;
+      --doll-blush: #ffb3c6;
+      --doll-face: #ffffff;
+      --doll-aura: rgba(255, 225, 53, 0.45);
     }
 
     * {
@@ -39,7 +39,7 @@
       color: var(--text);
       min-height: 100vh;
       overflow-x: hidden;
-      padding-bottom: 110px;
+      padding-bottom: 120px;
       position: relative;
     }
 
@@ -363,7 +363,7 @@
       position: relative;
       min-height: 118px;
       display: flex;
-       flex-direction: column;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
@@ -454,7 +454,7 @@
       gap: 6px;
     }
 
-    /* TARJETAS DE FORMULARIOS (RECARGAS, REPORTES, COMPRAS) */
+    /* TARJETAS DE FORMULARIOS */
     .panel-card {
       background: var(--card-bg);
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -611,7 +611,7 @@
     }
 
     /* =====================================================
-       MUÑEQUITA ASISTENTE VIRTUAL (CUERPO COMPLETO + GESTOS)
+       ASISTENTE VIRTUAL PERRITO CAPUCHA AMARILLA (CHIMMY STYLE)
        ===================================================== */
     .doll-widget {
       position: fixed;
@@ -625,111 +625,114 @@
     }
     .doll-Speech {
       pointer-events: auto;
-      background: rgba(16, 22, 38, 0.95);
-      border: 1.5px solid var(--doll-accent);
+      background: rgba(16, 22, 38, 0.96);
+      border: 2px solid var(--doll-hoodie);
       color: #fff;
-      padding: 6px 11px;
-      border-radius: 14px 14px 2px 14px;
+      padding: 6px 12px;
+      border-radius: 16px 16px 4px 16px;
       font-size: 11.5px;
-      font-weight: 700;
+      font-weight: 800;
       margin-bottom: 4px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.45);
-      max-width: 190px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.5);
+      max-width: 195px;
       cursor: pointer;
     }
     .doll-avatar-btn {
       pointer-events: auto;
-      width: 96px;
-      height: 132px;
+      width: 104px;
+      height: 126px;
       cursor: pointer;
       position: relative;
-      filter: drop-shadow(0 0 12px var(--doll-aura));
-      animation: dollFloat 3.2s ease-in-out infinite;
+      filter: drop-shadow(0 4px 12px var(--doll-aura));
+      animation: chimmyFloat 2.8s ease-in-out infinite;
       user-select: none;
     }
-    @keyframes dollFloat {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-7px); }
+    @keyframes chimmyFloat {
+      0%, 100% { transform: translateY(0px) rotate(-1deg); }
+      50% { transform: translateY(-7px) rotate(1.5deg); }
     }
     .doll-svg {
       width: 100%;
       height: 100%;
       overflow: visible;
     }
-    .doll-hair-tail-l {
-      transform-origin: 28px 34px;
-      animation: tailSwayL 2.8s ease-in-out infinite;
+    /* Movimiento fluido de las orejitas negras */
+    .chimmy-ear-l {
+      transform-origin: 22px 35px;
+      animation: earFlopL 2.6s ease-in-out infinite;
     }
-    .doll-hair-tail-r {
-      transform-origin: 72px 34px;
-      animation: tailSwayR 2.8s ease-in-out infinite;
+    .chimmy-ear-r {
+      transform-origin: 98px 35px;
+      animation: earFlopR 2.6s ease-in-out infinite;
     }
-    @keyframes tailSwayL {
+    @keyframes earFlopL {
       0%, 100% { transform: rotate(0deg); }
-      50% { transform: rotate(6deg); }
+      50% { transform: rotate(5deg); }
     }
-    @keyframes tailSwayR {
+    @keyframes earFlopR {
       0%, 100% { transform: rotate(0deg); }
-      50% { transform: rotate(-6deg); }
+      50% { transform: rotate(-5deg); }
     }
-    .doll-arm-wave {
-      transform-origin: 66px 66px;
-      animation: waveHand 2.2s ease-in-out infinite;
+    /* Saludo fluido de su manita */
+    .chimmy-arm-r {
+      transform-origin: 76px 96px;
+      animation: pawWave 2.1s ease-in-out infinite;
     }
-    @keyframes waveHand {
+    @keyframes pawWave {
       0%, 100% { transform: rotate(0deg); }
-      25% { transform: rotate(-22deg); }
+      30% { transform: rotate(-20deg); }
+      60% { transform: rotate(8deg); }
+    }
+    .chimmy-arm-l {
+      transform-origin: 44px 96px;
+      animation: pawSwayL 2.8s ease-in-out infinite;
+    }
+    @keyframes pawSwayL {
+      0%, 100% { transform: rotate(0deg); }
       50% { transform: rotate(8deg); }
-      75% { transform: rotate(-18deg); }
     }
-    .doll-skirt-group {
-      transform-origin: 50px 78px;
-      animation: skirtSway 3.2s ease-in-out infinite;
-    }
-    @keyframes skirtSway {
-      0%, 100% { transform: rotate(-1.5deg); }
-      50% { transform: rotate(1.5deg); }
-    }
-    .doll-eyes-open {
-      animation: blinkEyes 4.2s infinite;
-      transform-origin: 50px 42px;
+    /* Parpadeo natural */
+    .chimmy-eyes-normal {
+      transform-origin: 60px 56px;
+      animation: blinkEyes 4s infinite;
     }
     @keyframes blinkEyes {
       0%, 92%, 100% { transform: scaleY(1); }
       96% { transform: scaleY(0.08); }
     }
-    .doll-mouth.talking {
-      animation: mouthTalk 0.28s infinite alternate;
-      transform-origin: 50px 50px;
+    /* Boquita hablando */
+    .chimmy-mouth-group.talking {
+      transform-origin: 60px 68px;
+      animation: mouthTalk 0.26s infinite alternate;
     }
     @keyframes mouthTalk {
-      0% { transform: scaleY(0.5); }
-      100% { transform: scaleY(1.45); }
+      0% { transform: scaleY(0.75); }
+      100% { transform: scaleY(1.35); }
     }
 
-    /* VENTANA DE CHAT DE LA MUÑEQUITA */
+    /* VENTANA DE CHAT DEL ASISTENTE */
     .assistant-chat {
       pointer-events: auto;
       width: 310px;
       max-width: calc(100vw - 24px);
       background: #0e1424;
-      border: 1.5px solid var(--doll-accent);
+      border: 2px solid var(--doll-hoodie);
       border-radius: 18px;
       overflow: hidden;
-      box-shadow: 0 12px 32px rgba(0,0,0,0.7);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.75);
       margin-bottom: 8px;
       display: none;
       flex-direction: column;
     }
     .assistant-chat.open { display: flex; }
     .chat-head {
-      background: linear-gradient(135deg, var(--doll-hair), var(--doll-dress));
+      background: linear-gradient(135deg, var(--doll-hoodie), var(--doll-buttons));
       padding: 10px 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      color: #fff;
-      font-weight: 800;
+      color: #111;
+      font-weight: 900;
       font-size: 13px;
     }
     .chat-body {
@@ -762,8 +765,8 @@
       border-top: 1px solid rgba(255,255,255,0.07);
     }
     .chat-chip {
-      background: rgba(0, 229, 255, 0.12);
-      border: 1px solid rgba(0, 229, 255, 0.35);
+      background: rgba(255, 225, 53, 0.12);
+      border: 1px solid rgba(255, 225, 53, 0.45);
       color: #fff;
       font-size: 11px;
       padding: 4px 8px;
@@ -784,10 +787,10 @@
       outline: none;
     }
     .chat-input-row button {
-      background: var(--doll-accent);
-      color: #000;
+      background: var(--doll-hoodie);
+      color: #111;
       border: none;
-      font-weight: 800;
+      font-weight: 900;
       padding: 0 12px;
       cursor: pointer;
     }
@@ -976,7 +979,7 @@
           <button class="nav-tab" onclick="switchAdminTab('adm-reportes', this)">🛠️ Reportes & Sync</button>
           <button class="nav-tab" onclick="switchAdminTab('adm-categorias', this)">📂 Categorías</button>
           <button class="nav-tab" onclick="switchAdminTab('adm-diseno', this)">🎨 Foto, Fondo & WA</button>
-          <button class="nav-tab" onclick="switchAdminTab('adm-doll', this)">🎀 Muñequita</button>
+          <button class="nav-tab" onclick="switchAdminTab('adm-doll', this)">🐾 Asistente</button>
           <button class="nav-tab" onclick="switchAdminTab('adm-musica', this)">🎵 Música</button>
           <button class="nav-tab" onclick="switchAdminTab('adm-export', this)">💾 Guardar Web</button>
         </div>
@@ -995,7 +998,7 @@
 
         <!-- TAB ADMIN 2: STOCK DE CUENTAS ÚNICAS -->
         <div id="adm-stock" class="adm-tab" style="display:none;">
-          <h3 style="font-size:15px;margin-bottom:8px;">🔑 Agregar Cuenta Única al Inventario Automático</h3>
+          <h3 style="font-size:15px;margin-bottom:8px;">🔑 Agregar Cuenta Únicas al Inventario Automático</h3>
           <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">
             Cada cuenta que guardes aquí se entregará automáticamente al comprador y se bloqueará de inmediato para no repetirse jamás.
           </p>
@@ -1032,7 +1035,7 @@
 
         <!-- TAB ADMIN 3: PRODUCTOS Y CAMPOS VISIBLES / OCULTOS -->
         <div id="adm-productos" class="adm-tab" style="display:none;">
-          <h3 style="font-size:15px;margin-bottom:10px;" id="prod-form-title">📦 Crear / Editar Producto o Combo</h3>
+          <h3 style="font-size:15px;margin-bottom:10px;">📦 Crear / Editar Producto o Combo</h3>
           <input type="hidden" id="edit-prod-id" />
           <div class="field-group">
             <label>Nombre del Producto / Combo</label>
@@ -1221,55 +1224,54 @@
           </div>
         </div>
 
-        <!-- TAB ADMIN 7: PERSONALIZAR MUÑEQUITA ASISTENTE -->
+        <!-- TAB ADMIN 7: PERSONALIZAR ASISTENTE VIRTUAL (CHIMMY STYLE) -->
         <div id="adm-doll" class="adm-tab" style="display:none;">
-          <h3 style="font-size:15px;margin-bottom:10px;">🎀 Personalizar Muñequita Asistente Virtual</h3>
+          <h3 style="font-size:15px;margin-bottom:10px;">🐾 Personalizar Asistente Virtual</h3>
           <div class="field-group">
-            <label>Nombre de la Asistente</label>
-            <input type="text" id="doll-cfg-name" placeholder="Mimi VIP" />
+            <label>Nombre del Asistente</label>
+            <input type="text" id="doll-cfg-name" placeholder="Chimmy VIP" />
           </div>
           <div class="field-group">
             <label>Mensaje de Burbuja Flotante</label>
-            <input type="text" id="doll-cfg-bubble" placeholder="¡Hola! ¿Te ayudo? 💕" />
+            <input type="text" id="doll-cfg-bubble" placeholder="¡Hola! ¿Te ayudo? 💛" />
           </div>
           <div class="field-group">
             <label>Saludo Inicial en el Chat</label>
             <textarea id="doll-cfg-welcome" rows="2"></textarea>
           </div>
 
-          <div style="font-size:12px;font-weight:700;margin-bottom:6px;">Estilos Rápidos en 1 Toque:</div>
+          <div style="font-size:12px;font-weight:700;margin-bottom:6px;">Combinaciones Rápidas en 1 Toque:</div>
           <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">
-            <button class="btn-outline" onclick="applyDollPreset('#ff4da6','#7c4dff','#00e5ff','#00e5ff','#ffe0d2')">🌸 Rosa Kawaii</button>
-            <button class="btn-outline" onclick="applyDollPreset('#00e5ff','#1e293b','#ff2a85','#00e5ff','#ffe4d6')">💎 Cielo Miku</button>
-            <button class="btn-outline" onclick="applyDollPreset('#a855f7','#3b0764','#f472b6','#c084fc','#ffe0d2')">🔮 Violeta Neón</button>
-            <button class="btn-outline" onclick="applyDollPreset('#10b981','#064e3b','#fde047','#34d399','#ffe0d2')">🍀 Esmeralda Cute</button>
-            <button class="btn-outline" onclick="applyDollPreset('#111827','#be123c','#f43f5e','#fb7185','#ffe4e6')">🖤 Gótica Rose</button>
-            <button class="btn-outline" onclick="applyDollPreset('#facc15','#78350f','#fef08a','#f59e0b','#ffedd5')">👑 Dorada VIP</button>
+            <button class="btn-outline" onclick="applyDollPreset('#ffe135','#111111','#f26d40','#ffb3c6','#ffffff')">💛 Amarillo Original</button>
+            <button class="btn-outline" onclick="applyDollPreset('#ff8da1','#2b1b17','#ff2a85','#ffc2d1','#ffffff')">🌸 Rosa Cute</button>
+            <button class="btn-outline" onclick="applyDollPreset('#7dd3fc','#0f172a','#38bdf8','#fda4af','#ffffff')">💎 Celeste Baby</button>
+            <button class="btn-outline" onclick="applyDollPreset('#c084fc','#1e1b4b','#ec4899','#f9a8d4','#ffffff')">💜 Lila Army</button>
+            <button class="btn-outline" onclick="applyDollPreset('#6ee7b7','#064e3b','#f59e0b','#fda4af','#ffffff')">🍀 Menta Kawaii</button>
           </div>
 
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;">
             <div class="field-group">
-              <label>Cabello</label>
-              <input type="color" id="doll-col-hair" style="height:38px;padding:2px;" />
+              <label>Capucha y Traje</label>
+              <input type="color" id="doll-col-hoodie" style="height:38px;padding:2px;" />
             </div>
             <div class="field-group">
-              <label>Vestido</label>
-              <input type="color" id="doll-col-dress" style="height:38px;padding:2px;" />
+              <label>Orejitas</label>
+              <input type="color" id="doll-col-ears" style="height:38px;padding:2px;" />
             </div>
             <div class="field-group">
-              <label>Moños / Olanes</label>
-              <input type="color" id="doll-col-accent" style="height:38px;padding:2px;" />
+              <label>Botones Pecho</label>
+              <input type="color" id="doll-col-buttons" style="height:38px;padding:2px;" />
             </div>
             <div class="field-group">
-              <label>Ojos</label>
-              <input type="color" id="doll-col-eyes" style="height:38px;padding:2px;" />
+              <label>Mejillas</label>
+              <input type="color" id="doll-col-blush" style="height:38px;padding:2px;" />
             </div>
             <div class="field-group">
-              <label>Piel</label>
-              <input type="color" id="doll-col-skin" style="height:38px;padding:2px;" />
+              <label>Carita y Manos</label>
+              <input type="color" id="doll-col-face" style="height:38px;padding:2px;" />
             </div>
           </div>
-          <button class="btn-main" onclick="adminSaveDoll()">💾 Guardar Cambios de la Muñequita</button>
+          <button class="btn-main" onclick="adminSaveDoll()">💾 Guardar Cambios del Asistente</button>
         </div>
 
         <!-- TAB ADMIN 8: MÚSICA -->
@@ -1317,18 +1319,19 @@
   </div>
 
   <!-- =========================================================
-       MUÑEQUITA ASISTENTE VIRTUAL (LADO DERECHO, CUERPO COMPLETO)
+       ASISTENTE VIRTUAL PERRITO CAPUCHA AMARILLA (IDÉNTICO A TU IMAGEN)
        ========================================================= -->
   <div class="doll-widget">
     <!-- VENTANA DE CHAT -->
     <div class="assistant-chat" id="assistant-chat">
       <div class="chat-head">
-        <div>✨ <span id="chat-doll-name">Mimi VIP</span></div>
-        <div style="display:flex;gap:6px;">
+        <div>🐾 <span id="chat-doll-name">Chimmy VIP</span></div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <button onclick="setDollExpression('happy')" style="background:none;border:none;cursor:pointer;font-size:14px;" title="Feliz">😊</button>
           <button onclick="setDollExpression('wink')" style="background:none;border:none;cursor:pointer;font-size:14px;" title="Guiño">😉</button>
           <button onclick="setDollExpression('star')" style="background:none;border:none;cursor:pointer;font-size:14px;" title="Estrellitas">🤩</button>
           <button onclick="setDollExpression('love')" style="background:none;border:none;cursor:pointer;font-size:14px;" title="Cute">💕</button>
-          <button onclick="toggleAssistantChat()" style="background:none;border:none;color:#fff;font-weight:900;cursor:pointer;">✕</button>
+          <button onclick="toggleAssistantChat()" style="background:none;border:none;color:#111;font-weight:900;cursor:pointer;font-size:15px;">✕</button>
         </div>
       </div>
       <div class="chat-body" id="chat-messages"></div>
@@ -1346,87 +1349,84 @@
 
     <!-- BURBUJA DE SALUDO -->
     <div class="doll-Speech" id="doll-speech-bubble" onclick="toggleAssistantChat()">
-      ¡Hola! ¿Te ayudo? 💕
+      ¡Hola! ¿Te ayudo? 💛
     </div>
 
-    <!-- MUÑEQUITA SVG ANIMADA -->
+    <!-- PERSONAJE ANIMADO DE CUERPO COMPLETO (FIEL A LA IMAGEN) -->
     <div class="doll-avatar-btn" onclick="toggleAssistantChat()" title="Asistente Virtual">
-      <svg class="doll-svg" viewBox="0 0 100 135">
-        <!-- Coletas traseras con movimiento fluido -->
-        <g class="doll-hair-tail-l">
-          <path d="M28,34 C10,38 6,66 14,86 C20,82 24,62 29,44 Z" fill="var(--doll-hair)" />
-          <circle cx="27" cy="34" r="5" fill="var(--doll-accent)" />
-        </g>
-        <g class="doll-hair-tail-r">
-          <path d="M72,34 C90,38 94,66 86,86 C80,82 76,62 71,44 Z" fill="var(--doll-hair)" />
-          <circle cx="73" cy="34" r="5" fill="var(--doll-accent)" />
+      <svg class="doll-svg" viewBox="0 0 120 140">
+        <!-- Brazo Izquierdo (amarillo con manita blanca redondeada) -->
+        <g class="chimmy-arm-l">
+          <path d="M 38 92 C 26 95, 20 103, 25 111 C 29 116, 38 112, 43 105 Z" fill="var(--doll-hoodie)" stroke="#111111" stroke-width="4.5" stroke-linejoin="round" />
+          <path d="M 28 99 C 22 103, 21 109, 25 112 C 29 115, 34 112, 36 108 Z" fill="var(--doll-face)" stroke="#111111" stroke-width="4" stroke-linejoin="round" />
         </g>
 
-        <!-- Cabello base trasero -->
-        <ellipse cx="50" cy="36" rx="24" ry="22" fill="var(--doll-hair)" />
-
-        <!-- Piernas y botitas cute -->
-        <rect x="40" y="96" width="6.5" height="22" rx="3" fill="var(--doll-skin)" />
-        <rect x="53.5" y="96" width="6.5" height="22" rx="3" fill="var(--doll-skin)" />
-        <!-- Calcetas altas -->
-        <rect x="40" y="105" width="6.5" height="13" rx="2" fill="#ffffff" />
-        <rect x="53.5" y="105" width="6.5" height="13" rx="2" fill="#ffffff" />
-        <!-- Botitas -->
-        <rect x="38" y="114" width="10" height="9" rx="4" fill="var(--doll-dress)" stroke="var(--doll-accent)" stroke-width="1.2" />
-        <rect x="52" y="114" width="10" height="9" rx="4" fill="var(--doll-dress)" stroke="var(--doll-accent)" stroke-width="1.2" />
-
-        <!-- Brazo izquierdo -->
-        <path d="M35,62 C25,68 24,78 28,84" stroke="var(--doll-skin)" stroke-width="6" stroke-linecap="round" fill="none" />
-
-        <!-- Brazo derecho que saluda -->
-        <g class="doll-arm-wave">
-          <path d="M65,62 C76,56 82,46 80,38" stroke="var(--doll-skin)" stroke-width="6" stroke-linecap="round" fill="none" />
-          <circle cx="80" cy="37" r="4" fill="var(--doll-skin)" />
+        <!-- Brazo Derecho que saluda (amarillo con manita blanca redondeada) -->
+        <g class="chimmy-arm-r">
+          <path d="M 82 92 C 94 95, 100 103, 95 111 C 91 116, 82 112, 77 105 Z" fill="var(--doll-hoodie)" stroke="#111111" stroke-width="4.5" stroke-linejoin="round" />
+          <path d="M 92 99 C 98 103, 99 109, 95 112 C 91 115, 86 112, 84 108 Z" fill="var(--doll-face)" stroke="#111111" stroke-width="4" stroke-linejoin="round" />
         </g>
 
-        <!-- Vestido Kawaii con olanes y moño -->
-        <g class="doll-skirt-group">
-          <path d="M36,60 L64,60 L76,98 C58,103 42,103 24,98 Z" fill="var(--doll-dress)" />
-          <!-- Olan inferior -->
-          <path d="M23,97 Q30,103 37,97 Q44,103 50,97 Q56,103 63,97 Q70,103 77,97" stroke="var(--doll-accent)" stroke-width="4" fill="none" stroke-linecap="round" />
-          <!-- Delantal / Pechera cute -->
-          <path d="M41,61 L59,61 L63,86 L37,86 Z" fill="#ffffff" opacity="0.9" />
-          <!-- Moño del pecho -->
-          <polygon points="50,64 42,59 42,69" fill="var(--doll-accent)" />
-          <polygon points="50,64 58,59 58,69" fill="var(--doll-accent)" />
-          <circle cx="50" cy="64" r="3" fill="var(--doll-hair)" />
+        <!-- Cuerpo y Piernitas Unidas con contorno grueso negro -->
+        <path d="M 40 88 L 38 122 C 38 131, 46 135, 54 135 C 58 135, 60 131, 60 126 C 60 131, 62 135, 66 135 C 74 135, 82 131, 82 122 L 80 88 Z" fill="var(--doll-hoodie)" stroke="#111111" stroke-width="4.8" stroke-linejoin="round" />
+        <!-- Línea divisoria de las piernitas -->
+        <line x1="60" y1="114" x2="60" y2="129" stroke="#111111" stroke-width="4.5" stroke-linecap="round" />
+
+        <!-- Los 2 Botones Naranjas en la pancita -->
+        <circle cx="60" cy="99" r="4.6" fill="var(--doll-buttons)" />
+        <circle cx="60" cy="110" r="4.6" fill="var(--doll-buttons)" />
+
+        <!-- Oreja Negra Caída Izquierda -->
+        <g class="chimmy-ear-l">
+          <path d="M 25 28 C 8 38, 2 62, 10 78 C 15 86, 26 84, 28 74 Z" fill="var(--doll-ears)" stroke="#111111" stroke-width="4.5" stroke-linejoin="round" />
         </g>
 
-        <!-- Cabeza y Rostro -->
-        <circle cx="50" cy="40" r="20" fill="var(--doll-skin)" />
-
-        <!-- Rubor en mejillas -->
-        <ellipse cx="37" cy="46" rx="4.2" ry="2.2" fill="#ff6b9d" opacity="0.65" />
-        <ellipse cx="63" cy="46" rx="4.2" ry="2.2" fill="#ff6b9d" opacity="0.65" />
-
-        <!-- Ojos dinámicos según gesto -->
-        <g id="doll-eyes-group" class="doll-eyes-open">
-          <!-- Ojo Izquierdo -->
-          <ellipse id="eye-l" cx="41" cy="42" rx="4.2" ry="5" fill="#1e1b4b" />
-          <ellipse cx="41" cy="43" rx="3.2" ry="3.6" fill="var(--doll-eyes)" />
-          <circle cx="39.5" cy="40.2" r="1.6" fill="#ffffff" />
-          <!-- Ojo Derecho -->
-          <ellipse id="eye-r" cx="59" cy="42" rx="4.2" ry="5" fill="#1e1b4b" />
-          <ellipse cx="59" cy="43" rx="3.2" ry="3.6" fill="var(--doll-eyes)" />
-          <circle cx="57.5" cy="40.2" r="1.6" fill="#ffffff" />
+        <!-- Oreja Negra Caída Derecha -->
+        <g class="chimmy-ear-r">
+          <path d="M 95 28 C 112 38, 118 62, 110 78 C 105 86, 94 84, 92 74 Z" fill="var(--doll-ears)" stroke="#111111" stroke-width="4.5" stroke-linejoin="round" />
         </g>
-        <!-- Ojo guiño oculto por defecto -->
-        <path id="eye-wink-r" d="M54,42 Q59,37 64,42" stroke="#1e1b4b" stroke-width="2.5" stroke-linecap="round" fill="none" style="display:none;" />
 
-        <!-- Boquita animada -->
-        <path id="doll-mouth" class="doll-mouth" d="M46,50 Q50,54.5 54,50" stroke="#e11d48" stroke-width="2.2" fill="#fb7185" stroke-linecap="round" />
+        <!-- Capucha Grande Redondeada (Cabeza) -->
+        <path d="M 60 10 C 26 10, 14 32, 16 58 C 18 82, 34 92, 60 92 C 86 92, 102 82, 104 58 C 106 32, 94 10, 60 10 Z" fill="var(--doll-hoodie)" stroke="#111111" stroke-width="4.8" stroke-linejoin="round" />
 
-        <!-- Fleco delantero -->
-        <path d="M30,36 C32,20 68,20 70,36 C64,28 58,35 50,27 C42,35 36,28 30,36 Z" fill="var(--doll-hair)" />
+        <!-- Carita Blanca Interna con forma suave de bollo -->
+        <path d="M 60 24 C 38 24, 30 37, 29 53 C 26 60, 26 71, 35 77 C 43 82, 51 83, 60 83 C 69 83, 77 82, 85 77 C 94 71, 94 60, 91 53 C 90 37, 82 24, 60 24 Z" fill="var(--doll-face)" stroke="#111111" stroke-width="4.5" stroke-linejoin="round" />
 
-        <!-- Diadema con orejitas cute -->
-        <polygon points="33,21 38,10 44,19" fill="var(--doll-accent)" />
-        <polygon points="67,21 62,10 56,19" fill="var(--doll-accent)" />
+        <!-- Rizo / Mechón Negro Característico en la frente -->
+        <path d="M 53 25 C 51 35, 58 42, 66 39 C 71 37, 69 31, 64 32" fill="none" stroke="#111111" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+
+        <!-- Mejillas Rosadas Redondas -->
+        <circle id="chimmy-blush-l" cx="38" cy="64" r="8.2" fill="var(--doll-blush)" />
+        <circle id="chimmy-blush-r" cx="82" cy="64" r="8.2" fill="var(--doll-blush)" />
+
+        <!-- Ojos Redondos Negros (Normales) -->
+        <g id="doll-eyes-group" class="chimmy-eyes-normal">
+          <circle id="eye-l" cx="48" cy="55" r="4.8" fill="#111111" />
+          <circle id="eye-r" cx="72" cy="55" r="4.8" fill="#111111" />
+          <!-- Brillitos de estrella (ocultos salvo en gesto star) -->
+          <circle id="eye-star-l" cx="46.5" cy="53.5" r="1.8" fill="#ffffff" style="display:none;" />
+          <circle id="eye-star-r" cx="70.5" cy="53.5" r="1.8" fill="#ffffff" style="display:none;" />
+        </g>
+
+        <!-- Ojo Derecho en Guiño (oculto por defecto) -->
+        <path id="eye-wink-r" d="M 67 55 Q 72 50 77 55" stroke="#111111" stroke-width="4" stroke-linecap="round" fill="none" style="display:none;" />
+
+        <!-- Ojos Felices Cute ^ ^ (ocultos por defecto) -->
+        <g id="eyes-love-group" style="display:none;">
+          <path d="M 43 56 Q 48 49 53 56" stroke="#111111" stroke-width="4" stroke-linecap="round" fill="none" />
+          <path d="M 67 56 Q 72 49 77 56" stroke="#111111" stroke-width="4" stroke-linecap="round" fill="none" />
+        </g>
+
+        <!-- Naricita Ovalada Negra -->
+        <ellipse cx="60" cy="60.5" rx="4.5" ry="3.1" fill="#111111" />
+
+        <!-- Boquita Sonriente con Hoyuelos en las Comisuras (Idéntica a la foto) -->
+        <g id="doll-mouth" class="chimmy-mouth-group">
+          <path d="M 52 67 Q 60 72 68 67" stroke="#111111" stroke-width="4" stroke-linecap="round" fill="none" />
+          <!-- Hoyuelo izquierdo y derecho -->
+          <path d="M 53 64 C 50 66, 50 69, 53 71" stroke="#111111" stroke-width="3.6" stroke-linecap="round" fill="none" />
+          <path d="M 67 64 C 70 66, 70 69, 67 71" stroke="#111111" stroke-width="3.6" stroke-linecap="round" fill="none" />
+        </g>
       </svg>
     </div>
   </div>
@@ -1577,18 +1577,18 @@
         overlayOpacity: 0.72
       },
       background: {
-        type: "particles", // 'particles' | 'image' | 'video'
+        type: "particles",
         dataUrl: ""
       },
       doll: {
-        name: "Mimi VIP",
-        bubble: "¡Hola! ¿Te ayudo? 💕",
-        welcome: "¡Hola! Soy Mimi VIP ✨ Tu ayudante virtual. Puedo explicarte cómo recargar saldo, cómo recibir tu cuenta al instante o ayudarte con un reporte.",
-        hair: "#ff4da6",
-        dress: "#7c4dff",
-        accent: "#00e5ff",
-        eyes: "#00e5ff",
-        skin: "#ffe0d2"
+        name: "Chimmy VIP",
+        bubble: "¡Hola! ¿Te ayudo? 💛",
+        welcome: "¡Hola! Soy Chimmy VIP 🐾 Tu asistente virtual. Puedo explicarte cómo recargar saldo, cómo recibir tu cuenta al instante o ayudarte con un reporte.",
+        hoodie: "#ffe135",
+        ears: "#111111",
+        buttons: "#f26d40",
+        blush: "#ffb3c6",
+        face: "#ffffff"
       },
       userBalance: 0,
       deliveredCount: 148,
@@ -1691,7 +1691,7 @@
       ]
     } /*__INITIAL_STATE_END__*/;
 
-    const STORAGE_KEY = "MICHELLE_VIP_STORE_V5";
+    const STORAGE_KEY = "MICHELLE_VIP_STORE_CHIMMY_V6";
     const ADMIN_PASS = "426153"; // Sin pistas en ningún lugar
     let STATE = loadState();
     let isAdmin = false;
@@ -1709,7 +1709,11 @@
     function loadState() {
       try {
         const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) return Object.assign({}, DEFAULT_STATE, JSON.parse(saved));
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          parsed.doll = Object.assign({}, DEFAULT_STATE.doll, parsed.doll || {});
+          return Object.assign({}, DEFAULT_STATE, parsed);
+        }
       } catch (e) {}
       return JSON.parse(JSON.stringify(DEFAULT_STATE));
     }
@@ -1718,7 +1722,7 @@
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE));
       } catch (e) {
-        alert("Nota: La imagen o video es muy pesado para la memoria local, usa una imagen más ligera.");
+        alert("Nota: La imagen es muy pesada para la memoria local, usa una imagen más ligera.");
       }
       renderAll();
     }
@@ -1788,12 +1792,12 @@
       r.style.setProperty("--bg-color", STATE.colors.bg);
       r.style.setProperty("--overlay-opacity", STATE.colors.overlayOpacity ?? 0.72);
 
-      // Colores de la muñequita
-      r.style.setProperty("--doll-hair", STATE.doll.hair);
-      r.style.setProperty("--doll-dress", STATE.doll.dress);
-      r.style.setProperty("--doll-accent", STATE.doll.accent);
-      r.style.setProperty("--doll-eyes", STATE.doll.eyes);
-      r.style.setProperty("--doll-skin", STATE.doll.skin);
+      // Colores del asistente (Chimmy)
+      r.style.setProperty("--doll-hoodie", STATE.doll.hoodie || "#ffe135");
+      r.style.setProperty("--doll-ears", STATE.doll.ears || "#111111");
+      r.style.setProperty("--doll-buttons", STATE.doll.buttons || "#f26d40");
+      r.style.setProperty("--doll-blush", STATE.doll.blush || "#ffb3c6");
+      r.style.setProperty("--doll-face", STATE.doll.face || "#ffffff");
 
       const bgContainer = document.getElementById("bg-media-container");
       const bgVideo = document.getElementById("bg-video");
@@ -1823,7 +1827,6 @@
     function renderAll() {
       applyThemeAndBackground();
 
-      // Logos y textos
       document.getElementById("top-logo").src = STATE.profilePic;
       document.getElementById("hero-logo").src = STATE.profilePic;
       document.getElementById("adm-profile-preview").src = STATE.profilePic;
@@ -1832,18 +1835,15 @@
       document.getElementById("hero-store-slogan").innerText = STATE.storeSlogan;
       document.getElementById("user-balance-txt").innerText = "$" + Number(STATE.userBalance).toFixed(2);
 
-      // Muñequita textos
       document.getElementById("doll-speech-bubble").innerText = STATE.doll.bubble;
       document.getElementById("chat-doll-name").innerText = STATE.doll.name;
 
-      // Estadísticas
       let totalStock = 0;
       STATE.products.forEach(p => { totalStock += getProductStockCount(p); });
       document.getElementById("stat-disponibles").innerText = totalStock;
       document.getElementById("stat-entregadas").innerText = STATE.deliveredCount;
       document.getElementById("stat-combos").innerText = STATE.products.length;
 
-      // Notificaciones badge
       const unread = STATE.notifications.filter(n => !n.read).length;
       const badge = document.getElementById("notif-badge");
       if (unread > 0) {
@@ -1853,7 +1853,6 @@
         badge.style.display = "none";
       }
 
-      // Datos bancarios
       document.getElementById("bank-info-box").innerHTML = STATE.bankInfo.replace(/\n/g, "<br>");
 
       renderCategoriesBar();
@@ -1953,7 +1952,6 @@
       document.getElementById("buy-modal-title").innerText = "Comprar " + prod.name;
       document.getElementById("buy-modal-desc").innerText = `Precio: $${prod.price} MXN • Tu saldo actual: $${STATE.userBalance}`;
 
-      // Mostrar u ocultar campos personalizados según configuración del producto
       document.getElementById("buy-ask-email-wrap").style.display = prod.askEmail ? "block" : "none";
       document.getElementById("buy-ask-pass-wrap").style.display = prod.askPass ? "block" : "none";
       document.getElementById("buy-ask-id-wrap").style.display = prod.askId ? "block" : "none";
@@ -1986,12 +1984,10 @@
       if (prod.askId && !clientId) return alert("Por favor ingresa tu ID.");
 
       if (prod.autoDelivery) {
-        // Buscar la primera cuenta libre en stock
         const freeAcc = STATE.accountsStock.find(a => a.prodId === prod.id && !a.used);
         if (!freeAcc) {
           return alert("Lo sentimos, no hay cuentas libres en este momento.");
         }
-        // Bloquear cuenta para que jamás se vuelva a entregar a otra persona
         freeAcc.used = true;
         STATE.userBalance -= Number(prod.price);
         STATE.deliveredCount += 1;
@@ -2019,7 +2015,6 @@
         closeModal("modal-buy-confirm");
         showDeliveryModal(purchaseRecord);
       } else {
-        // Sincronización Manual (ej. Canva Pro a correo del cliente)
         if (prod.manualStock <= 0) return alert("Sin cupos disponibles.");
         prod.manualStock -= 1;
         STATE.userBalance -= Number(prod.price);
@@ -2293,7 +2288,6 @@
     }
 
     function renderAdminPanels() {
-      // Selectores de productos y categorías
       const prodOpts = STATE.products.map(p => `<option value="${p.id}">${p.name}</option>`).join("");
       document.getElementById("stk-prod-id").innerHTML = prodOpts;
       document.getElementById("res-stock-prod").innerHTML = prodOpts;
@@ -2301,7 +2295,6 @@
       const catOpts = STATE.categories.filter(c => c.id !== "all").map(c => `<option value="${c.id}">${c.name}</option>`).join("");
       document.getElementById("p-cat").innerHTML = catOpts;
 
-      // 1. Lista de recargas
       const recBox = document.getElementById("adm-recharges-list");
       recBox.innerHTML = STATE.rechargeRequests.length ? STATE.rechargeRequests.map(r => `
         <div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:12px;margin-bottom:10px;">
@@ -2318,7 +2311,6 @@
         </div>
       `).join("") : `<p style="font-size:12px;color:var(--muted);">No hay solicitudes de recarga.</p>`;
 
-      // 2. Stock de cuentas
       const stkBox = document.getElementById("adm-stock-list");
       stkBox.innerHTML = STATE.accountsStock.map(a => {
         const prod = STATE.products.find(p => p.id === a.prodId);
@@ -2333,7 +2325,6 @@
         `;
       }).join("");
 
-      // 3. Lista de productos en admin
       const pBox = document.getElementById("adm-products-list");
       pBox.innerHTML = STATE.products.map(p => `
         <div class="copy-row">
@@ -2351,7 +2342,6 @@
         </div>
       `).join("");
 
-      // 4. Reportes en admin
       const repBox = document.getElementById("adm-reports-list");
       repBox.innerHTML = STATE.reports.length ? STATE.reports.map(r => `
         <div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:12px;margin-bottom:10px;">
@@ -2367,7 +2357,6 @@
         </div>
       `).join("") : `<p style="font-size:12px;color:var(--muted);">Sin reportes pendientes.</p>`;
 
-      // 5. Categorías en admin
       const cBox = document.getElementById("adm-cats-list");
       cBox.innerHTML = STATE.categories.filter(c => c.id !== "all").map(c => `
         <div class="copy-row">
@@ -2379,7 +2368,6 @@
         </div>
       `).join("");
 
-      // 6. Diseño y WhatsApp inputs
       document.getElementById("cfg-store-name").value = STATE.storeName;
       document.getElementById("cfg-store-slogan").value = STATE.storeSlogan;
       document.getElementById("cfg-wa-number").value = STATE.waNumber;
@@ -2390,17 +2378,15 @@
       document.getElementById("cfg-col-bg").value = STATE.colors.bg;
       document.getElementById("cfg-overlay-opacity").value = STATE.colors.overlayOpacity ?? 0.72;
 
-      // 7. Muñequita inputs
       document.getElementById("doll-cfg-name").value = STATE.doll.name;
       document.getElementById("doll-cfg-bubble").value = STATE.doll.bubble;
       document.getElementById("doll-cfg-welcome").value = STATE.doll.welcome;
-      document.getElementById("doll-col-hair").value = STATE.doll.hair;
-      document.getElementById("doll-col-dress").value = STATE.doll.dress;
-      document.getElementById("doll-col-accent").value = STATE.doll.accent;
-      document.getElementById("doll-col-eyes").value = STATE.doll.eyes;
-      document.getElementById("doll-col-skin").value = STATE.doll.skin;
+      document.getElementById("doll-col-hoodie").value = STATE.doll.hoodie || "#ffe135";
+      document.getElementById("doll-col-ears").value = STATE.doll.ears || "#111111";
+      document.getElementById("doll-col-buttons").value = STATE.doll.buttons || "#f26d40";
+      document.getElementById("doll-col-blush").value = STATE.doll.blush || "#ffb3c6";
+      document.getElementById("doll-col-face").value = STATE.doll.face || "#ffffff";
 
-      // 8. Canciones
       const sBox = document.getElementById("adm-songs-list");
       sBox.innerHTML = STATE.songs.map((s, idx) => `
         <div class="copy-row">
@@ -2410,7 +2396,6 @@
       `).join("");
     }
 
-    /* ACCIONES DE ADMINISTRADORA */
     function adminAddBalance(isSum) {
       const val = Number(document.getElementById("adm-manual-bal").value);
       if (isNaN(val)) return;
@@ -2557,7 +2542,6 @@
       saveState();
     }
 
-    /* RESOLUCIÓN DE REPORTES CON ENTREGA DE NUEVA CUENTA */
     function openResolveReportModal(repId) {
       document.getElementById("res-report-id").value = repId;
       document.getElementById("res-new-email").value = "";
@@ -2590,7 +2574,6 @@
       rep.status = "Resuelto";
       rep.newAccount = { email, pass, profile, msg };
 
-      // Agregar también a Mis Compras para que el cliente la tenga a la mano
       if (email) {
         STATE.purchases.unshift({
           id: "pur_rep_" + Date.now(),
@@ -2615,7 +2598,6 @@
       alert("Reporte resuelto y nueva cuenta enviada al cliente.");
     }
 
-    /* CATEGORÍAS, DISEÑO, FONDO ANIMADO Y MUÑEQUITA */
     function adminAddCategory() {
       const name = document.getElementById("cat-name-input").value.trim();
       const icon = document.getElementById("cat-icon-input").value.trim() || "📁";
@@ -2684,24 +2666,24 @@
       saveState();
     }
 
-    function applyDollPreset(hair, dress, accent, eyes, skin) {
-      document.getElementById("doll-col-hair").value = hair;
-      document.getElementById("doll-col-dress").value = dress;
-      document.getElementById("doll-col-accent").value = accent;
-      document.getElementById("doll-col-eyes").value = eyes;
-      document.getElementById("doll-col-skin").value = skin;
+    function applyDollPreset(hoodie, ears, buttons, blush, face) {
+      document.getElementById("doll-col-hoodie").value = hoodie;
+      document.getElementById("doll-col-ears").value = ears;
+      document.getElementById("doll-col-buttons").value = buttons;
+      document.getElementById("doll-col-blush").value = blush;
+      document.getElementById("doll-col-face").value = face;
       adminSaveDoll();
     }
 
     function adminSaveDoll() {
-      STATE.doll.name = document.getElementById("doll-cfg-name").value.trim() || "Mimi VIP";
-      STATE.doll.bubble = document.getElementById("doll-cfg-bubble").value.trim() || "¡Hola! 💕";
+      STATE.doll.name = document.getElementById("doll-cfg-name").value.trim() || "Chimmy VIP";
+      STATE.doll.bubble = document.getElementById("doll-cfg-bubble").value.trim() || "¡Hola! 💛";
       STATE.doll.welcome = document.getElementById("doll-cfg-welcome").value.trim();
-      STATE.doll.hair = document.getElementById("doll-col-hair").value;
-      STATE.doll.dress = document.getElementById("doll-col-dress").value;
-      STATE.doll.accent = document.getElementById("doll-col-accent").value;
-      STATE.doll.eyes = document.getElementById("doll-col-eyes").value;
-      STATE.doll.skin = document.getElementById("doll-col-skin").value;
+      STATE.doll.hoodie = document.getElementById("doll-col-hoodie").value;
+      STATE.doll.ears = document.getElementById("doll-col-ears").value;
+      STATE.doll.buttons = document.getElementById("doll-col-buttons").value;
+      STATE.doll.blush = document.getElementById("doll-col-blush").value;
+      STATE.doll.face = document.getElementById("doll-col-face").value;
       saveState();
     }
 
@@ -2760,7 +2742,7 @@
     }
 
     /* =========================================================
-       INTERACCIÓN Y GESTOS DE LA MUÑEQUITA ASISTENTE VIRTUAL
+       INTERACCIÓN Y GESTOS DEL ASISTENTE VIRTUAL (CHIMMY STYLE)
        ========================================================= */
     function toggleAssistantChat() {
       const chat = document.getElementById("assistant-chat");
@@ -2772,28 +2754,47 @@
     }
 
     function setDollExpression(type) {
+      const eyesGroup = document.getElementById("doll-eyes-group");
       const eyeR = document.getElementById("eye-r");
       const winkR = document.getElementById("eye-wink-r");
+      const starL = document.getElementById("eye-star-l");
+      const starR = document.getElementById("eye-star-r");
+      const loveGroup = document.getElementById("eyes-love-group");
       const bubble = document.getElementById("doll-speech-bubble");
+
+      // Resetear estados visuales
+      eyesGroup.style.display = "block";
+      eyeR.style.display = "block";
+      winkR.style.display = "none";
+      starL.style.display = "none";
+      starR.style.display = "none";
+      loveGroup.style.display = "none";
 
       if (type === "wink") {
         eyeR.style.display = "none";
         winkR.style.display = "block";
-        bubble.innerText = "😉 ¡Cuenta conmigo!";
+        bubble.innerText = "😉 ¡Yo te ayudo!";
       } else if (type === "star") {
-        eyeR.style.display = "block";
-        winkR.style.display = "none";
-        bubble.innerText = "🤩 ¡Combos disponibles!";
+        starL.style.display = "block";
+        starR.style.display = "block";
+        bubble.innerText = "🤩 ¡Estrenos y Combos!";
       } else if (type === "love") {
-        eyeR.style.display = "block";
-        winkR.style.display = "none";
-        bubble.innerText = "💕 ¡Gracias por tu visita!";
+        eyesGroup.style.display = "none";
+        loveGroup.style.display = "block";
+        bubble.innerText = "💕 ¡Qué gusto verte!";
+      } else {
+        bubble.innerText = "😊 " + STATE.doll.bubble;
       }
+
       setTimeout(() => {
+        eyesGroup.style.display = "block";
         eyeR.style.display = "block";
         winkR.style.display = "none";
+        starL.style.display = "none";
+        starR.style.display = "none";
+        loveGroup.style.display = "none";
         bubble.innerText = STATE.doll.bubble;
-      }, 3000);
+      }, 3200);
     }
 
     function appendAssistantMsg(text, isUser) {
@@ -2816,16 +2817,16 @@
       setTimeout(() => {
         const q = question.toLowerCase();
         if (q.includes("recarg")) {
-          appendAssistantMsg("Para recargar, ve a la pestaña <b>💳 Recargar Saldo</b>, copia tu código de referencia de 7 dígitos en el concepto de tu transferencia SPEI y sube tu captura desde la galería.", false);
+          appendAssistantMsg("Para recargar, entra a <b>💳 Recargar Saldo</b>, pon tu código de referencia de 7 dígitos en el concepto de tu transferencia SPEI y sube tu captura desde la galería.", false);
         } else if (q.includes("entrega") || q.includes("inmediata")) {
-          appendAssistantMsg("¡Sí! ⚡ Al comprar cualquier servicio con entrega automática, la página te muestra al instante tu correo, contraseña, perfil y el botón para generar tus códigos.", false);
+          appendAssistantMsg("¡Sí! ⚡ Al comprar cualquier plataforma con entrega automática, recibes al instante tu correo, contraseña, perfil y el enlace para generar códigos.", false);
         } else if (q.includes("falla") || q.includes("report")) {
-          appendAssistantMsg("Puedes reportar cualquier detalle en la pestaña <b>⚠️ Reportar Falla</b>. Cuando la administradora lo resuelva, te llegará una notificación con tu nueva cuenta.", false);
+          appendAssistantMsg("Ve a la pestaña <b>⚠️ Reportar Falla</b>. En cuanto la administradora resuelva tu reporte, te llegará una notificación con tu nueva cuenta.", false);
         } else if (q.includes("whatsapp")) {
-          appendAssistantMsg("¡Claro! Te abro el chat directo de WhatsApp con la administradora.", false);
+          appendAssistantMsg("¡Claro! Te abro el chat de WhatsApp directo con la administradora.", false);
           notifyWhatsApp("Hola, vengo de la página web y necesito ayuda.");
         } else {
-          appendAssistantMsg(`Estoy aquí para ayudarte 💕 Tu saldo actual es de <b>$${STATE.userBalance.toFixed(2)}</b>. Puedes explorar el catálogo, recargar saldo o contactarnos por WhatsApp.`, false);
+          appendAssistantMsg(`¡Aquí estoy para ayudarte! 🐾 Tu saldo actual es de <b>$${STATE.userBalance.toFixed(2)}</b>. Puedes comprar en el catálogo, recargar saldo o escribirnos por WhatsApp.`, false);
         }
       }, 350);
     }
