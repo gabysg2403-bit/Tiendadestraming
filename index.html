@@ -17,7 +17,7 @@
       --warning: #f59e0b;
       --danger: #ef4444;
       --overlay-opacity: 0.72;
-      /* Colores personalizables del Asistente Virtual (Chimmy Style) */
+      /* Colores personalizables del Asistente Virtual */
       --doll-hoodie: #ffe135;
       --doll-ears: #111111;
       --doll-buttons: #f26d40;
@@ -656,7 +656,6 @@
       height: 100%;
       overflow: visible;
     }
-    /* Movimiento fluido de las orejitas negras */
     .chimmy-ear-l {
       transform-origin: 22px 35px;
       animation: earFlopL 2.6s ease-in-out infinite;
@@ -673,7 +672,6 @@
       0%, 100% { transform: rotate(0deg); }
       50% { transform: rotate(-5deg); }
     }
-    /* Saludo fluido de su manita */
     .chimmy-arm-r {
       transform-origin: 76px 96px;
       animation: pawWave 2.1s ease-in-out infinite;
@@ -691,7 +689,6 @@
       0%, 100% { transform: rotate(0deg); }
       50% { transform: rotate(8deg); }
     }
-    /* Parpadeo natural */
     .chimmy-eyes-normal {
       transform-origin: 60px 56px;
       animation: blinkEyes 4s infinite;
@@ -700,7 +697,6 @@
       0%, 92%, 100% { transform: scaleY(1); }
       96% { transform: scaleY(0.08); }
     }
-    /* Boquita hablando */
     .chimmy-mouth-group.talking {
       transform-origin: 60px 68px;
       animation: mouthTalk 0.26s infinite alternate;
@@ -814,7 +810,7 @@
       <img id="top-logo" src="" alt="Logo" onclick="onProfilePicClick()" />
       <div>
         <div class="brand-mini-title" id="top-store-name">Streaming VIP</div>
-        <div style="font-size:10.5px;color:#34d399;">● En línea 24/7</div>
+        <div style="font-size:10.5px;color:#34d399;" id="sync-status-mini">● En línea 24/7</div>
       </div>
     </div>
     <div class="top-actions">
@@ -901,7 +897,7 @@
         </div>
 
         <div class="field-group">
-          <label>Nombre o Alias del Cliente</label>
+          <label>Tu Nombre o Alias (Tu ID de cliente es: <span id="my-client-id-lbl" style="color:var(--secondary);"></span>)</label>
           <input type="text" id="rec-client-name" placeholder="Ej. Michelle / Tu nombre o WhatsApp" />
         </div>
 
@@ -967,8 +963,13 @@
     <!-- 5. PANEL DE ADMINISTRADORA (OCULTO PARA CLIENTES) -->
     <section id="view-admin" class="view-section">
       <div class="panel-card" style="border-color:var(--warning);">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
-          <h2 style="font-size:18px;color:var(--warning);">👑 Modo Administradora Activo</h2>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
+          <div>
+            <h2 style="font-size:18px;color:var(--warning);">👑 Modo Administradora Activo</h2>
+            <div id="firebase-status-banner" style="font-size:12px;color:#34d399;font-weight:700;margin-top:2px;">
+              🟢 Sincronizado en vivo con Firebase (michellestore)
+            </div>
+          </div>
           <button class="btn-outline" onclick="logoutAdmin()">🔒 Salir de Edición</button>
         </div>
 
@@ -981,26 +982,30 @@
           <button class="nav-tab" onclick="switchAdminTab('adm-diseno', this)">🎨 Foto, Fondo & WA</button>
           <button class="nav-tab" onclick="switchAdminTab('adm-doll', this)">🐾 Asistente</button>
           <button class="nav-tab" onclick="switchAdminTab('adm-musica', this)">🎵 Música</button>
-          <button class="nav-tab" onclick="switchAdminTab('adm-export', this)">💾 Guardar Web</button>
+          <button class="nav-tab" onclick="switchAdminTab('adm-export', this)">💾 Respaldo</button>
         </div>
 
         <!-- TAB ADMIN 1: RECARGAS Y SALDO MANUAL -->
         <div id="adm-recargas" class="adm-tab">
           <h3 style="font-size:15px;margin-bottom:8px;">💰 Ajustar o Recargar Saldo Manualmente</h3>
+          <div class="field-group">
+            <label>Seleccionar Cliente (o tu propio dispositivo)</label>
+            <select id="adm-target-client"></select>
+          </div>
           <div style="display:flex;gap:8px;margin-bottom:16px;">
-            <input type="number" id="adm-manual-bal" placeholder="Monto a sumar o fijar ($)" style="flex:1;background:#080b14;border:1px solid rgba(255,255,255,0.2);color:#fff;padding:9px;border-radius:10px;" />
+            <input type="number" id="adm-manual-bal" placeholder="Monto ($)" style="flex:1;background:#080b14;border:1px solid rgba(255,255,255,0.2);color:#fff;padding:9px;border-radius:10px;" />
             <button class="btn-main" style="width:auto;" onclick="adminAddBalance(true)">+ Sumar</button>
             <button class="btn-outline" onclick="adminAddBalance(false)">Fijar total</button>
           </div>
-          <h3 style="font-size:15px;margin-bottom:8px;">📥 Solicitudes de Recarga con Captura</h3>
+          <h3 style="font-size:15px;margin-bottom:8px;">📥 Solicitudes de Recarga con Captura (En Vivo)</h3>
           <div id="adm-recharges-list"></div>
         </div>
 
         <!-- TAB ADMIN 2: STOCK DE CUENTAS ÚNICAS -->
         <div id="adm-stock" class="adm-tab" style="display:none;">
-          <h3 style="font-size:15px;margin-bottom:8px;">🔑 Agregar Cuenta Únicas al Inventario Automático</h3>
+          <h3 style="font-size:15px;margin-bottom:8px;">🔑 Agregar Cuenta Única al Inventario Automático</h3>
           <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">
-            Cada cuenta que guardes aquí se entregará automáticamente al comprador y se bloqueará de inmediato para no repetirse jamás.
+            Cada cuenta que guardes aquí se sincroniza en la nube, se entrega automáticamente al comprador y se bloquea al instante para no repetirse jamás.
           </p>
           <div class="field-group">
             <label>Selecciona el Producto</label>
@@ -1026,7 +1031,7 @@
             <label>Enlace para generar códigos (abajo de la entrega)</label>
             <input type="text" id="stk-codeurl" placeholder="https://..." />
           </div>
-          <button class="btn-main" onclick="adminAddAccountStock()">+ Guardar Cuenta en Stock</button>
+          <button class="btn-main" onclick="adminAddAccountStock()">+ Guardar Cuenta en Stock (En Vivo)</button>
 
           <hr style="border-color:rgba(255,255,255,0.08);margin:16px 0;" />
           <h4 style="font-size:14px;margin-bottom:8px;">Inventario Actual de Cuentas</h4>
@@ -1109,7 +1114,7 @@
           </div>
 
           <div style="display:flex;gap:8px;">
-            <button class="btn-main" onclick="adminSaveProduct()">💾 Guardar Producto</button>
+            <button class="btn-main" onclick="adminSaveProduct()">💾 Guardar Producto para Todos</button>
             <button class="btn-outline" onclick="adminResetProductForm()">Limpiar</button>
           </div>
 
@@ -1205,12 +1210,8 @@
           </div>
 
           <div class="field-group">
-            <label>Fondo Animado en Video (.mp4 / .webm desde Galería o enlace)</label>
-            <label for="adm-bg-vid-input" class="upload-label" style="border-color:var(--primary);color:var(--primary);">
-              🎬 Subir Video Corto de Fondo desde mi Galería
-            </label>
-            <input type="file" id="adm-bg-vid-input" accept="video/*" style="display:none" onchange="handleBgVideoUpload(event)" />
-            <input type="text" id="cfg-bg-vid-url" placeholder="O pega aquí el link directo de un video .mp4" style="margin-top:6px;" />
+            <label>Fondo Animado en Video (Enlace directo .mp4)</label>
+            <input type="text" id="cfg-bg-vid-url" placeholder="Pega aquí el link directo de un video .mp4 si deseas fondo en video" />
           </div>
 
           <div class="field-group">
@@ -1219,7 +1220,7 @@
           </div>
 
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button class="btn-main" onclick="adminSaveDesign()">💾 Aplicar y Guardar Diseño</button>
+            <button class="btn-main" onclick="adminSaveDesign()">💾 Aplicar y Publicar en Vivo</button>
             <button class="btn-outline" onclick="adminClearBackground()">Quitar Imagen/Video de Fondo</button>
           </div>
         </div>
@@ -1271,7 +1272,7 @@
               <input type="color" id="doll-col-face" style="height:38px;padding:2px;" />
             </div>
           </div>
-          <button class="btn-main" onclick="adminSaveDoll()">💾 Guardar Cambios del Asistente</button>
+          <button class="btn-main" onclick="adminSaveDoll()">💾 Guardar Cambios del Asistente en Vivo</button>
         </div>
 
         <!-- TAB ADMIN 8: MÚSICA -->
@@ -1282,27 +1283,23 @@
             <input type="text" id="song-title-input" placeholder="Ej. BTS - Dynamite" />
           </div>
           <div class="field-group">
-            <label>Subir archivo MP3 desde tu celular o pegar link</label>
-            <label for="song-file-input" class="upload-label">
-              🎵 Seleccionar audio MP3 desde mi teléfono
-            </label>
-            <input type="file" id="song-file-input" accept="audio/*" style="display:none" onchange="handleSongUpload(event)" />
-            <input type="text" id="song-url-input" placeholder="O pega enlace directo .mp3" style="margin-top:6px;" />
+            <label>Enlace directo de audio (.mp3)</label>
+            <input type="text" id="song-url-input" placeholder="Pega enlace directo .mp3" />
           </div>
           <button class="btn-main" onclick="adminAddSong()">+ Agregar Canción</button>
           <hr style="border-color:rgba(255,255,255,0.08);margin:14px 0;" />
           <div id="adm-songs-list"></div>
         </div>
 
-        <!-- TAB ADMIN 9: EXPORTAR / DESCARGAR WEB LISTA PARA CLIENTES -->
+        <!-- TAB ADMIN 9: RESPALDO OPCIONAL -->
         <div id="adm-export" class="adm-tab" style="display:none;">
-          <h3 style="font-size:15px;margin-bottom:8px;">💾 Guardar Todo para tus Clientes (Netlify)</h3>
+          <h3 style="font-size:15px;margin-bottom:8px;">💾 Sincronización Automática Activa</h3>
           <p style="font-size:12.5px;color:var(--muted);margin-bottom:12px;">
-            Cuando termines de subir tus fotos, productos, cuentas y colores, descarga aquí tu archivo <b>index.html</b> actualizado. Ese archivo ya lleva todos tus cambios grabados por dentro para que tus clientes vean exactamente lo que configuraste sin poder editarlo.
+            Tu página ya está conectada en tiempo real a <b>https://michellestore-default-rtdb.firebaseio.com/</b>. Todos los cambios que hagas en el panel se ven reflejados al instante en los teléfonos de tus clientes sin volver a subir el archivo.
           </p>
           <div style="display:flex;flex-direction:column;gap:10px;">
-            <button class="btn-main" onclick="exportUpdatedHTML(true)">📥 Descargar index.html con mis cambios</button>
-            <button class="btn-outline" onclick="exportUpdatedHTML(false)">📋 Copiar código HTML actualizado al portapapeles</button>
+            <button class="btn-main" onclick="forcePushToFirebase()">☁️ Forzar Sincronización con Firebase Ahora</button>
+            <button class="btn-outline" onclick="exportUpdatedHTML(true)">📥 Descargar respaldo index.html</button>
           </div>
         </div>
       </div>
@@ -1319,10 +1316,9 @@
   </div>
 
   <!-- =========================================================
-       ASISTENTE VIRTUAL PERRITO CAPUCHA AMARILLA (IDÉNTICO A TU IMAGEN)
+       ASISTENTE VIRTUAL PERRITO CAPUCHA AMARILLA
        ========================================================= -->
   <div class="doll-widget">
-    <!-- VENTANA DE CHAT -->
     <div class="assistant-chat" id="assistant-chat">
       <div class="chat-head">
         <div>🐾 <span id="chat-doll-name">Chimmy VIP</span></div>
@@ -1347,83 +1343,49 @@
       </div>
     </div>
 
-    <!-- BURBUJA DE SALUDO -->
     <div class="doll-Speech" id="doll-speech-bubble" onclick="toggleAssistantChat()">
       ¡Hola! ¿Te ayudo? 💛
     </div>
 
-    <!-- PERSONAJE ANIMADO DE CUERPO COMPLETO (FIEL A LA IMAGEN) -->
     <div class="doll-avatar-btn" onclick="toggleAssistantChat()" title="Asistente Virtual">
       <svg class="doll-svg" viewBox="0 0 120 140">
-        <!-- Brazo Izquierdo (amarillo con manita blanca redondeada) -->
         <g class="chimmy-arm-l">
           <path d="M 38 92 C 26 95, 20 103, 25 111 C 29 116, 38 112, 43 105 Z" fill="var(--doll-hoodie)" stroke="#111111" stroke-width="4.5" stroke-linejoin="round" />
           <path d="M 28 99 C 22 103, 21 109, 25 112 C 29 115, 34 112, 36 108 Z" fill="var(--doll-face)" stroke="#111111" stroke-width="4" stroke-linejoin="round" />
         </g>
-
-        <!-- Brazo Derecho que saluda (amarillo con manita blanca redondeada) -->
         <g class="chimmy-arm-r">
           <path d="M 82 92 C 94 95, 100 103, 95 111 C 91 116, 82 112, 77 105 Z" fill="var(--doll-hoodie)" stroke="#111111" stroke-width="4.5" stroke-linejoin="round" />
           <path d="M 92 99 C 98 103, 99 109, 95 112 C 91 115, 86 112, 84 108 Z" fill="var(--doll-face)" stroke="#111111" stroke-width="4" stroke-linejoin="round" />
         </g>
-
-        <!-- Cuerpo y Piernitas Unidas con contorno grueso negro -->
         <path d="M 40 88 L 38 122 C 38 131, 46 135, 54 135 C 58 135, 60 131, 60 126 C 60 131, 62 135, 66 135 C 74 135, 82 131, 82 122 L 80 88 Z" fill="var(--doll-hoodie)" stroke="#111111" stroke-width="4.8" stroke-linejoin="round" />
-        <!-- Línea divisoria de las piernitas -->
         <line x1="60" y1="114" x2="60" y2="129" stroke="#111111" stroke-width="4.5" stroke-linecap="round" />
-
-        <!-- Los 2 Botones Naranjas en la pancita -->
         <circle cx="60" cy="99" r="4.6" fill="var(--doll-buttons)" />
         <circle cx="60" cy="110" r="4.6" fill="var(--doll-buttons)" />
-
-        <!-- Oreja Negra Caída Izquierda -->
         <g class="chimmy-ear-l">
           <path d="M 25 28 C 8 38, 2 62, 10 78 C 15 86, 26 84, 28 74 Z" fill="var(--doll-ears)" stroke="#111111" stroke-width="4.5" stroke-linejoin="round" />
         </g>
-
-        <!-- Oreja Negra Caída Derecha -->
         <g class="chimmy-ear-r">
           <path d="M 95 28 C 112 38, 118 62, 110 78 C 105 86, 94 84, 92 74 Z" fill="var(--doll-ears)" stroke="#111111" stroke-width="4.5" stroke-linejoin="round" />
         </g>
-
-        <!-- Capucha Grande Redondeada (Cabeza) -->
         <path d="M 60 10 C 26 10, 14 32, 16 58 C 18 82, 34 92, 60 92 C 86 92, 102 82, 104 58 C 106 32, 94 10, 60 10 Z" fill="var(--doll-hoodie)" stroke="#111111" stroke-width="4.8" stroke-linejoin="round" />
-
-        <!-- Carita Blanca Interna con forma suave de bollo -->
         <path d="M 60 24 C 38 24, 30 37, 29 53 C 26 60, 26 71, 35 77 C 43 82, 51 83, 60 83 C 69 83, 77 82, 85 77 C 94 71, 94 60, 91 53 C 90 37, 82 24, 60 24 Z" fill="var(--doll-face)" stroke="#111111" stroke-width="4.5" stroke-linejoin="round" />
-
-        <!-- Rizo / Mechón Negro Característico en la frente -->
         <path d="M 53 25 C 51 35, 58 42, 66 39 C 71 37, 69 31, 64 32" fill="none" stroke="#111111" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
-
-        <!-- Mejillas Rosadas Redondas -->
         <circle id="chimmy-blush-l" cx="38" cy="64" r="8.2" fill="var(--doll-blush)" />
         <circle id="chimmy-blush-r" cx="82" cy="64" r="8.2" fill="var(--doll-blush)" />
-
-        <!-- Ojos Redondos Negros (Normales) -->
         <g id="doll-eyes-group" class="chimmy-eyes-normal">
           <circle id="eye-l" cx="48" cy="55" r="4.8" fill="#111111" />
           <circle id="eye-r" cx="72" cy="55" r="4.8" fill="#111111" />
-          <!-- Brillitos de estrella (ocultos salvo en gesto star) -->
           <circle id="eye-star-l" cx="46.5" cy="53.5" r="1.8" fill="#ffffff" style="display:none;" />
           <circle id="eye-star-r" cx="70.5" cy="53.5" r="1.8" fill="#ffffff" style="display:none;" />
         </g>
-
-        <!-- Ojo Derecho en Guiño (oculto por defecto) -->
         <path id="eye-wink-r" d="M 67 55 Q 72 50 77 55" stroke="#111111" stroke-width="4" stroke-linecap="round" fill="none" style="display:none;" />
-
-        <!-- Ojos Felices Cute ^ ^ (ocultos por defecto) -->
         <g id="eyes-love-group" style="display:none;">
           <path d="M 43 56 Q 48 49 53 56" stroke="#111111" stroke-width="4" stroke-linecap="round" fill="none" />
           <path d="M 67 56 Q 72 49 77 56" stroke="#111111" stroke-width="4" stroke-linecap="round" fill="none" />
         </g>
-
-        <!-- Naricita Ovalada Negra -->
         <ellipse cx="60" cy="60.5" rx="4.5" ry="3.1" fill="#111111" />
-
-        <!-- Boquita Sonriente con Hoyuelos en las Comisuras (Idéntica a la foto) -->
         <g id="doll-mouth" class="chimmy-mouth-group">
           <path d="M 52 67 Q 60 72 68 67" stroke="#111111" stroke-width="4" stroke-linecap="round" fill="none" />
-          <!-- Hoyuelo izquierdo y derecho -->
           <path d="M 53 64 C 50 66, 50 69, 53 71" stroke="#111111" stroke-width="3.6" stroke-linecap="round" fill="none" />
           <path d="M 67 64 C 70 66, 70 69, 67 71" stroke="#111111" stroke-width="3.6" stroke-linecap="round" fill="none" />
         </g>
@@ -1432,7 +1394,7 @@
   </div>
 
   <!-- =========================================================
-       MODAL 1: LOGIN ADMINISTRADORA (SIN PISTA DE CONTRASEÑA)
+       MODALES
        ========================================================= -->
   <div class="modal-backdrop" id="modal-admin-login">
     <div class="modal-box" style="max-width:360px;text-align:center;">
@@ -1448,15 +1410,11 @@
     </div>
   </div>
 
-  <!-- =========================================================
-       MODAL 2: CONFIRMAR COMPRA + CAMPOS DEL CLIENTE (CANVA / ID)
-       ========================================================= -->
   <div class="modal-backdrop" id="modal-buy-confirm">
     <div class="modal-box" style="max-width:420px;">
       <h3 id="buy-modal-title" style="margin-bottom:6px;">Confirmar Compra</h3>
       <p id="buy-modal-desc" style="font-size:12.5px;color:var(--muted);margin-bottom:12px;"></p>
 
-      <!-- Campos dinámicos (ocultos si el producto no los pide) -->
       <div id="buy-client-fields">
         <div class="field-group" id="buy-ask-email-wrap" style="display:none;">
           <label>📧 Escribe tu Correo para vincular tu cuenta *</label>
@@ -1479,9 +1437,6 @@
     </div>
   </div>
 
-  <!-- =========================================================
-       MODAL 3: PÁGINA DE ENTREGA DE CUENTA (CON COPIAR Y LINK)
-       ========================================================= -->
   <div class="modal-backdrop" id="modal-account-delivery">
     <div class="modal-box">
       <div style="text-align:center;margin-bottom:12px;">
@@ -1492,7 +1447,6 @@
 
       <div id="deliv-fields-container"></div>
 
-      <!-- ENLACE ABAJO PARA GENERAR CÓDIGOS AUTOMÁTICAMENTE -->
       <div id="deliv-codeurl-wrap" style="margin-top:12px;">
         <a id="deliv-codeurl-btn" href="#" target="_blank" class="btn-main" style="display:block;text-align:center;text-decoration:none;background:linear-gradient(135deg,#00e5ff,#3b82f6);color:#000;">
           🔗 Abrir enlace para generar códigos automáticamente
@@ -1503,9 +1457,6 @@
     </div>
   </div>
 
-  <!-- =========================================================
-       MODAL 4: NOTIFICACIONES (PARA CLIENTE Y ADMINISTRADORA)
-       ========================================================= -->
   <div class="modal-backdrop" id="modal-notifications">
     <div class="modal-box">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
@@ -1516,14 +1467,11 @@
     </div>
   </div>
 
-  <!-- =========================================================
-       MODAL 5: RESOLVER REPORTE Y ENVIAR NUEVA CUENTA AL CLIENTE
-       ========================================================= -->
   <div class="modal-backdrop" id="modal-resolve-report">
     <div class="modal-box">
       <h3 style="margin-bottom:6px;">✅ Resolver Reporte y Entregar Nueva Cuenta</h3>
       <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">
-        Al confirmar, al cliente le llegará una notificación de que su reporte fue resuelto y podrá copiar su nueva cuenta.
+        Al confirmar, al teléfono del cliente le llegará en vivo la notificación con su nueva cuenta.
       </p>
       <input type="hidden" id="res-report-id" />
 
@@ -1561,9 +1509,22 @@
 
   <script>
     /* =========================================================
-       ESTADO INICIAL DE LA TIENDA (EDITABLE Y EXPORTABLE)
+       CONEXIÓN EN TIEMPO REAL CON FIREBASE REALTIME DATABASE
        ========================================================= */
+    const FIREBASE_DB_URL = "https://michellestore-default-rtdb.firebaseio.com/store_v1.json";
+    const STORAGE_KEY = "MICHELLE_VIP_FIREBASE_CACHE_V1";
+    const CLIENT_ID_KEY = "MICHELLE_CLIENT_DEVICE_ID";
+    const ADMIN_PASS = "426153"; // Sin pistas
+
+    // Cada teléfono tiene un ID único para conservar su propio saldo y compras
+    let MY_CLIENT_ID = localStorage.getItem(CLIENT_ID_KEY);
+    if (!MY_CLIENT_ID) {
+      MY_CLIENT_ID = "cli_" + Math.floor(100000 + Math.random() * 900000);
+      localStorage.setItem(CLIENT_ID_KEY, MY_CLIENT_ID);
+    }
+
     const DEFAULT_STATE = /*__INITIAL_STATE_START__*/ {
+      lastUpdated: 0,
       storeName: "Michelle Streaming VIP",
       storeSlogan: "Cuentas Premium y Combos • Entrega Automática 24/7",
       profilePic: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&auto=format&fit=crop&q=80",
@@ -1590,7 +1551,6 @@
         blush: "#ffb3c6",
         face: "#ffffff"
       },
-      userBalance: 0,
       deliveredCount: 148,
       categories: [
         { id: "all", name: "Todo", icon: "✨", img: "" },
@@ -1682,53 +1642,148 @@
           used: false
         }
       ],
-      purchases: [],
+      clients: {},
       rechargeRequests: [],
       reports: [],
-      notifications: [],
+      adminNotifications: [],
       songs: [
         { title: "Synthwave Chill VIP", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" }
       ]
     } /*__INITIAL_STATE_END__*/;
 
-    const STORAGE_KEY = "MICHELLE_VIP_STORE_CHIMMY_V6";
-    const ADMIN_PASS = "426153"; // Sin pistas en ningún lugar
-    let STATE = loadState();
+    let STATE = loadLocalCache();
     let isAdmin = false;
     let currentCat = "all";
     let pendingBuyProdId = null;
     let currentSongIdx = 0;
+    let isSavingToCloud = false;
 
-    // Variables temporales para subidas de galería
     window.recCaptureData = "";
     window.repCaptureData = "";
     window.prodImgData = "";
     window.catImgData = "";
-    window.songFileData = "";
 
-    function loadState() {
-      try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          parsed.doll = Object.assign({}, DEFAULT_STATE.doll, parsed.doll || {});
-          return Object.assign({}, DEFAULT_STATE, parsed);
-        }
-      } catch (e) {}
-      return JSON.parse(JSON.stringify(DEFAULT_STATE));
+    function ensureClientRecord(cid, alias) {
+      if (!STATE.clients) STATE.clients = {};
+      if (!STATE.clients[cid]) {
+        STATE.clients[cid] = {
+          id: cid,
+          name: alias || ("Cliente " + cid.slice(-4)),
+          balance: 0,
+          purchases: [],
+          notifications: []
+        };
+      } else if (alias) {
+        STATE.clients[cid].name = alias;
+      }
+      return STATE.clients[cid];
     }
 
-    function saveState() {
+    function getMyClient() {
+      return ensureClientRecord(MY_CLIENT_ID);
+    }
+
+    function normalizeState(raw) {
+      const merged = Object.assign({}, DEFAULT_STATE, raw || {});
+      merged.colors = Object.assign({}, DEFAULT_STATE.colors, (raw && raw.colors) || {});
+      merged.background = Object.assign({}, DEFAULT_STATE.background, (raw && raw.background) || {});
+      merged.doll = Object.assign({}, DEFAULT_STATE.doll, (raw && raw.doll) || {});
+      merged.categories = Array.isArray(merged.categories) ? merged.categories : DEFAULT_STATE.categories;
+      merged.products = Array.isArray(merged.products) ? merged.products : [];
+      merged.accountsStock = Array.isArray(merged.accountsStock) ? merged.accountsStock : [];
+      merged.rechargeRequests = Array.isArray(merged.rechargeRequests) ? merged.rechargeRequests : [];
+      merged.reports = Array.isArray(merged.reports) ? merged.reports : [];
+      merged.adminNotifications = Array.isArray(merged.adminNotifications) ? merged.adminNotifications : [];
+      merged.songs = Array.isArray(merged.songs) ? merged.songs : [];
+      merged.clients = merged.clients || {};
+      return merged;
+    }
+
+    function loadLocalCache() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) return normalizeState(JSON.parse(saved));
+      } catch (e) {}
+      return normalizeState(JSON.parse(JSON.stringify(DEFAULT_STATE)));
+    }
+
+    function saveLocalCache() {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE));
-      } catch (e) {
-        alert("Nota: La imagen es muy pesada para la memoria local, usa una imagen más ligera.");
-      }
-      renderAll();
+      } catch (e) {}
     }
 
     /* =========================================================
-       COMPRESOR DE IMÁGENES DESDE GALERÍA (EVITA PANTALLA NEGRA)
+       SINCRONIZACIÓN EN VIVO CON FIREBASE (PUSH & PULL)
+       ========================================================= */
+    async function saveState() {
+      STATE.lastUpdated = Date.now();
+      saveLocalCache();
+      renderAll();
+      await pushStateToFirebase();
+    }
+
+    async function pushStateToFirebase() {
+      isSavingToCloud = true;
+      updateFirebaseBanner("⏳ Guardando cambios en Firebase...", "#fbbf24");
+      try {
+        const res = await fetch(FIREBASE_DB_URL, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(STATE)
+        });
+        if (res.ok) {
+          updateFirebaseBanner("🟢 Cambios publicados en vivo para todos los clientes", "#34d399");
+        } else if (res.status === 401 || res.status === 403) {
+          updateFirebaseBanner("⚠️ Permiso denegado en Firebase: Ve a Reglas (Rules) en Firebase y pon .read: true y .write: true", "#ef4444");
+        } else {
+          updateFirebaseBanner("⚠️ Error al subir a Firebase (Código " + res.status + ")", "#f59e0b");
+        }
+      } catch (err) {
+        updateFirebaseBanner("⚠️ Sin conexión a internet o bloqueado", "#ef4444");
+      } finally {
+        isSavingToCloud = false;
+      }
+    }
+
+    async function pullStateFromFirebase() {
+      if (isSavingToCloud) return;
+      try {
+        const res = await fetch(FIREBASE_DB_URL + "?t=" + Date.now(), { cache: "no-store" });
+        if (res.ok) {
+          const cloudData = await res.json();
+          if (!cloudData) {
+            // Primera vez que se conecta la base de datos: subir el estado actual
+            await pushStateToFirebase();
+            return;
+          }
+          if (!STATE.lastUpdated || (cloudData.lastUpdated && cloudData.lastUpdated > STATE.lastUpdated)) {
+            STATE = normalizeState(cloudData);
+            ensureClientRecord(MY_CLIENT_ID);
+            saveLocalCache();
+            renderAll();
+          }
+          updateFirebaseBanner("🟢 Sincronizado en vivo con Firebase", "#34d399");
+        } else if (res.status === 401 || res.status === 403) {
+          updateFirebaseBanner("⚠️ Activa las Reglas en Firebase (.read: true, .write: true) para sincronizar", "#ef4444");
+        }
+      } catch (e) {}
+    }
+
+    function forcePushToFirebase() {
+      saveState().then(() => alert("☁️ Sincronización enviada a Firebase."));
+    }
+
+    function updateFirebaseBanner(text, color) {
+      const b = document.getElementById("firebase-status-banner");
+      if (b) {
+        b.innerText = text;
+        b.style.color = color;
+      }
+    }
+
+    /* =========================================================
+       COMPRESOR OPTIMIZADO DE IMÁGENES DESDE GALERÍA
        ========================================================= */
     function compressImageFile(file, maxW, quality, callback) {
       if (!file) return;
@@ -1757,7 +1812,7 @@
     function previewUpload(event, previewImgId, globalVarName) {
       const file = event.target.files && event.target.files[0];
       if (!file) return;
-      compressImageFile(file, 720, 0.8, function(dataUrl) {
+      compressImageFile(file, 520, 0.75, function(dataUrl) {
         window[globalVarName] = dataUrl;
         const previewEl = document.getElementById(previewImgId);
         if (previewEl) {
@@ -1776,7 +1831,7 @@
     function handleQuickProfileUpload(event) {
       const file = event.target.files && event.target.files[0];
       if (!file) return;
-      compressImageFile(file, 400, 0.85, function(dataUrl) {
+      compressImageFile(file, 360, 0.82, function(dataUrl) {
         STATE.profilePic = dataUrl;
         saveState();
       });
@@ -1792,7 +1847,6 @@
       r.style.setProperty("--bg-color", STATE.colors.bg);
       r.style.setProperty("--overlay-opacity", STATE.colors.overlayOpacity ?? 0.72);
 
-      // Colores del asistente (Chimmy)
       r.style.setProperty("--doll-hoodie", STATE.doll.hoodie || "#ffe135");
       r.style.setProperty("--doll-ears", STATE.doll.ears || "#111111");
       r.style.setProperty("--doll-buttons", STATE.doll.buttons || "#f26d40");
@@ -1826,14 +1880,16 @@
 
     function renderAll() {
       applyThemeAndBackground();
+      const me = getMyClient();
 
+      document.getElementById("my-client-id-lbl").innerText = MY_CLIENT_ID;
       document.getElementById("top-logo").src = STATE.profilePic;
       document.getElementById("hero-logo").src = STATE.profilePic;
       document.getElementById("adm-profile-preview").src = STATE.profilePic;
       document.getElementById("top-store-name").innerText = STATE.storeName;
       document.getElementById("hero-store-name").innerText = STATE.storeName;
       document.getElementById("hero-store-slogan").innerText = STATE.storeSlogan;
-      document.getElementById("user-balance-txt").innerText = "$" + Number(STATE.userBalance).toFixed(2);
+      document.getElementById("user-balance-txt").innerText = "$" + Number(me.balance || 0).toFixed(2);
 
       document.getElementById("doll-speech-bubble").innerText = STATE.doll.bubble;
       document.getElementById("chat-doll-name").innerText = STATE.doll.name;
@@ -1844,7 +1900,8 @@
       document.getElementById("stat-entregadas").innerText = STATE.deliveredCount;
       document.getElementById("stat-combos").innerText = STATE.products.length;
 
-      const unread = STATE.notifications.filter(n => !n.read).length;
+      const activeNotifs = isAdmin ? (STATE.adminNotifications || []) : (me.notifications || []);
+      const unread = activeNotifs.filter(n => !n.read).length;
       const badge = document.getElementById("notif-badge");
       if (unread > 0) {
         badge.style.display = "flex";
@@ -1853,7 +1910,7 @@
         badge.style.display = "none";
       }
 
-      document.getElementById("bank-info-box").innerHTML = STATE.bankInfo.replace(/\n/g, "<br>");
+      document.getElementById("bank-info-box").innerHTML = (STATE.bankInfo || "").replace(/\n/g, "<br>");
 
       renderCategoriesBar();
       renderCatalog();
@@ -1932,7 +1989,7 @@
     function quickProdPhotoUpload(event, prodId) {
       const file = event.target.files && event.target.files[0];
       if (!file) return;
-      compressImageFile(file, 500, 0.82, function(dataUrl) {
+      compressImageFile(file, 450, 0.78, function(dataUrl) {
         const p = STATE.products.find(x => x.id === prodId);
         if (p) {
           p.img = dataUrl;
@@ -1942,15 +1999,16 @@
     }
 
     /* =========================================================
-       FLUJO DE COMPRA: ENTREGA AUTOMÁTICA ÚNICA O SYNC MANUAL
+       FLUJO DE COMPRA SINCRONIZADO EN FIREBASE
        ========================================================= */
     function openBuyModal(prodId) {
       const prod = STATE.products.find(p => p.id === prodId);
       if (!prod) return;
       pendingBuyProdId = prodId;
+      const me = getMyClient();
 
       document.getElementById("buy-modal-title").innerText = "Comprar " + prod.name;
-      document.getElementById("buy-modal-desc").innerText = `Precio: $${prod.price} MXN • Tu saldo actual: $${STATE.userBalance}`;
+      document.getElementById("buy-modal-desc").innerText = `Precio: $${prod.price} MXN • Tu saldo actual: $${Number(me.balance || 0).toFixed(2)}`;
 
       document.getElementById("buy-ask-email-wrap").style.display = prod.askEmail ? "block" : "none";
       document.getElementById("buy-ask-pass-wrap").style.display = prod.askPass ? "block" : "none";
@@ -1964,11 +2022,15 @@
       openModal("modal-buy-confirm");
     }
 
-    function executePurchase() {
+    async function executePurchase() {
+      // Traer la versión más reciente de Firebase antes de vender una cuenta para evitar duplicados
+      await pullStateFromFirebase();
+
       const prod = STATE.products.find(p => p.id === pendingBuyProdId);
       if (!prod) return;
+      const me = getMyClient();
 
-      if (STATE.userBalance < prod.price) {
+      if ((me.balance || 0) < prod.price) {
         closeModal("modal-buy-confirm");
         alert("Saldo insuficiente. Recarga tu saldo primero.");
         switchView("recargar");
@@ -1983,14 +2045,16 @@
       if (prod.askPass && !clientPass) return alert("Por favor ingresa la contraseña solicitada.");
       if (prod.askId && !clientId) return alert("Por favor ingresa tu ID.");
 
+      if (!Array.isArray(me.purchases)) me.purchases = [];
+
       if (prod.autoDelivery) {
         const freeAcc = STATE.accountsStock.find(a => a.prodId === prod.id && !a.used);
         if (!freeAcc) {
-          return alert("Lo sentimos, no hay cuentas libres en este momento.");
+          return alert("Lo sentimos, otra persona acaba de comprar la última cuenta disponible.");
         }
         freeAcc.used = true;
-        STATE.userBalance -= Number(prod.price);
-        STATE.deliveredCount += 1;
+        me.balance = Number(me.balance) - Number(prod.price);
+        STATE.deliveredCount = Number(STATE.deliveredCount || 0) + 1;
 
         const purchaseRecord = {
           id: "pur_" + Date.now(),
@@ -2010,18 +2074,21 @@
           showCodeUrl: prod.showCodeUrl
         };
 
-        STATE.purchases.unshift(purchaseRecord);
-        saveState();
+        me.purchases.unshift(purchaseRecord);
+        pushAdminNotification(`🛒 Venta automática: ${prod.name} entregada a ${me.name}`);
+        await saveState();
         closeModal("modal-buy-confirm");
         showDeliveryModal(purchaseRecord);
       } else {
         if (prod.manualStock <= 0) return alert("Sin cupos disponibles.");
         prod.manualStock -= 1;
-        STATE.userBalance -= Number(prod.price);
-        STATE.deliveredCount += 1;
+        me.balance = Number(me.balance) - Number(prod.price);
+        STATE.deliveredCount = Number(STATE.deliveredCount || 0) + 1;
 
         const syncReport = {
           id: "rep_" + Date.now(),
+          clientId: MY_CLIENT_ID,
+          clientName: me.name,
           type: "sync",
           platform: prod.name,
           desc: `Sincronización manual pagada ($${prod.price}). Datos del cliente -> Correo: ${clientEmail || 'N/A'} | Clave: ${clientPass || 'N/A'} | ID: ${clientId || 'N/A'}`,
@@ -2049,12 +2116,12 @@
           showId: Boolean(clientId),
           showCodeUrl: false
         };
-        STATE.purchases.unshift(purchaseRecord);
+        me.purchases.unshift(purchaseRecord);
 
-        pushNotification("👑 Nueva Sincronización Manual: " + prod.name + " para " + (clientEmail || clientId));
-        saveState();
+        pushAdminNotification("👑 Nueva Sincronización Manual: " + prod.name + " para " + (clientEmail || clientId));
+        await saveState();
         closeModal("modal-buy-confirm");
-        alert("¡Compra registrada! Tus datos fueron enviados a la administradora para vincular tu cuenta. Recibirás una notificación en cuanto quede lista.");
+        alert("¡Compra registrada! Tus datos fueron enviados a la administradora para vincular tu cuenta.");
         notifyWhatsApp(`Hola, acabo de comprar *${prod.name}* (Sincronización manual). Mis datos: Correo: ${clientEmail} ${clientId ? 'ID: '+clientId : ''}`);
       }
     }
@@ -2125,11 +2192,13 @@
 
     function renderPurchases() {
       const list = document.getElementById("purchases-list");
-      if (!STATE.purchases.length) {
-        list.innerHTML = `<p style="font-size:13px;color:var(--muted);">Aún no tienes compras registradas.</p>`;
+      const me = getMyClient();
+      const myPurchases = Array.isArray(me.purchases) ? me.purchases : [];
+      if (!myPurchases.length) {
+        list.innerHTML = `<p style="font-size:13px;color:var(--muted);">Aún no tienes compras registradas en este dispositivo.</p>`;
         return;
       }
-      list.innerHTML = STATE.purchases.map(p => `
+      list.innerHTML = myPurchases.map(p => `
         <div class="copy-row" style="margin-bottom:10px;">
           <div>
             <div style="font-weight:800;font-size:14px;color:var(--secondary);">${p.prodName}</div>
@@ -2142,28 +2211,33 @@
     }
 
     function showDeliveryById(purId) {
-      const p = STATE.purchases.find(x => x.id === purId);
+      const me = getMyClient();
+      const p = (me.purchases || []).find(x => x.id === purId);
       if (p) showDeliveryModal(p);
     }
 
     /* =========================================================
-       RECARGAS DE SALDO (CÓDIGO 7 DÍGITOS + CAPTURA + NOTIFICACIÓN)
+       RECARGAS DE SALDO EN VIVO
        ========================================================= */
     function generateNewRefCode() {
       const code = Math.floor(1000000 + Math.random() * 9000000).toString();
       document.getElementById("recharge-ref-code").innerText = code;
     }
 
-    function submitRechargeRequest() {
-      const name = document.getElementById("rec-client-name").value.trim() || "Cliente";
+    async function submitRechargeRequest() {
+      const name = document.getElementById("rec-client-name").value.trim() || ("Cliente " + MY_CLIENT_ID.slice(-4));
       const amount = Number(document.getElementById("rec-amount").value);
       const refCode = document.getElementById("recharge-ref-code").innerText;
 
       if (!amount || amount <= 0) return alert("Ingresa el monto transferido.");
       if (!window.recCaptureData) return alert("Por favor sube la captura de pantalla de tu transferencia desde tu galería.");
 
+      await pullStateFromFirebase();
+      ensureClientRecord(MY_CLIENT_ID, name);
+
       const req = {
         id: "rec_" + Date.now(),
+        clientId: MY_CLIENT_ID,
         clientName: name,
         amount: amount,
         refCode: refCode,
@@ -2173,27 +2247,32 @@
       };
 
       STATE.rechargeRequests.unshift(req);
-      pushNotification(`💳 Nueva recarga solicitada de ${name} por $${amount} (Ref: ${refCode})`);
+      pushAdminNotification(`💳 Nueva recarga de ${name} por $${amount} (Ref: ${refCode})`);
       window.recCaptureData = "";
       document.getElementById("rec-capture-preview").style.display = "none";
       document.getElementById("rec-amount").value = "";
       generateNewRefCode();
-      saveState();
+      await saveState();
 
-      alert("✅ Captura enviada con éxito. La administradora recibió la notificación para abonar tu saldo.");
-      notifyWhatsApp(`Hola, envié una solicitud de recarga por *$${amount} MXN* con el código de referencia *${refCode}*.`);
+      alert("✅ Captura enviada en vivo. En cuanto la administradora la apruebe, tu saldo aparecerá automáticamente arriba.");
+      notifyWhatsApp(`Hola, envié una solicitud de recarga por *$${amount} MXN* con el código de referencia *${refCode}* (ID: ${MY_CLIENT_ID}).`);
     }
 
     /* =========================================================
-       REPORTES DE FALLAS Y NOTIFICACIÓN DE NUEVA CUENTA AL CLIENTE
+       REPORTES DE FALLAS EN VIVO
        ========================================================= */
-    function submitIssueReport() {
+    async function submitIssueReport() {
       const plat = document.getElementById("rep-platform").value.trim();
       const desc = document.getElementById("rep-desc").value.trim();
       if (!plat || !desc) return alert("Por favor escribe la plataforma y describe la falla.");
 
+      await pullStateFromFirebase();
+      const me = getMyClient();
+
       const rep = {
         id: "rep_" + Date.now(),
+        clientId: MY_CLIENT_ID,
+        clientName: me.name,
         type: "falla",
         platform: plat,
         desc: desc,
@@ -2204,24 +2283,25 @@
       };
 
       STATE.reports.unshift(rep);
-      pushNotification(`⚠️ Nuevo reporte de falla en: ${plat}`);
+      pushAdminNotification(`⚠️ Nuevo reporte de falla en: ${plat} (${me.name})`);
       window.repCaptureData = "";
       document.getElementById("rep-platform").value = "";
       document.getElementById("rep-desc").value = "";
       document.getElementById("rep-capture-preview").style.display = "none";
-      saveState();
+      await saveState();
 
-      alert("📨 Reporte enviado. Te aparecerá una notificación aquí mismo cuando la administradora te asigne tu nueva cuenta.");
-      notifyWhatsApp(`Hola, envié un reporte de falla en la página sobre: *${plat}* (${desc}).`);
+      alert("📨 Reporte enviado en vivo. Recibirás una notificación aquí mismo cuando la administradora te envíe tu nueva cuenta.");
+      notifyWhatsApp(`Hola, envié un reporte de falla sobre: *${plat}* (${desc}).`);
     }
 
     function renderClientReports() {
       const box = document.getElementById("client-reports-list");
-      if (!STATE.reports.length) {
+      const myReports = STATE.reports.filter(r => !r.clientId || r.clientId === MY_CLIENT_ID);
+      if (!myReports.length) {
         box.innerHTML = `<p style="font-size:12.5px;color:var(--muted);">No tienes reportes enviados.</p>`;
         return;
       }
-      box.innerHTML = STATE.reports.map(r => `
+      box.innerHTML = myReports.map(r => `
         <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px;margin-bottom:8px;">
           <div style="display:flex;justify-content:space-between;align-items:center;">
             <b>${r.platform}</b>
@@ -2295,18 +2375,27 @@
       const catOpts = STATE.categories.filter(c => c.id !== "all").map(c => `<option value="${c.id}">${c.name}</option>`).join("");
       document.getElementById("p-cat").innerHTML = catOpts;
 
+      // Lista de clientes para ajuste manual de saldo
+      ensureClientRecord(MY_CLIENT_ID);
+      const clientEntries = Object.values(STATE.clients || {});
+      document.getElementById("adm-target-client").innerHTML = clientEntries.map(c => `
+        <option value="${c.id}" ${c.id === MY_CLIENT_ID ? 'selected' : ''}>
+          ${c.name} (${c.id}) — Saldo: $${Number(c.balance || 0).toFixed(2)}
+        </option>
+      `).join("");
+
       const recBox = document.getElementById("adm-recharges-list");
       recBox.innerHTML = STATE.rechargeRequests.length ? STATE.rechargeRequests.map(r => `
         <div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:12px;margin-bottom:10px;">
           <div style="display:flex;justify-content:space-between;align-items:center;">
-            <b>${r.clientName} — $${r.amount} MXN</b>
+            <b>${r.clientName} (${r.clientId || ''}) — $${r.amount} MXN</b>
             <span style="font-size:11px;color:${r.status==='Aprobada'?'#34d399':'#fbbf24'};font-weight:800;">${r.status}</span>
           </div>
           <div style="font-size:12px;color:var(--secondary);">Referencia 7 dígitos: <b>${r.refCode}</b></div>
           <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">${r.date}</div>
           ${r.capture ? `<img src="${r.capture}" style="max-height:140px;border-radius:8px;margin-bottom:8px;display:block;" />` : ''}
           ${r.status === 'Pendiente' ? `
-            <button class="btn-main" onclick="adminApproveRecharge('${r.id}')">✅ Aprobar y Abonar $${r.amount}</button>
+            <button class="btn-main" onclick="adminApproveRecharge('${r.id}')">✅ Aprobar y Abonar $${r.amount} al Cliente</button>
           ` : ''}
         </div>
       `).join("") : `<p style="font-size:12px;color:var(--muted);">No hay solicitudes de recarga.</p>`;
@@ -2346,7 +2435,7 @@
       repBox.innerHTML = STATE.reports.length ? STATE.reports.map(r => `
         <div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:12px;margin-bottom:10px;">
           <div style="display:flex;justify-content:space-between;">
-            <b>${r.platform} (${r.type === 'sync' ? 'Sincronización Manual' : 'Falla'})</b>
+            <b>${r.platform} — ${r.clientName || ''} (${r.type === 'sync' ? 'Sincronización Manual' : 'Falla'})</b>
             <span style="font-size:11px;color:${r.status==='Resuelto'?'#34d399':'#fbbf24'};font-weight:800;">${r.status}</span>
           </div>
           <div style="font-size:12px;margin:4px 0;">${r.desc}</div>
@@ -2397,20 +2486,24 @@
     }
 
     function adminAddBalance(isSum) {
+      const targetCid = document.getElementById("adm-target-client").value || MY_CLIENT_ID;
       const val = Number(document.getElementById("adm-manual-bal").value);
       if (isNaN(val)) return;
-      STATE.userBalance = isSum ? (Number(STATE.userBalance) + val) : val;
-      pushNotification(`💰 Tu saldo ha sido actualizado: $${STATE.userBalance.toFixed(2)} MXN`);
+      const cli = ensureClientRecord(targetCid);
+      cli.balance = isSum ? (Number(cli.balance || 0) + val) : val;
+      pushClientNotification(targetCid, `💰 Tu saldo ha sido actualizado: $${cli.balance.toFixed(2)} MXN`);
       saveState();
-      alert("Saldo actualizado correctamente.");
+      alert("Saldo actualizado en vivo para " + cli.name);
     }
 
     function adminApproveRecharge(reqId) {
       const r = STATE.rechargeRequests.find(x => x.id === reqId);
       if (!r || r.status === "Aprobada") return;
       r.status = "Aprobada";
-      STATE.userBalance = Number(STATE.userBalance) + Number(r.amount);
-      pushNotification(`✅ ¡Tu recarga de $${r.amount} (Ref: ${r.refCode}) fue aprobada!`);
+      const targetCid = r.clientId || MY_CLIENT_ID;
+      const cli = ensureClientRecord(targetCid, r.clientName);
+      cli.balance = Number(cli.balance || 0) + Number(r.amount);
+      pushClientNotification(targetCid, `✅ ¡Tu recarga de $${r.amount} (Ref: ${r.refCode}) fue aprobada!`);
       saveState();
     }
 
@@ -2492,7 +2585,7 @@
 
       adminResetProductForm();
       saveState();
-      alert("Producto guardado.");
+      alert("Producto guardado y publicado en vivo.");
     }
 
     function adminLoadProductToEdit(prodId) {
@@ -2574,8 +2667,12 @@
       rep.status = "Resuelto";
       rep.newAccount = { email, pass, profile, msg };
 
+      const targetCid = rep.clientId || MY_CLIENT_ID;
+      const cli = ensureClientRecord(targetCid, rep.clientName);
+      if (!Array.isArray(cli.purchases)) cli.purchases = [];
+
       if (email) {
-        STATE.purchases.unshift({
+        cli.purchases.unshift({
           id: "pur_rep_" + Date.now(),
           prodId: "rep",
           prodName: "Reposición / Activación: " + rep.platform,
@@ -2592,10 +2689,10 @@
         });
       }
 
-      pushNotification(`🎉 ¡Tu reporte de ${rep.platform} fue resuelto! Toca aquí o revisa Reportes / Mis Compras para ver tu nueva cuenta.`);
+      pushClientNotification(targetCid, `🎉 ¡Tu reporte de ${rep.platform} fue resuelto! Revisa Reportes o Mis Compras para ver tu nueva cuenta.`);
       saveState();
       closeModal("modal-resolve-report");
-      alert("Reporte resuelto y nueva cuenta enviada al cliente.");
+      alert("Reporte resuelto y nueva cuenta enviada al teléfono del cliente.");
     }
 
     function adminAddCategory() {
@@ -2623,20 +2720,11 @@
     function handleBgImageUpload(event) {
       const file = event.target.files && event.target.files[0];
       if (!file) return;
-      compressImageFile(file, 1100, 0.8, function(dataUrl) {
+      compressImageFile(file, 960, 0.74, function(dataUrl) {
         STATE.background.type = "image";
         STATE.background.dataUrl = dataUrl;
         saveState();
       });
-    }
-
-    function handleBgVideoUpload(event) {
-      const file = event.target.files && event.target.files[0];
-      if (!file) return;
-      const url = URL.createObjectURL(file);
-      STATE.background.type = "video";
-      STATE.background.dataUrl = url;
-      saveState();
     }
 
     function adminSaveDesign() {
@@ -2656,7 +2744,7 @@
         STATE.background.dataUrl = vidUrl;
       }
       saveState();
-      alert("Diseño guardado.");
+      alert("Diseño publicado en vivo para todos los clientes.");
     }
 
     function adminClearBackground() {
@@ -2688,22 +2776,11 @@
     }
 
     /* MÚSICA */
-    function handleSongUpload(event) {
-      const file = event.target.files && event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        window.songFileData = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-
     function adminAddSong() {
       const title = document.getElementById("song-title-input").value.trim() || "Canción VIP";
-      const url = window.songFileData || document.getElementById("song-url-input").value.trim();
-      if (!url) return alert("Sube un archivo MP3 o pega un enlace.");
+      const url = document.getElementById("song-url-input").value.trim();
+      if (!url) return alert("Pega un enlace directo .mp3.");
       STATE.songs.push({ title, url });
-      window.songFileData = "";
       document.getElementById("song-title-input").value = "";
       document.getElementById("song-url-input").value = "";
       saveState();
@@ -2742,7 +2819,7 @@
     }
 
     /* =========================================================
-       INTERACCIÓN Y GESTOS DEL ASISTENTE VIRTUAL (CHIMMY STYLE)
+       INTERACCIÓN Y GESTOS DEL ASISTENTE VIRTUAL
        ========================================================= */
     function toggleAssistantChat() {
       const chat = document.getElementById("assistant-chat");
@@ -2762,7 +2839,6 @@
       const loveGroup = document.getElementById("eyes-love-group");
       const bubble = document.getElementById("doll-speech-bubble");
 
-      // Resetear estados visuales
       eyesGroup.style.display = "block";
       eyeR.style.display = "block";
       winkR.style.display = "none";
@@ -2814,6 +2890,7 @@
 
     function askAssistant(question) {
       appendAssistantMsg(question, true);
+      const me = getMyClient();
       setTimeout(() => {
         const q = question.toLowerCase();
         if (q.includes("recarg")) {
@@ -2826,7 +2903,7 @@
           appendAssistantMsg("¡Claro! Te abro el chat de WhatsApp directo con la administradora.", false);
           notifyWhatsApp("Hola, vengo de la página web y necesito ayuda.");
         } else {
-          appendAssistantMsg(`¡Aquí estoy para ayudarte! 🐾 Tu saldo actual es de <b>$${STATE.userBalance.toFixed(2)}</b>. Puedes comprar en el catálogo, recargar saldo o escribirnos por WhatsApp.`, false);
+          appendAssistantMsg(`¡Aquí estoy para ayudarte! 🐾 Tu saldo actual es de <b>$${Number(me.balance || 0).toFixed(2)}</b>. Puedes comprar en el catálogo, recargar saldo o escribirnos por WhatsApp.`, false);
         }
       }, 350);
     }
@@ -2840,10 +2917,12 @@
     }
 
     /* =========================================================
-       UTILIDADES: NOTIFICACIONES, WHATSAPP, EXPORTAR HTML
+       NOTIFICACIONES SEPARADAS CLIENTE / ADMIN
        ========================================================= */
-    function pushNotification(text) {
-      STATE.notifications.unshift({
+    function pushClientNotification(cid, text) {
+      const cli = ensureClientRecord(cid);
+      if (!Array.isArray(cli.notifications)) cli.notifications = [];
+      cli.notifications.unshift({
         id: "n_" + Date.now(),
         text,
         date: new Date().toLocaleTimeString(),
@@ -2851,11 +2930,23 @@
       });
     }
 
+    function pushAdminNotification(text) {
+      if (!Array.isArray(STATE.adminNotifications)) STATE.adminNotifications = [];
+      STATE.adminNotifications.unshift({
+        id: "adm_n_" + Date.now(),
+        text,
+        date: new Date().toLocaleTimeString(),
+        read: false
+      });
+    }
+
     function openNotificationsModal() {
-      STATE.notifications.forEach(n => n.read = true);
+      const me = getMyClient();
+      const list = isAdmin ? (STATE.adminNotifications || []) : (me.notifications || []);
+      list.forEach(n => n.read = true);
       saveState();
       const box = document.getElementById("notifications-list");
-      box.innerHTML = STATE.notifications.length ? STATE.notifications.map(n => `
+      box.innerHTML = list.length ? list.map(n => `
         <div style="padding:10px;border-bottom:1px solid rgba(255,255,255,0.08);font-size:12.5px;">
           <div>${n.text}</div>
           <div style="font-size:10.5px;color:var(--muted);margin-top:3px;">${n.date}</div>
@@ -2919,7 +3010,6 @@
       }
     }
 
-    /* ESTRELLAS / PARTÍCULAS ANIMADAS DE FONDO */
     function initParticles() {
       const canvas = document.getElementById("bg-canvas");
       const ctx = canvas.getContext("2d");
@@ -2955,10 +3045,12 @@
       draw();
     }
 
-    // Inicializar aplicación
+    // Inicializar aplicación y sincronización continua cada 4 segundos con Firebase
     generateNewRefCode();
     initParticles();
     renderAll();
+    pullStateFromFirebase();
+    setInterval(pullStateFromFirebase, 4000);
   </script>
 </body>
 </html>
