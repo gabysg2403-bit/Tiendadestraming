@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Michelle Streaming VIP</title>
 
-  <!-- BLOQUEADOR SEGURO DE ETIQUETA EXTERNA DE NETLIFY (NO TOCA LA PÁGINA) -->
+  <!-- BLOQUEADOR SEGURO DE ETIQUETA EXTERNA DE NETLIFY -->
   <script>
     (function() {
       const origAttachShadow = Element.prototype.attachShadow;
@@ -73,6 +73,35 @@
       position: relative;
     }
 
+    /* ANUNCIO FLOTANTE MORADO DE 1 SEGUNDO (REEMPLAZA PANTALLAS GRISES) */
+    #purple-toast {
+      position: fixed;
+      top: 22px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-25px) scale(0.92);
+      background: linear-gradient(135deg, #7c3aed, #9333ea);
+      color: #ffffff;
+      padding: 12px 22px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 13.5px;
+      letter-spacing: 0.2px;
+      box-shadow: 0 10px 28px rgba(124, 58, 237, 0.65), 0 0 0 1.5px rgba(255, 255, 255, 0.28);
+      z-index: 2147483646;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+      text-align: center;
+      max-width: 90vw;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    #purple-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0) scale(1);
+    }
+
     /* FONDO MULTIMEDIA Y ANIMADO */
     #bg-media-container {
       position: fixed;
@@ -104,7 +133,7 @@
       pointer-events: none;
     }
 
-    /* BARRA SUPERIOR */
+    /* BARRA SUPERIOR CON BOTÓN DE 3 RAYAS A LA IZQUIERDA */
     .topbar {
       position: sticky;
       top: 0;
@@ -124,9 +153,25 @@
       gap: 8px;
       min-width: 0;
     }
+    .menu-3lines-btn {
+      background: linear-gradient(135deg, rgba(124, 77, 255, 0.25), rgba(255, 42, 133, 0.22));
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #fff;
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: 900;
+      flex-shrink: 0;
+      box-shadow: 0 2px 10px rgba(124, 77, 255, 0.3);
+    }
     .brand-mini img {
-      width: 36px;
-      height: 36px;
+      width: 35px;
+      height: 35px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid var(--primary);
@@ -136,32 +181,18 @@
     }
     .brand-mini-title {
       font-weight: 800;
-      font-size: 14px;
+      font-size: 13.5px;
       letter-spacing: 0.3px;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .user-pill {
-      background: rgba(124, 77, 255, 0.2);
-      border: 1px solid rgba(124, 77, 255, 0.55);
-      padding: 5px 10px;
-      border-radius: 999px;
-      font-size: 11.5px;
-      font-weight: 700;
-      color: #e2e8f0;
-      cursor: pointer;
-      white-space: nowrap;
-      max-width: 115px;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     .saldo-pill {
       background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(0, 229, 255, 0.15));
       border: 1px solid rgba(16, 185, 129, 0.5);
-      padding: 5px 10px;
+      padding: 6px 11px;
       border-radius: 999px;
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 800;
       color: #34d399;
       cursor: pointer;
@@ -178,8 +209,8 @@
       background: rgba(255, 255, 255, 0.07);
       border: 1px solid rgba(255, 255, 255, 0.12);
       color: #fff;
-      width: 34px;
-      height: 34px;
+      width: 35px;
+      height: 35px;
       border-radius: 10px;
       display: flex;
       align-items: center;
@@ -205,7 +236,74 @@
       box-shadow: 0 0 8px var(--danger);
     }
 
-    /* NAVEGACIÓN RÁPIDA */
+    /* PESTAÑA / MENÚ LATERAL IZQUIERDO DE 3 RAYAS PARA CLIENTES */
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.72);
+      backdrop-filter: blur(5px);
+      z-index: 400;
+      display: none;
+    }
+    .drawer-backdrop.open {
+      display: block;
+    }
+    .side-drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 280px;
+      max-width: 82vw;
+      background: #0d1222;
+      border-right: 1px solid rgba(255, 255, 255, 0.14);
+      z-index: 401;
+      transform: translateX(-100%);
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      padding: 18px 14px;
+      box-shadow: 10px 0 30px rgba(0, 0, 0, 0.75);
+    }
+    .side-drawer.open {
+      transform: translateX(0);
+    }
+    .drawer-user-card {
+      background: linear-gradient(135deg, rgba(124, 77, 255, 0.22), rgba(255, 42, 133, 0.18));
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+    .drawer-menu-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+    .drawer-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 13px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+      transition: 0.18s;
+    }
+    .drawer-item.active, .drawer-item:active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-color: transparent;
+      box-shadow: 0 4px 14px rgba(255, 42, 133, 0.35);
+    }
+
+    /* NAVEGACIÓN INTERNA DEL PANEL ADMIN */
     .quick-nav {
       display: flex;
       gap: 8px;
@@ -238,7 +336,7 @@
     /* PORTADA / HERO CON RADAR ANIMADO */
     .hero-box {
       text-align: center;
-      padding: 24px 16px 18px;
+      padding: 22px 16px 16px;
       position: relative;
     }
     .radar-wrap {
@@ -682,7 +780,7 @@
       position: fixed;
       right: 12px;
       bottom: 12px;
-      z-index: 2147483640;
+      z-index: 350;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
@@ -859,6 +957,9 @@
 </head>
 <body>
 
+  <!-- ANUNCIO MORADO DE 1 SEGUNDO (SIN PANTALLAS GRISES DE ACEPTAR) -->
+  <div id="purple-toast" data-app="michelle">✨ Se guardó con éxito</div>
+
   <!-- FONDO ANIMADO (VIDEO / IMAGEN / PARTÍCULAS) -->
   <div id="bg-media-container" data-app="michelle">
     <video id="bg-video" autoplay loop muted playsinline></video>
@@ -869,9 +970,53 @@
   <!-- INPUT GLOBAL RÁPIDO PARA FOTO DE PERFIL -->
   <input type="file" id="quick-profile-input" data-app="michelle" accept="image/*" style="display:none" onchange="handleQuickProfileUpload(event)" />
 
-  <!-- BARRA SUPERIOR -->
+  <!-- PESTAÑA LATERAL DE 3 RAYAS (IZQUIERDA) PARA CLIENTES -->
+  <div class="drawer-backdrop" id="drawer-backdrop" data-app="michelle" onclick="closeSideMenu()"></div>
+  <aside class="side-drawer" id="side-drawer" data-app="michelle">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+      <div style="font-weight:900;font-size:15px;color:var(--secondary);">☰ Menú de Cliente</div>
+      <button class="btn-outline" style="padding:4px 9px;" onclick="closeSideMenu()">✕</button>
+    </div>
+
+    <div class="drawer-user-card" onclick="closeSideMenu(); openAuthModal();" style="cursor:pointer;">
+      <div style="font-size:11px;color:var(--muted);">CUENTA ACTIVA</div>
+      <div style="font-weight:900;font-size:15px;margin-top:2px;" id="drawer-user-name">Invitado</div>
+      <div style="font-size:11.5px;color:#cbd5e1;margin-top:2px;" id="drawer-user-contact">Toca para iniciar sesión o registrarte</div>
+      <div style="margin-top:8px;font-size:13px;font-weight:800;color:#34d399;">
+        💰 Saldo: <span id="drawer-user-balance">$0.00</span>
+      </div>
+    </div>
+
+    <div class="drawer-menu-list">
+      <button class="drawer-item active" data-drawer-view="tienda" onclick="selectFromDrawer('tienda')">
+        <span>🛍️</span> <span>Catálogo Principal</span>
+      </button>
+      <button class="drawer-item" data-drawer-view="compras" onclick="selectFromDrawer('compras')">
+        <span>📦</span> <span>Mis Pedidos</span>
+      </button>
+      <button class="drawer-item" data-drawer-view="recargar" onclick="selectFromDrawer('recargar')">
+        <span>💳</span> <span>Recargar Saldo</span>
+      </button>
+      <button class="drawer-item" onclick="closeSideMenu(); openAuthModal();">
+        <span>👤</span> <span>Mi Cuenta</span>
+      </button>
+      <button class="drawer-item" data-drawer-view="reportes" onclick="selectFromDrawer('reportes')">
+        <span>⚠️</span> <span>Reportar Falla</span>
+      </button>
+      <button class="drawer-item" id="drawer-admin-btn" style="display:none;background:linear-gradient(135deg,#f59e0b,#ef4444);" onclick="selectFromDrawer('admin')">
+        <span>👑</span> <span>Panel Administradora</span>
+      </button>
+    </div>
+
+    <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:12px;">
+      Entrega Automática 24/7
+    </div>
+  </aside>
+
+  <!-- BARRA SUPERIOR CON BOTÓN DE 3 RAYAS A LA IZQUIERDA -->
   <header class="topbar" data-app="michelle">
     <div class="brand-mini">
+      <button class="menu-3lines-btn" onclick="openSideMenu()" title="Menú">☰</button>
       <img id="top-logo" src="" alt="Logo" onclick="onProfilePicClick()" />
       <div style="min-width:0;">
         <div class="brand-mini-title" id="top-store-name">Michelle Streaming VIP</div>
@@ -879,9 +1024,6 @@
       </div>
     </div>
     <div class="top-actions">
-      <div class="user-pill" id="user-account-pill" onclick="openAuthModal()" title="Mi Cuenta">
-        👤 <span id="user-name-top">Registrarme</span>
-      </div>
       <div class="saldo-pill" onclick="switchView('recargar')">
         💰 <span id="user-balance-txt">$0.00</span>
       </div>
@@ -894,16 +1036,6 @@
       </button>
     </div>
   </header>
-
-  <!-- PESTAÑAS DE NAVEGACIÓN -->
-  <nav class="quick-nav" data-app="michelle">
-    <button class="nav-tab active" data-view="tienda" onclick="switchView('tienda')">🛍️ Catálogo</button>
-    <button class="nav-tab" data-view="recargar" onclick="switchView('recargar')">💳 Recargar Saldo</button>
-    <button class="nav-tab" data-view="compras" onclick="switchView('compras')">📦 Mis Compras</button>
-    <button class="nav-tab" data-view="reportes" onclick="switchView('reportes')">⚠️ Reportar Falla</button>
-    <button class="nav-tab" onclick="openAuthModal()">👤 Mi Cuenta</button>
-    <button class="nav-tab" id="admin-nav-tab" style="display:none;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;" data-view="admin" onclick="switchView('admin')">⚙️ Panel Admin</button>
-  </nav>
 
   <!-- PORTADA CON RADAR Y CONTADORES -->
   <section class="hero-box" data-app="michelle">
@@ -952,7 +1084,10 @@
     <!-- 2. VISTA RECARGAR SALDO -->
     <section id="view-recargar" class="view-section">
       <div class="panel-card">
-        <h2 style="font-size:18px;margin-bottom:6px;">💳 Recargar Saldo</h2>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <h2 style="font-size:18px;">💳 Recargar Saldo</h2>
+          <button class="btn-outline" style="padding:5px 10px;" onclick="switchView('tienda')">← Volver al Catálogo</button>
+        </div>
         <p style="font-size:12.5px;color:var(--muted);margin-bottom:12px;">
           Realiza tu transferencia SPEI colocando el siguiente <b>Código de Referencia</b> en el <b>Concepto de pago</b> y sube tu captura.
         </p>
@@ -988,10 +1123,13 @@
       </div>
     </section>
 
-    <!-- 3. VISTA MIS COMPRAS -->
+    <!-- 3. VISTA MIS PEDIDOS (COMPRAS) -->
     <section id="view-compras" class="view-section">
       <div class="panel-card">
-        <h2 style="font-size:18px;margin-bottom:10px;">📦 Mis Cuentas Compradas</h2>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <h2 style="font-size:18px;">📦 Mis Pedidos</h2>
+          <button class="btn-outline" style="padding:5px 10px;" onclick="switchView('tienda')">← Volver al Catálogo</button>
+        </div>
         <div id="purchases-list"></div>
       </div>
     </section>
@@ -999,7 +1137,10 @@
     <!-- 4. VISTA REPORTAR FALLA -->
     <section id="view-reportes" class="view-section">
       <div class="panel-card">
-        <h2 style="font-size:18px;margin-bottom:6px;">⚠️ Reportar una Falla</h2>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <h2 style="font-size:18px;">⚠️ Reportar una Falla</h2>
+          <button class="btn-outline" style="padding:5px 10px;" onclick="switchView('tienda')">← Volver al Catálogo</button>
+        </div>
         <p style="font-size:12.5px;color:var(--muted);margin-bottom:12px;">
           Si tu cuenta presenta algún inconveniente, envíanos el reporte. Cuando la administradora lo resuelva, recibirás una notificación aquí mismo con tu nueva cuenta.
         </p>
@@ -1039,7 +1180,10 @@
               🟢 Sincronizado en vivo con Firebase
             </div>
           </div>
-          <button class="btn-outline" onclick="logoutAdmin()">🔒 Salir de Edición</button>
+          <div style="display:flex;gap:6px;">
+            <button class="btn-outline" onclick="switchView('tienda')">🛍️ Ver Tienda</button>
+            <button class="btn-outline" onclick="logoutAdmin()">🔒 Salir</button>
+          </div>
         </div>
 
         <div class="quick-nav" style="margin-bottom:14px;border-radius:12px;">
@@ -1186,7 +1330,7 @@
           </div>
 
           <div style="display:flex;gap:8px;">
-            <button class="btn-main" onclick="adminSaveProduct()">💾 Guardar Producto para Todos</button>
+            <button class="btn-main" onclick="adminSaveProduct()">💾 Guardar Producto</button>
             <button class="btn-outline" onclick="adminResetProductForm()">Limpiar</button>
           </div>
 
@@ -1296,7 +1440,7 @@
           </div>
 
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button class="btn-main" onclick="adminSaveDesign()">💾 Aplicar y Publicar en Vivo</button>
+            <button class="btn-main" onclick="adminSaveDesign()">💾 Guardar Diseño</button>
             <button class="btn-outline" onclick="adminClearBackground()">Quitar Imagen/Video de Fondo</button>
           </div>
         </div>
@@ -1348,7 +1492,7 @@
               <input type="color" id="doll-col-face" style="height:38px;padding:2px;" />
             </div>
           </div>
-          <button class="btn-main" onclick="adminSaveDoll()">💾 Guardar Cambios del Asistente en Vivo</button>
+          <button class="btn-main" onclick="adminSaveDoll()">💾 Guardar Cambios del Asistente</button>
         </div>
 
         <!-- TAB ADMIN 8: MÚSICA -->
@@ -1476,7 +1620,7 @@
   <div class="modal-backdrop" id="modal-client-auth" data-app="michelle">
     <div class="modal-box" style="max-width:410px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <h3 style="font-size:17px;">👤 Cuenta de Cliente VIP</h3>
+        <h3 style="font-size:17px;">👤 Mi Cuenta VIP</h3>
         <button class="btn-outline" style="padding:4px 9px;" onclick="closeModal('modal-client-auth')">✕</button>
       </div>
 
@@ -1521,7 +1665,7 @@
 
         <div id="form-client-login" style="display:none;">
           <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">
-            Ingresa con tu correo, usuario o número de teléfono para recuperar tu saldo y tus compras.
+            Ingresa con tu correo, usuario o número de teléfono para recuperar tu saldo y tus pedidos.
           </p>
           <div class="field-group">
             <label>Tu Correo, Usuario o Teléfono *</label>
@@ -1658,8 +1802,42 @@
 
   <script data-app="michelle">
     /* =========================================================
+       ANUNCIO MORADO DE 1 SEGUNDO (REEMPLAZA TODOS LOS ALERTS GRISES)
+       ========================================================= */
+    let toastTimer = null;
+    function showPurpleToast(msg) {
+      const el = document.getElementById("purple-toast");
+      if (!el) return;
+      el.innerText = msg || "✨ Se guardó con éxito";
+      el.classList.add("show");
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        el.classList.remove("show");
+      }, 1250);
+    }
+    // Reemplaza automáticamente cualquier alert gris del navegador
+    window.alert = function(msg) {
+      showPurpleToast(msg);
+    };
+
+    /* =========================================================
+       MENÚ LATERAL DE 3 RAYAS (IZQUIERDA) PARA CLIENTES
+       ========================================================= */
+    function openSideMenu() {
+      document.getElementById("drawer-backdrop").classList.add("open");
+      document.getElementById("side-drawer").classList.add("open");
+    }
+    function closeSideMenu() {
+      document.getElementById("drawer-backdrop").classList.remove("open");
+      document.getElementById("side-drawer").classList.remove("open");
+    }
+    function selectFromDrawer(viewName) {
+      closeSideMenu();
+      switchView(viewName);
+    }
+
+    /* =========================================================
        FILTRO SEGURO PARA OCULTAR EL BOTÓN "POWERED BY NETLIFY"
-       (Solo revisa hijos directos extraños al final de body)
        ========================================================= */
     function hideNetlifyWidgetSafely() {
       if (!document.body) return;
@@ -1668,7 +1846,6 @@
         if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'LINK') return;
         if (el.getAttribute('data-app') === 'michelle') return;
 
-        // Si es un elemento inyectado por fuera de nuestra app (como el badge de Netlify)
         el.style.setProperty('display', 'none', 'important');
         el.style.setProperty('visibility', 'hidden', 'important');
         el.style.setProperty('opacity', '0', 'important');
@@ -1957,7 +2134,7 @@
     }
 
     function forcePushToFirebase() {
-      saveState().then(() => alert("☁️ Sincronización enviada a Firebase."));
+      saveState().then(() => showPurpleToast("✨ Se guardó con éxito"));
     }
 
     function updateFirebaseBanner(text, color) {
@@ -2006,12 +2183,12 @@
       const pass = document.getElementById("reg-pass").value.trim();
 
       if (!username || !email || !phone || !pass) {
-        return alert("Por favor completa tu usuario, correo electrónico, número de teléfono y contraseña.");
+        return showPurpleToast("✨ Completa todos los campos");
       }
 
       const cleanPhone = normalizePhoneForWA(phone);
       if (cleanPhone.length < 10) {
-        return alert("Ingresa un número de teléfono válido (mínimo 10 dígitos).");
+        return showPurpleToast("✨ Ingresa un teléfono válido");
       }
 
       await pullStateFromFirebase();
@@ -2024,7 +2201,7 @@
       );
 
       if (existing) {
-        return alert("Ya existe una cuenta con ese correo o número de teléfono. Toca en 'Iniciar Sesión' para entrar.");
+        return showPurpleToast("✨ Ese correo o teléfono ya está registrado");
       }
 
       const me = getMyClient();
@@ -2037,13 +2214,13 @@
       pushAdminNotification(`👤 Nuevo cliente registrado: ${username} (${email} | WA: ${cleanPhone})`);
       await saveState();
       closeModal("modal-client-auth");
-      alert(`🎉 ¡Bienvenido(a) ${username}! Tu cuenta quedó registrada y tu saldo está protegido.`);
+      showPurpleToast("✨ Se guardó con éxito");
     }
 
     async function loginClientAccount() {
       const ident = document.getElementById("log-identifier").value.trim().toLowerCase();
       const pass = document.getElementById("log-pass").value.trim();
-      if (!ident || !pass) return alert("Ingresa tu usuario/correo/teléfono y tu contraseña.");
+      if (!ident || !pass) return showPurpleToast("✨ Ingresa tus datos de acceso");
 
       await pullStateFromFirebase();
       const cleanIdentPhone = normalizePhoneForWA(ident);
@@ -2057,14 +2234,14 @@
       });
 
       if (!found) {
-        return alert("Datos incorrectos o usuario no encontrado. Verifica tu correo/teléfono y contraseña.");
+        return showPurpleToast("✨ Usuario o contraseña incorrectos");
       }
 
       MY_CLIENT_ID = found.id;
       localStorage.setItem(CLIENT_ID_KEY, MY_CLIENT_ID);
       renderAll();
       closeModal("modal-client-auth");
-      alert(`✅ ¡Hola de nuevo, ${found.name}! Tu saldo actual es de $${Number(found.balance || 0).toFixed(2)} MXN.`);
+      showPurpleToast("✨ Sesión iniciada con éxito");
     }
 
     function logoutClientAccount() {
@@ -2073,6 +2250,7 @@
       ensureClientRecord(MY_CLIENT_ID);
       renderAll();
       closeModal("modal-client-auth");
+      showPurpleToast("✨ Sesión cerrada");
     }
 
     /* =========================================================
@@ -2112,6 +2290,7 @@
           previewEl.src = dataUrl;
           previewEl.style.display = "block";
         }
+        showPurpleToast("✨ Imagen cargada con éxito");
       });
     }
 
@@ -2127,6 +2306,7 @@
       compressImageFile(file, 360, 0.82, function(dataUrl) {
         STATE.profilePic = dataUrl;
         saveState();
+        showPurpleToast("✨ Se guardó con éxito");
       });
     }
 
@@ -2176,7 +2356,12 @@
       const me = getMyClient();
 
       document.getElementById("my-client-id-lbl").innerText = MY_CLIENT_ID;
-      document.getElementById("user-name-top").innerText = me.registered ? me.name : "Registrarme";
+      document.getElementById("drawer-user-name").innerText = me.registered ? me.name : "Invitado (Sin registro)";
+      document.getElementById("drawer-user-contact").innerText = me.registered
+        ? `${me.email} • WA: ${me.phone}`
+        : "Toca aquí para crear tu usuario o iniciar sesión";
+      document.getElementById("drawer-user-balance").innerText = "$" + Number(me.balance || 0).toFixed(2);
+
       if (me.registered && !document.getElementById("rec-client-name").value) {
         document.getElementById("rec-client-name").value = `${me.name} (${me.phone})`;
       }
@@ -2292,6 +2477,7 @@
         if (p) {
           p.img = dataUrl;
           saveState();
+          showPurpleToast("✨ Se guardó con éxito");
         }
       });
     }
@@ -2302,7 +2488,7 @@
     function openBuyModal(prodId) {
       const me = getMyClient();
       if (!me.registered) {
-        alert("👤 Primero crea tu usuario con tu correo y número de WhatsApp para guardar tu saldo y enviarte tu cuenta automáticamente.");
+        showPurpleToast("👤 Regístrate primero para comprar");
         openAuthModal();
         return;
       }
@@ -2364,7 +2550,7 @@
 
       if ((me.balance || 0) < prod.price) {
         closeModal("modal-buy-confirm");
-        alert("Saldo insuficiente. Recarga tu saldo primero.");
+        showPurpleToast("💳 Saldo insuficiente, recarga primero");
         switchView("recargar");
         return;
       }
@@ -2373,9 +2559,9 @@
       const clientPass = document.getElementById("buy-client-pass").value.trim();
       const clientId = document.getElementById("buy-client-id").value.trim();
 
-      if (prod.askEmail && !clientEmail) return alert("Por favor ingresa tu correo para vincular tu cuenta.");
-      if (prod.askPass && !clientPass) return alert("Por favor ingresa la contraseña solicitada.");
-      if (prod.askId && !clientId) return alert("Por favor ingresa tu ID.");
+      if (prod.askEmail && !clientEmail) return showPurpleToast("📧 Ingresa tu correo para vincular");
+      if (prod.askPass && !clientPass) return showPurpleToast("🔑 Ingresa la contraseña solicitada");
+      if (prod.askId && !clientId) return showPurpleToast("🆔 Ingresa tu ID");
 
       if (!Array.isArray(me.purchases)) me.purchases = [];
       const postMsg = (prod.postBuyMsg && prod.postBuyMsg.trim()) ? prod.postBuyMsg.trim() : (STATE.defaultPostBuyMsg || "");
@@ -2383,7 +2569,7 @@
       if (prod.autoDelivery) {
         const freeAcc = STATE.accountsStock.find(a => a.prodId === prod.id && !a.used);
         if (!freeAcc) {
-          return alert("Lo sentimos, otra persona acaba de comprar la última cuenta disponible.");
+          return showPurpleToast("⚠️ Sin cuentas disponibles en stock");
         }
         freeAcc.used = true;
         me.balance = Number(me.balance) - Number(prod.price);
@@ -2413,12 +2599,13 @@
         me.purchases.unshift(purchaseRecord);
         pushAdminNotification(`🛒 Venta automática: ${prod.name} entregada a ${me.name} (${me.phone})`);
         closeModal("modal-buy-confirm");
+        showPurpleToast("✨ Compra realizada con éxito");
         showDeliveryModal(purchaseRecord);
 
         sendAccountToClientWhatsApp(purchaseRecord, me.phone);
         await saveState();
       } else {
-        if (prod.manualStock <= 0) return alert("Sin cupos disponibles.");
+        if (prod.manualStock <= 0) return showPurpleToast("⚠️ Sin cupos disponibles");
         prod.manualStock -= 1;
         me.balance = Number(me.balance) - Number(prod.price);
         STATE.deliveredCount = Number(STATE.deliveredCount || 0) + 1;
@@ -2462,6 +2649,7 @@
         pushAdminNotification("👑 Nueva Sincronización Manual: " + prod.name + " para " + (clientEmail || clientId));
         await saveState();
         closeModal("modal-buy-confirm");
+        showPurpleToast("✨ Se guardó con éxito");
         showDeliveryModal(purchaseRecord);
         notifyWhatsApp(`Hola, soy *${me.name}* (${me.phone}). Acabo de comprar *${prod.name}* (Sincronización manual). Mis datos: Correo: ${clientEmail} ${clientId ? 'ID: '+clientId : ''}`);
       }
@@ -2550,7 +2738,7 @@
       const me = getMyClient();
       const myPurchases = Array.isArray(me.purchases) ? me.purchases : [];
       if (!myPurchases.length) {
-        list.innerHTML = `<p style="font-size:13px;color:var(--muted);">Aún no tienes compras registradas en tu cuenta.</p>`;
+        list.innerHTML = `<p style="font-size:13px;color:var(--muted);">Aún no tienes pedidos registrados en tu cuenta.</p>`;
         return;
       }
       list.innerHTML = myPurchases.map(p => `
@@ -2585,7 +2773,7 @@
     async function submitRechargeRequest() {
       const me = getMyClient();
       if (!me.registered) {
-        alert("👤 Por favor regístrate primero con tu correo y número de teléfono para que tu saldo quede guardado en tu cuenta.");
+        showPurpleToast("👤 Regístrate primero para guardar tu saldo");
         openAuthModal();
         return;
       }
@@ -2594,8 +2782,8 @@
       const amount = Number(document.getElementById("rec-amount").value);
       const refCode = document.getElementById("recharge-ref-code").innerText;
 
-      if (!amount || amount <= 0) return alert("Ingresa el monto transferido.");
-      if (!window.recCaptureData) return alert("Por favor sube la captura de pantalla de tu transferencia desde tu galería.");
+      if (!amount || amount <= 0) return showPurpleToast("💳 Ingresa el monto transferido");
+      if (!window.recCaptureData) return showPurpleToast("📸 Sube la captura de tu transferencia");
 
       await pullStateFromFirebase();
 
@@ -2618,7 +2806,7 @@
       generateNewRefCode();
       await saveState();
 
-      alert("✅ Captura enviada en vivo. En cuanto la administradora la apruebe, tu saldo aparecerá automáticamente en tu cuenta.");
+      showPurpleToast("✨ Se guardó con éxito");
       notifyWhatsApp(`Hola, soy *${me.name}* (${me.phone}). Envié una solicitud de recarga por *$${amount} MXN* con referencia *${refCode}*.`);
     }
 
@@ -2628,7 +2816,7 @@
     async function submitIssueReport() {
       const plat = document.getElementById("rep-platform").value.trim();
       const desc = document.getElementById("rep-desc").value.trim();
-      if (!plat || !desc) return alert("Por favor escribe la plataforma y describe la falla.");
+      if (!plat || !desc) return showPurpleToast("⚠️ Escribe la plataforma y la falla");
 
       await pullStateFromFirebase();
       const me = getMyClient();
@@ -2654,7 +2842,7 @@
       document.getElementById("rep-capture-preview").style.display = "none";
       await saveState();
 
-      alert("📨 Reporte enviado en vivo. Recibirás una notificación aquí mismo cuando la administradora te envíe tu nueva cuenta.");
+      showPurpleToast("✨ Se guardó con éxito");
       notifyWhatsApp(`Hola, soy *${me.name}*. Envié un reporte de falla sobre: *${plat}* (${desc}).`);
     }
 
@@ -2703,11 +2891,12 @@
       const val = document.getElementById("admin-pass-input").value.trim();
       if (val === ADMIN_PASS) {
         isAdmin = true;
-        document.getElementById("admin-nav-tab").style.display = "inline-block";
+        document.getElementById("drawer-admin-btn").style.display = "flex";
         document.getElementById("hero-edit-chip").style.display = "block";
         closeModal("modal-admin-login");
         renderAll();
         switchView("admin");
+        showPurpleToast("👑 Modo Administradora Activo");
       } else {
         document.getElementById("admin-login-err").style.display = "block";
       }
@@ -2715,10 +2904,11 @@
 
     function logoutAdmin() {
       isAdmin = false;
-      document.getElementById("admin-nav-tab").style.display = "none";
+      document.getElementById("drawer-admin-btn").style.display = "none";
       document.getElementById("hero-edit-chip").style.display = "none";
       switchView("tienda");
       renderAll();
+      showPurpleToast("✨ Saliste del modo edición");
     }
 
     function switchAdminTab(tabId, btnEl) {
@@ -2857,7 +3047,7 @@
       cli.balance = isSum ? (Number(cli.balance || 0) + val) : val;
       pushClientNotification(targetCid, `💰 Tu saldo ha sido actualizado: $${cli.balance.toFixed(2)} MXN`);
       saveState();
-      alert("Saldo actualizado en vivo para " + cli.name);
+      showPurpleToast("✨ Se guardó con éxito");
     }
 
     function adminApproveRecharge(reqId) {
@@ -2869,6 +3059,7 @@
       cli.balance = Number(cli.balance || 0) + Number(r.amount);
       pushClientNotification(targetCid, `✅ ¡Tu recarga de $${r.amount} (Ref: ${r.refCode}) fue aprobada!`);
       saveState();
+      showPurpleToast("✨ Se guardó con éxito");
     }
 
     function adminAddAccountStock() {
@@ -2879,7 +3070,7 @@
       const customId = document.getElementById("stk-customid").value.trim();
       const codeUrl = document.getElementById("stk-codeurl").value.trim() || STATE.defaultCodeUrl;
 
-      if (!email) return alert("Ingresa el correo o usuario de la cuenta.");
+      if (!email) return showPurpleToast("📧 Ingresa el correo de la cuenta");
       STATE.accountsStock.push({
         id: "acc_" + Date.now(),
         prodId,
@@ -2895,11 +3086,13 @@
       document.getElementById("stk-profile").value = "";
       document.getElementById("stk-customid").value = "";
       saveState();
+      showPurpleToast("✨ Se guardó con éxito");
     }
 
     function adminDeleteStock(accId) {
       STATE.accountsStock = STATE.accountsStock.filter(a => a.id !== accId);
       saveState();
+      showPurpleToast("✨ Se guardó con éxito");
     }
 
     function toggleManualStockInput() {
@@ -2918,7 +3111,7 @@
       const tags = tagsRaw ? tagsRaw.split(",").map(t => t.trim()).filter(Boolean) : [];
       const gradient = document.getElementById("p-gradient").value;
 
-      if (!name || isNaN(price)) return alert("Completa el nombre y el precio del producto.");
+      if (!name || isNaN(price)) return showPurpleToast("📦 Completa el nombre y el precio");
 
       const prodObj = {
         id: editId || ("p_" + Date.now()),
@@ -2951,7 +3144,7 @@
 
       adminResetProductForm();
       saveState();
-      alert("Producto guardado y publicado en vivo.");
+      showPurpleToast("✨ Se guardó con éxito");
     }
 
     function adminLoadProductToEdit(prodId) {
@@ -3001,6 +3194,7 @@
     function adminDeleteProduct(prodId) {
       STATE.products = STATE.products.filter(p => p.id !== prodId);
       saveState();
+      showPurpleToast("✨ Se guardó con éxito");
     }
 
     function openResolveReportModal(repId) {
@@ -3014,12 +3208,13 @@
     function pullStockForResolution() {
       const prodId = document.getElementById("res-stock-prod").value;
       const freeAcc = STATE.accountsStock.find(a => a.prodId === prodId && !a.used);
-      if (!freeAcc) return alert("No hay cuentas libres en stock para ese producto.");
+      if (!freeAcc) return showPurpleToast("⚠️ Sin cuentas libres en stock");
       freeAcc.used = true;
       document.getElementById("res-new-email").value = freeAcc.email;
       document.getElementById("res-new-pass").value = freeAcc.pass;
       document.getElementById("res-new-profile").value = freeAcc.profile;
       saveState();
+      showPurpleToast("✨ Cuenta cargada del stock");
     }
 
     function confirmResolveReport() {
@@ -3060,16 +3255,16 @@
         });
       }
 
-      pushClientNotification(targetCid, `🎉 ¡Tu reporte de ${rep.platform} fue resuelto! Revisa Reportes o Mis Compras para ver tu nueva cuenta.`);
+      pushClientNotification(targetCid, `🎉 ¡Tu reporte de ${rep.platform} fue resuelto! Revisa Reportes o Mis Pedidos para ver tu nueva cuenta.`);
       saveState();
       closeModal("modal-resolve-report");
-      alert("Reporte resuelto y nueva cuenta enviada al teléfono del cliente.");
+      showPurpleToast("✨ Se guardó con éxito");
     }
 
     function adminAddCategory() {
       const name = document.getElementById("cat-name-input").value.trim();
       const icon = document.getElementById("cat-icon-input").value.trim() || "📁";
-      if (!name) return alert("Escribe el nombre de la categoría.");
+      if (!name) return showPurpleToast("📂 Escribe el nombre de la categoría");
       STATE.categories.push({
         id: "cat_" + Date.now(),
         name,
@@ -3080,12 +3275,14 @@
       document.getElementById("cat-name-input").value = "";
       document.getElementById("cat-img-preview").style.display = "none";
       saveState();
+      showPurpleToast("✨ Se guardó con éxito");
     }
 
     function adminDeleteCategory(catId) {
       STATE.categories = STATE.categories.filter(c => c.id !== catId);
       if (currentCat === catId) currentCat = "all";
       saveState();
+      showPurpleToast("✨ Se guardó con éxito");
     }
 
     function handleBgImageUpload(event) {
@@ -3095,6 +3292,7 @@
         STATE.background.type = "image";
         STATE.background.dataUrl = dataUrl;
         saveState();
+        showPurpleToast("✨ Se guardó con éxito");
       });
     }
 
@@ -3116,7 +3314,7 @@
         STATE.background.dataUrl = vidUrl;
       }
       saveState();
-      alert("Diseño y descripción post-compra publicados en vivo para todos los clientes.");
+      showPurpleToast("✨ Se guardó con éxito");
     }
 
     function adminClearBackground() {
@@ -3124,6 +3322,7 @@
       STATE.background.dataUrl = "";
       document.getElementById("cfg-bg-vid-url").value = "";
       saveState();
+      showPurpleToast("✨ Se guardó con éxito");
     }
 
     function applyDollPreset(hoodie, ears, buttons, blush, face) {
@@ -3145,22 +3344,25 @@
       STATE.doll.blush = document.getElementById("doll-col-blush").value;
       STATE.doll.face = document.getElementById("doll-col-face").value;
       saveState();
+      showPurpleToast("✨ Se guardó con éxito");
     }
 
     /* MÚSICA */
     function adminAddSong() {
       const title = document.getElementById("song-title-input").value.trim() || "Canción VIP";
       const url = document.getElementById("song-url-input").value.trim();
-      if (!url) return alert("Pega un enlace directo .mp3.");
+      if (!url) return showPurpleToast("🎵 Pega un enlace directo .mp3");
       STATE.songs.push({ title, url });
       document.getElementById("song-title-input").value = "";
       document.getElementById("song-url-input").value = "";
       saveState();
+      showPurpleToast("✨ Se guardó con éxito");
     }
 
     function adminDeleteSong(idx) {
       STATE.songs.splice(idx, 1);
       saveState();
+      showPurpleToast("✨ Se guardó con éxito");
     }
 
     function toggleMusicPlay() {
@@ -3266,15 +3468,15 @@
       setTimeout(() => {
         const q = question.toLowerCase();
         if (q.includes("registr") || q.includes("usuario")) {
-          appendAssistantMsg("Toca el botón <b>👤 Registrarme / Mi Cuenta</b> arriba para crear tu usuario con tu correo y WhatsApp. Así tu saldo siempre quedará guardado.", false);
+          appendAssistantMsg("Toca el menú de tres rayitas <b>☰</b> arriba a la izquierda y entra a <b>👤 Mi Cuenta</b> para registrarte con tu correo y WhatsApp.", false);
         } else if (q.includes("recarg")) {
-          appendAssistantMsg("Para recargar, entra a <b>💳 Recargar Saldo</b>, pon tu código de referencia de 7 dígitos en el concepto de tu transferencia SPEI y sube tu captura desde la galería.", false);
+          appendAssistantMsg("Abre el menú <b>☰</b> arriba a la izquierda, elige <b>💳 Recargar Saldo</b>, pon tu código de 7 dígitos en el concepto SPEI y sube tu captura.", false);
         } else if (q.includes("entrega") || q.includes("inmediata") || q.includes("whatsapp")) {
-          appendAssistantMsg("¡Sí! ⚡ Al comprar cualquier plataforma con entrega automática, recibes al instante en pantalla y directo en tu <b>WhatsApp</b> el correo, contraseña, perfil/PIN y las indicaciones.", false);
+          appendAssistantMsg("¡Sí! ⚡ Al comprar cualquier plataforma automática, recibes al instante en pantalla y en tu <b>WhatsApp</b> el correo, contraseña, perfil/PIN y las indicaciones.", false);
         } else if (q.includes("falla") || q.includes("report")) {
-          appendAssistantMsg("Ve a la pestaña <b>⚠️ Reportar Falla</b>. En cuanto la administradora resuelva tu reporte, te llegará una notificación con tu nueva cuenta.", false);
+          appendAssistantMsg("En el menú <b>☰</b> arriba a la izquierda entra a <b>⚠️ Reportar Falla</b>. Cuando la administradora lo resuelva, te llegará una notificación con tu nueva cuenta.", false);
         } else {
-          appendAssistantMsg(`¡Aquí estoy para ayudarte! 🐾 Tu saldo actual es de <b>$${Number(me.balance || 0).toFixed(2)}</b>. Puedes crear tu usuario, comprar en el catálogo o recargar saldo.`, false);
+          appendAssistantMsg(`¡Aquí estoy para ayudarte! 🐾 Tu saldo actual es de <b>$${Number(me.balance || 0).toFixed(2)}</b>. Usa el botón <b>☰</b> arriba a la izquierda para ver Mis Pedidos, Recargar Saldo o Mi Cuenta.`, false);
         }
       }, 350);
     }
@@ -3338,8 +3540,8 @@
       const target = document.getElementById("view-" + viewName);
       if (target) target.classList.add("active");
 
-      document.querySelectorAll(".quick-nav .nav-tab[data-view]").forEach(b => {
-        b.classList.toggle("active", b.getAttribute("data-view") === viewName);
+      document.querySelectorAll(".drawer-item[data-drawer-view]").forEach(b => {
+        b.classList.toggle("active", b.getAttribute("data-drawer-view") === viewName);
       });
     }
 
@@ -3348,7 +3550,7 @@
 
     function copyText(txt) {
       navigator.clipboard.writeText(txt).then(() => {
-        alert("📋 Copiado: " + txt);
+        showPurpleToast("✨ Copiado con éxito");
       }).catch(() => {
         const t = document.createElement("textarea");
         t.setAttribute("data-app", "michelle");
@@ -3357,7 +3559,7 @@
         t.select();
         document.execCommand("copy");
         t.remove();
-        alert("📋 Copiado: " + txt);
+        showPurpleToast("✨ Copiado con éxito");
       });
     }
 
@@ -3378,6 +3580,7 @@
         document.body.appendChild(a);
         a.click();
         a.remove();
+        showPurpleToast("✨ Se guardó con éxito");
       } else {
         copyText(updatedHtml);
       }
