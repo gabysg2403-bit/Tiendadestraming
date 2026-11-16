@@ -82,58 +82,80 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 14px;
-      background: rgba(8, 11, 20, 0.85);
+      padding: 10px 12px;
+      background: rgba(8, 11, 20, 0.88);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      gap: 6px;
     }
     .brand-mini {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      min-width: 0;
     }
     .brand-mini img {
-      width: 38px;
-      height: 38px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid var(--primary);
       box-shadow: 0 0 10px var(--primary);
       cursor: pointer;
+      flex-shrink: 0;
     }
     .brand-mini-title {
       font-weight: 800;
-      font-size: 15px;
-      letter-spacing: 0.4px;
+      font-size: 14px;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .user-pill {
+      background: rgba(124, 77, 255, 0.2);
+      border: 1px solid rgba(124, 77, 255, 0.55);
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #e2e8f0;
+      cursor: pointer;
+      white-space: nowrap;
+      max-width: 115px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .saldo-pill {
       background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(0, 229, 255, 0.15));
       border: 1px solid rgba(16, 185, 129, 0.5);
-      padding: 5px 11px;
+      padding: 5px 10px;
       border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
+      font-size: 11.5px;
+      font-weight: 800;
       color: #34d399;
       cursor: pointer;
+      white-space: nowrap;
     }
     .top-actions {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      flex-shrink: 0;
     }
     .icon-btn {
       position: relative;
       background: rgba(255, 255, 255, 0.07);
       border: 1px solid rgba(255, 255, 255, 0.12);
       color: #fff;
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 15px;
     }
     .badge-dot {
       position: absolute;
@@ -576,6 +598,19 @@
       white-space: nowrap;
     }
 
+    /* DESCRIPCIÓN POST-COMPRA EN HOJA DE ENTREGA */
+    .post-buy-box {
+      background: rgba(255, 225, 53, 0.08);
+      border: 1px solid rgba(255, 225, 53, 0.35);
+      border-radius: 12px;
+      padding: 11px 13px;
+      margin-top: 10px;
+      font-size: 12.5px;
+      color: #fef08a;
+      line-height: 1.45;
+      white-space: pre-line;
+    }
+
     /* REPRODUCTOR DE MÚSICA FLOTANTE (IZQUIERDA) */
     .music-fab {
       position: fixed;
@@ -808,12 +843,15 @@
   <header class="topbar">
     <div class="brand-mini">
       <img id="top-logo" src="" alt="Logo" onclick="onProfilePicClick()" />
-      <div>
+      <div style="min-width:0;">
         <div class="brand-mini-title" id="top-store-name">Streaming VIP</div>
-        <div style="font-size:10.5px;color:#34d399;" id="sync-status-mini">● En línea 24/7</div>
+        <div style="font-size:10px;color:#34d399;" id="sync-status-mini">● En línea 24/7</div>
       </div>
     </div>
     <div class="top-actions">
+      <div class="user-pill" id="user-account-pill" onclick="openAuthModal()" title="Mi Cuenta">
+        👤 <span id="user-name-top">Registrarme</span>
+      </div>
       <div class="saldo-pill" onclick="switchView('recargar')">
         💰 <span id="user-balance-txt">$0.00</span>
       </div>
@@ -833,6 +871,7 @@
     <button class="nav-tab" data-view="recargar" onclick="switchView('recargar')">💳 Recargar Saldo</button>
     <button class="nav-tab" data-view="compras" onclick="switchView('compras')">📦 Mis Compras</button>
     <button class="nav-tab" data-view="reportes" onclick="switchView('reportes')">⚠️ Reportar Falla</button>
+    <button class="nav-tab" onclick="openAuthModal()">👤 Mi Cuenta</button>
     <button class="nav-tab" id="admin-nav-tab" style="display:none;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;" data-view="admin" onclick="switchView('admin')">⚙️ Panel Admin</button>
   </nav>
 
@@ -880,7 +919,7 @@
       <div class="products-grid" id="products-grid"></div>
     </section>
 
-    <!-- 2. VISTA RECARGAR SALDO (SIN 10% REGALO, CON REFERENCIA Y CAPTURA) -->
+    <!-- 2. VISTA RECARGAR SALDO -->
     <section id="view-recargar" class="view-section">
       <div class="panel-card">
         <h2 style="font-size:18px;margin-bottom:6px;">💳 Recargar Saldo</h2>
@@ -897,8 +936,8 @@
         </div>
 
         <div class="field-group">
-          <label>Tu Nombre o Alias (Tu ID de cliente es: <span id="my-client-id-lbl" style="color:var(--secondary);"></span>)</label>
-          <input type="text" id="rec-client-name" placeholder="Ej. Michelle / Tu nombre o WhatsApp" />
+          <label>Tu Usuario Registrado (ID: <span id="my-client-id-lbl" style="color:var(--secondary);"></span>)</label>
+          <input type="text" id="rec-client-name" placeholder="Tu usuario o WhatsApp" />
         </div>
 
         <div class="field-group">
@@ -974,7 +1013,7 @@
         </div>
 
         <div class="quick-nav" style="margin-bottom:14px;border-radius:12px;">
-          <button class="nav-tab active" onclick="switchAdminTab('adm-recargas', this)">🔔 Recargas & Saldo</button>
+          <button class="nav-tab active" onclick="switchAdminTab('adm-recargas', this)">🔔 Recargas & Clientes</button>
           <button class="nav-tab" onclick="switchAdminTab('adm-stock', this)">🔑 Stock Cuentas</button>
           <button class="nav-tab" onclick="switchAdminTab('adm-productos', this)">📦 Productos & Campos</button>
           <button class="nav-tab" onclick="switchAdminTab('adm-reportes', this)">🛠️ Reportes & Sync</button>
@@ -985,11 +1024,11 @@
           <button class="nav-tab" onclick="switchAdminTab('adm-export', this)">💾 Respaldo</button>
         </div>
 
-        <!-- TAB ADMIN 1: RECARGAS Y SALDO MANUAL -->
+        <!-- TAB ADMIN 1: RECARGAS, SALDO MANUAL Y CLIENTES REGISTRADOS -->
         <div id="adm-recargas" class="adm-tab">
-          <h3 style="font-size:15px;margin-bottom:8px;">💰 Ajustar o Recargar Saldo Manualmente</h3>
+          <h3 style="font-size:15px;margin-bottom:8px;">💰 Ajustar o Recargar Saldo a Cliente Registrado</h3>
           <div class="field-group">
-            <label>Seleccionar Cliente (o tu propio dispositivo)</label>
+            <label>Seleccionar Cliente Registrado (Usuario | Correo | WhatsApp)</label>
             <select id="adm-target-client"></select>
           </div>
           <div style="display:flex;gap:8px;margin-bottom:16px;">
@@ -1005,7 +1044,7 @@
         <div id="adm-stock" class="adm-tab" style="display:none;">
           <h3 style="font-size:15px;margin-bottom:8px;">🔑 Agregar Cuenta Única al Inventario Automático</h3>
           <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">
-            Cada cuenta que guardes aquí se sincroniza en la nube, se entrega automáticamente al comprador y se bloquea al instante para no repetirse jamás.
+            Cada cuenta que guardes aquí se sincroniza en la nube, se entrega automáticamente al comprador (en pantalla y a su WhatsApp) y se bloquea al instante para no repetirse jamás.
           </p>
           <div class="field-group">
             <label>Selecciona el Producto</label>
@@ -1038,7 +1077,7 @@
           <div id="adm-stock-list"></div>
         </div>
 
-        <!-- TAB ADMIN 3: PRODUCTOS Y CAMPOS VISIBLES / OCULTOS -->
+        <!-- TAB ADMIN 3: PRODUCTOS, CAMPOS Y MENSAJE POST-COMPRA -->
         <div id="adm-productos" class="adm-tab" style="display:none;">
           <h3 style="font-size:15px;margin-bottom:10px;">📦 Crear / Editar Producto o Combo</h3>
           <input type="hidden" id="edit-prod-id" />
@@ -1057,8 +1096,12 @@
             </div>
           </div>
           <div class="field-group">
-            <label>Descripción / Detalles (ej. 30 Días | 1 Pantalla)</label>
+            <label>Descripción corta en el catálogo (ej. 30 Días | 1 Pantalla)</label>
             <input type="text" id="p-desc" placeholder="30 Días Garantizados" />
+          </div>
+          <div class="field-group">
+            <label style="color:#fde047;">📝 Breve mensaje / descripción abajo cuando YA compraron (aparece en la entrega y en WhatsApp)</label>
+            <textarea id="p-post-buy-msg" rows="3" placeholder="Ej. 📌 Importante: No cambiar contraseña ni modificar otros perfiles. Prohibido abrir en más de 1 dispositivo. Garantía de 30 días."></textarea>
           </div>
           <div class="field-group">
             <label>Etiquetas de Combo (separadas por coma, opcional)</label>
@@ -1089,7 +1132,7 @@
             <div style="font-weight:800;font-size:13px;margin-bottom:8px;color:var(--secondary);">⚙️ Modo de Entrega y Campos Visibles / Ocultos</div>
             <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;margin-bottom:8px;">
               <input type="checkbox" id="p-auto-delivery" checked onchange="toggleManualStockInput()" />
-              <b>⚡ Entregar cuenta automáticamente del stock</b> (Desmarca para Canva o activaciones a mano)
+              <b>⚡ Entregar cuenta automáticamente al instante y enviar a WhatsApp</b> (Desmarca para Canva o activaciones a mano)
             </label>
             <div id="manual-stock-wrap" class="field-group" style="display:none;margin-top:6px;">
               <label>Cantidad de cupos disponibles (Sincronización Manual)</label>
@@ -1152,7 +1195,7 @@
           <div id="adm-cats-list"></div>
         </div>
 
-        <!-- TAB ADMIN 6: FOTO DE PERFIL, FONDO ANIMADO Y WHATSAPP -->
+        <!-- TAB ADMIN 6: FOTO DE PERFIL, FONDO ANIMADO, WHATSAPP Y MENSAJE POST-COMPRA GENERAL -->
         <div id="adm-diseno" class="adm-tab" style="display:none;">
           <h3 style="font-size:15px;margin-bottom:10px;">🎨 Foto de Perfil, Fondo Animado, Colores y WhatsApp</h3>
 
@@ -1174,12 +1217,16 @@
             <input type="text" id="cfg-store-slogan" />
           </div>
           <div class="field-group">
-            <label>Tu Número de WhatsApp (con código de país, ej. 5215512345678)</label>
+            <label>Tu Número de WhatsApp Administradora (con código de país, ej. 5215512345678)</label>
             <input type="text" id="cfg-wa-number" placeholder="52155..." />
           </div>
           <div class="field-group">
             <label>Enlace general para generar códigos (abajo de las cuentas entregadas)</label>
             <input type="text" id="cfg-code-url" placeholder="https://..." />
+          </div>
+          <div class="field-group">
+            <label style="color:#fde047;">📝 Breve mensaje / descripción general abajo cuando ya compraron una plataforma</label>
+            <textarea id="cfg-default-post-buy-msg" rows="3" placeholder="Ej. ¡Gracias por tu compra! Recuerda ingresar únicamente en el perfil indicado y no modificar la contraseña para mantener tu garantía activa."></textarea>
           </div>
           <div class="field-group">
             <label>Datos Bancarios SPEI para Recargas</label>
@@ -1295,7 +1342,7 @@
         <div id="adm-export" class="adm-tab" style="display:none;">
           <h3 style="font-size:15px;margin-bottom:8px;">💾 Sincronización Automática Activa</h3>
           <p style="font-size:12.5px;color:var(--muted);margin-bottom:12px;">
-            Tu página ya está conectada en tiempo real a <b>https://michellestore-default-rtdb.firebaseio.com/</b>. Todos los cambios que hagas en el panel se ven reflejados al instante en los teléfonos de tus clientes sin volver a subir el archivo.
+            Tu página ya está conectada en tiempo real a <b>https://michellestore-default-rtdb.firebaseio.com/</b>. Todos los cambios que hagas en el panel y los registros de tus clientes se guardan al instante en la nube.
           </p>
           <div style="display:flex;flex-direction:column;gap:10px;">
             <button class="btn-main" onclick="forcePushToFirebase()">☁️ Forzar Sincronización con Firebase Ahora</button>
@@ -1332,10 +1379,10 @@
       </div>
       <div class="chat-body" id="chat-messages"></div>
       <div class="chat-quick">
+        <span class="chat-chip" onclick="askAssistant('¿Cómo me registro?')">👤 Registro</span>
         <span class="chat-chip" onclick="askAssistant('¿Cómo recargo saldo?')">💳 ¿Cómo recargo?</span>
-        <span class="chat-chip" onclick="askAssistant('¿La entrega es inmediata?')">⚡ Entrega automática</span>
+        <span class="chat-chip" onclick="askAssistant('¿La entrega es inmediata?')">⚡ Entrega a WhatsApp</span>
         <span class="chat-chip" onclick="askAssistant('Reportar una falla')">🛠️ Reportar falla</span>
-        <span class="chat-chip" onclick="askAssistant('Hablar por WhatsApp')">📲 WhatsApp</span>
       </div>
       <div class="chat-input-row">
         <input type="text" id="chat-user-input" placeholder="Escribe tu duda..." onkeydown="if(event.key==='Enter')sendUserChat()" />
@@ -1396,6 +1443,76 @@
   <!-- =========================================================
        MODALES
        ========================================================= -->
+
+  <!-- MODAL DE REGISTRO E INICIO DE SESIÓN DE CLIENTES -->
+  <div class="modal-backdrop" id="modal-client-auth">
+    <div class="modal-box" style="max-width:410px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <h3 style="font-size:17px;">👤 Cuenta de Cliente VIP</h3>
+        <button class="btn-outline" style="padding:4px 9px;" onclick="closeModal('modal-client-auth')">✕</button>
+      </div>
+
+      <!-- Vista cuando ya inició sesión -->
+      <div id="auth-logged-view" style="display:none;">
+        <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.4);padding:12px;border-radius:12px;margin-bottom:12px;font-size:13px;line-height:1.6;">
+          <div><b>👤 Usuario:</b> <span id="prof-view-name"></span></div>
+          <div><b>📧 Correo:</b> <span id="prof-view-email"></span></div>
+          <div><b>📲 WhatsApp:</b> <span id="prof-view-phone"></span></div>
+          <div><b>💰 Saldo Guardado:</b> <span id="prof-view-balance" style="color:#34d399;font-weight:900;"></span></div>
+        </div>
+        <button class="btn-outline" style="width:100%;color:#f87171;border-color:rgba(239,68,68,0.4);" onclick="logoutClientAccount()">🚪 Cerrar sesión en este dispositivo</button>
+      </div>
+
+      <!-- Vista de Formulario Registro / Login -->
+      <div id="auth-forms-view">
+        <div style="display:flex;gap:6px;margin-bottom:12px;">
+          <button class="nav-tab active" id="tab-btn-reg" style="flex:1;" onclick="switchAuthMode('register')">✨ Crear Usuario</button>
+          <button class="nav-tab" id="tab-btn-log" style="flex:1;" onclick="switchAuthMode('login')">🔑 Iniciar Sesión</button>
+        </div>
+
+        <!-- Formulario Crear Cuenta -->
+        <div id="form-client-register">
+          <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">
+            Regístrate con tu correo y WhatsApp para guardar tu saldo en la nube y recibir tus cuentas automáticamente en tu WhatsApp al comprar.
+          </p>
+          <div class="field-group">
+            <label>Nombre de Usuario *</label>
+            <input type="text" id="reg-username" placeholder="Ej. MichelleVIP" />
+          </div>
+          <div class="field-group">
+            <label>Correo Electrónico *</label>
+            <input type="email" id="reg-email" placeholder="tucorreo@gmail.com" />
+          </div>
+          <div class="field-group">
+            <label>Número de Teléfono (WhatsApp) *</label>
+            <input type="tel" id="reg-phone" placeholder="Ej. 5512345678" />
+          </div>
+          <div class="field-group">
+            <label>Crea una Contraseña *</label>
+            <input type="password" id="reg-pass" placeholder="Para proteger tu saldo" />
+          </div>
+          <button class="btn-main" onclick="registerClientAccount()">✅ Crear mi Usuario y Guardar Saldo</button>
+        </div>
+
+        <!-- Formulario Iniciar Sesión -->
+        <div id="form-client-login" style="display:none;">
+          <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">
+            Ingresa con tu correo, usuario o número de teléfono para recuperar tu saldo y tus compras.
+          </p>
+          <div class="field-group">
+            <label>Tu Correo, Usuario o Teléfono *</label>
+            <input type="text" id="log-identifier" placeholder="Correo, usuario o WhatsApp" />
+          </div>
+          <div class="field-group">
+            <label>Tu Contraseña *</label>
+            <input type="password" id="log-pass" placeholder="Tu contraseña" />
+          </div>
+          <button class="btn-main" onclick="loginClientAccount()">🔑 Entrar a mi Cuenta</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="modal-backdrop" id="modal-admin-login">
     <div class="modal-box" style="max-width:360px;text-align:center;">
       <h3 style="margin-bottom:10px;">🔒 Acceso Administradora</h3>
@@ -1437,6 +1554,7 @@
     </div>
   </div>
 
+  <!-- MODAL ENTREGA DE CUENTA CON DESCRIPCIÓN POST-COMPRA Y ENVÍO A WHATSAPP -->
   <div class="modal-backdrop" id="modal-account-delivery">
     <div class="modal-box">
       <div style="text-align:center;margin-bottom:12px;">
@@ -1447,13 +1565,22 @@
 
       <div id="deliv-fields-container"></div>
 
+      <!-- BREVE MENSAJE / DESCRIPCIÓN ABAJO CUANDO YA COMPRARON -->
+      <div id="deliv-postbuy-wrap" class="post-buy-box" style="display:none;"></div>
+
       <div id="deliv-codeurl-wrap" style="margin-top:12px;">
         <a id="deliv-codeurl-btn" href="#" target="_blank" class="btn-main" style="display:block;text-align:center;text-decoration:none;background:linear-gradient(135deg,#00e5ff,#3b82f6);color:#000;">
           🔗 Abrir enlace para generar códigos automáticamente
         </a>
       </div>
 
-      <button class="btn-outline" style="width:100%;margin-top:12px;" onclick="closeModal('modal-account-delivery')">Cerrar ventana</button>
+      <div style="margin-top:10px;">
+        <button class="btn-main" id="deliv-wa-client-btn" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;">
+          📲 Enviar datos de la cuenta a mi WhatsApp
+        </button>
+      </div>
+
+      <button class="btn-outline" style="width:100%;margin-top:10px;" onclick="closeModal('modal-account-delivery')">Cerrar ventana</button>
     </div>
   </div>
 
@@ -1516,7 +1643,6 @@
     const CLIENT_ID_KEY = "MICHELLE_CLIENT_DEVICE_ID";
     const ADMIN_PASS = "426153"; // Sin pistas
 
-    // Cada teléfono tiene un ID único para conservar su propio saldo y compras
     let MY_CLIENT_ID = localStorage.getItem(CLIENT_ID_KEY);
     if (!MY_CLIENT_ID) {
       MY_CLIENT_ID = "cli_" + Math.floor(100000 + Math.random() * 900000);
@@ -1530,6 +1656,7 @@
       profilePic: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&auto=format&fit=crop&q=80",
       waNumber: "5215500000000",
       defaultCodeUrl: "https://mis-codigos-vip.com",
+      defaultPostBuyMsg: "📌 Importante: Ingresa únicamente en el perfil asignado, no cambies la contraseña ni modifiques otros perfiles para conservar tu garantía activa.",
       bankInfo: "🏦 Banco: Nu México / SPEI\n💳 CLABE: 6381 8000 0000 0000 01\n👤 Beneficiario: Michelle VIP",
       colors: {
         primary: "#ff2a85",
@@ -1544,7 +1671,7 @@
       doll: {
         name: "Chimmy VIP",
         bubble: "¡Hola! ¿Te ayudo? 💛",
-        welcome: "¡Hola! Soy Chimmy VIP 🐾 Tu asistente virtual. Puedo explicarte cómo recargar saldo, cómo recibir tu cuenta al instante o ayudarte con un reporte.",
+        welcome: "¡Hola! Soy Chimmy VIP 🐾 Tu asistente virtual. Puedo explicarte cómo crear tu usuario, recargar saldo, recibir tu cuenta en tu WhatsApp o ayudarte con un reporte.",
         hoodie: "#ffe135",
         ears: "#111111",
         buttons: "#f26d40",
@@ -1565,6 +1692,7 @@
           price: 95,
           cat: "streaming",
           desc: "1 Perfil con PIN | 30 Días",
+          postBuyMsg: "📌 Reglas Netflix: Usa únicamente tu perfil asignado y no modifiques la contraseña. Garantía de 30 días.",
           tags: ["4K Ultra HD", "Entrega Automática"],
           gradient: "linear-gradient(135deg, #e50914, #7f1d1d)",
           img: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=300&auto=format&fit=crop&q=80",
@@ -1585,6 +1713,7 @@
           price: 65,
           cat: "streaming",
           desc: "1 Pantalla | 30 Días",
+          postBuyMsg: "📌 Reglas Disney+: Ingresa solo en 1 dispositivo a la vez en el perfil indicado.",
           tags: ["ESPN incluido", "30 Días"],
           gradient: "linear-gradient(135deg, #1d4ed8, #06b6d4)",
           img: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=300&auto=format&fit=crop&q=80",
@@ -1605,6 +1734,7 @@
           price: 45,
           cat: "diseno",
           desc: "Activación directa en tu propio correo | 30 Días",
+          postBuyMsg: "📌 Revisa la bandeja de entrada de tu correo para aceptar la invitación a Canva Pro.",
           tags: ["Sincronización Manual", "A tu correo"],
           gradient: "linear-gradient(135deg, #7c3aed, #ec4899)",
           img: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=300&auto=format&fit=crop&q=80",
@@ -1668,12 +1798,16 @@
       if (!STATE.clients[cid]) {
         STATE.clients[cid] = {
           id: cid,
-          name: alias || ("Cliente " + cid.slice(-4)),
+          name: alias || ("Invitado " + cid.slice(-4)),
+          email: "",
+          phone: "",
+          password: "",
+          registered: false,
           balance: 0,
           purchases: [],
           notifications: []
         };
-      } else if (alias) {
+      } else if (alias && !STATE.clients[cid].registered) {
         STATE.clients[cid].name = alias;
       }
       return STATE.clients[cid];
@@ -1681,6 +1815,14 @@
 
     function getMyClient() {
       return ensureClientRecord(MY_CLIENT_ID);
+    }
+
+    function normalizePhoneForWA(rawPhone) {
+      let digits = (rawPhone || "").replace(/\D/g, "");
+      if (digits.length === 10) {
+        digits = "52" + digits;
+      }
+      return digits;
     }
 
     function normalizeState(raw) {
@@ -1696,6 +1838,9 @@
       merged.adminNotifications = Array.isArray(merged.adminNotifications) ? merged.adminNotifications : [];
       merged.songs = Array.isArray(merged.songs) ? merged.songs : [];
       merged.clients = merged.clients || {};
+      if (typeof merged.defaultPostBuyMsg !== "string") {
+        merged.defaultPostBuyMsg = DEFAULT_STATE.defaultPostBuyMsg;
+      }
       return merged;
     }
 
@@ -1735,7 +1880,7 @@
         if (res.ok) {
           updateFirebaseBanner("🟢 Cambios publicados en vivo para todos los clientes", "#34d399");
         } else if (res.status === 401 || res.status === 403) {
-          updateFirebaseBanner("⚠️ Permiso denegado en Firebase: Ve a Reglas (Rules) en Firebase y pon .read: true y .write: true", "#ef4444");
+          updateFirebaseBanner("⚠️ Permiso denegado en Firebase: Ve a Reglas (Rules) y pon .read: true y .write: true", "#ef4444");
         } else {
           updateFirebaseBanner("⚠️ Error al subir a Firebase (Código " + res.status + ")", "#f59e0b");
         }
@@ -1753,7 +1898,6 @@
         if (res.ok) {
           const cloudData = await res.json();
           if (!cloudData) {
-            // Primera vez que se conecta la base de datos: subir el estado actual
             await pushStateToFirebase();
             return;
           }
@@ -1764,8 +1908,6 @@
             renderAll();
           }
           updateFirebaseBanner("🟢 Sincronizado en vivo con Firebase", "#34d399");
-        } else if (res.status === 401 || res.status === 403) {
-          updateFirebaseBanner("⚠️ Activa las Reglas en Firebase (.read: true, .write: true) para sincronizar", "#ef4444");
         }
       } catch (e) {}
     }
@@ -1780,6 +1922,114 @@
         b.innerText = text;
         b.style.color = color;
       }
+    }
+
+    /* =========================================================
+       REGISTRO E INICIO DE SESIÓN DE CLIENTES (CORREO + TELÉFONO)
+       ========================================================= */
+    function openAuthModal() {
+      const me = getMyClient();
+      const loggedView = document.getElementById("auth-logged-view");
+      const formsView = document.getElementById("auth-forms-view");
+
+      if (me.registered) {
+        loggedView.style.display = "block";
+        formsView.style.display = "none";
+        document.getElementById("prof-view-name").innerText = me.name;
+        document.getElementById("prof-view-email").innerText = me.email || "Sin correo";
+        document.getElementById("prof-view-phone").innerText = me.phone || "Sin teléfono";
+        document.getElementById("prof-view-balance").innerText = "$" + Number(me.balance || 0).toFixed(2) + " MXN";
+      } else {
+        loggedView.style.display = "none";
+        formsView.style.display = "block";
+        switchAuthMode("register");
+      }
+      openModal("modal-client-auth");
+    }
+
+    function switchAuthMode(mode) {
+      const isReg = mode === "register";
+      document.getElementById("form-client-register").style.display = isReg ? "block" : "none";
+      document.getElementById("form-client-login").style.display = isReg ? "none" : "block";
+      document.getElementById("tab-btn-reg").classList.toggle("active", isReg);
+      document.getElementById("tab-btn-log").classList.toggle("active", !isReg);
+    }
+
+    async function registerClientAccount() {
+      const username = document.getElementById("reg-username").value.trim();
+      const email = document.getElementById("reg-email").value.trim().toLowerCase();
+      const phone = document.getElementById("reg-phone").value.trim();
+      const pass = document.getElementById("reg-pass").value.trim();
+
+      if (!username || !email || !phone || !pass) {
+        return alert("Por favor completa tu usuario, correo electrónico, número de teléfono y contraseña.");
+      }
+
+      const cleanPhone = normalizePhoneForWA(phone);
+      if (cleanPhone.length < 10) {
+        return alert("Ingresa un número de teléfono válido (mínimo 10 dígitos).");
+      }
+
+      await pullStateFromFirebase();
+
+      // Verificar si ya existe ese correo o teléfono
+      const existing = Object.values(STATE.clients || {}).find(c =>
+        c.registered && (
+          (c.email && c.email.toLowerCase() === email) ||
+          (c.phone && normalizePhoneForWA(c.phone) === cleanPhone)
+        )
+      );
+
+      if (existing) {
+        return alert("Ya existe una cuenta con ese correo o número de teléfono. Toca en 'Iniciar Sesión' para entrar.");
+      }
+
+      const me = getMyClient();
+      me.name = username;
+      me.email = email;
+      me.phone = cleanPhone;
+      me.password = pass;
+      me.registered = true;
+
+      pushAdminNotification(`👤 Nuevo cliente registrado: ${username} (${email} | WA: ${cleanPhone})`);
+      await saveState();
+      closeModal("modal-client-auth");
+      alert(`🎉 ¡Bienvenido(a) ${username}! Tu cuenta quedó registrada y tu saldo está protegido.`);
+    }
+
+    async function loginClientAccount() {
+      const ident = document.getElementById("log-identifier").value.trim().toLowerCase();
+      const pass = document.getElementById("log-pass").value.trim();
+      if (!ident || !pass) return alert("Ingresa tu usuario/correo/teléfono y tu contraseña.");
+
+      await pullStateFromFirebase();
+      const cleanIdentPhone = normalizePhoneForWA(ident);
+
+      const found = Object.values(STATE.clients || {}).find(c => {
+        if (!c.registered) return false;
+        const matchEmail = c.email && c.email.toLowerCase() === ident;
+        const matchName = c.name && c.name.toLowerCase() === ident;
+        const matchPhone = c.phone && (c.phone === ident || normalizePhoneForWA(c.phone) === cleanIdentPhone);
+        return (matchEmail || matchName || matchPhone) && c.password === pass;
+      });
+
+      if (!found) {
+        return alert("Datos incorrectos o usuario no encontrado. Verifica tu correo/teléfono y contraseña.");
+      }
+
+      MY_CLIENT_ID = found.id;
+      localStorage.setItem(CLIENT_ID_KEY, MY_CLIENT_ID);
+      renderAll();
+      closeModal("modal-client-auth");
+      alert(`✅ ¡Hola de nuevo, ${found.name}! Tu saldo actual es de $${Number(found.balance || 0).toFixed(2)} MXN.`);
+    }
+
+    function logoutClientAccount() {
+      MY_CLIENT_ID = "cli_" + Math.floor(100000 + Math.random() * 900000);
+      localStorage.setItem(CLIENT_ID_KEY, MY_CLIENT_ID);
+      ensureClientRecord(MY_CLIENT_ID);
+      renderAll();
+      closeModal("modal-client-auth");
     }
 
     /* =========================================================
@@ -1883,6 +2133,11 @@
       const me = getMyClient();
 
       document.getElementById("my-client-id-lbl").innerText = MY_CLIENT_ID;
+      document.getElementById("user-name-top").innerText = me.registered ? me.name : "Registrarme";
+      if (me.registered && !document.getElementById("rec-client-name").value) {
+        document.getElementById("rec-client-name").value = `${me.name} (${me.phone})`;
+      }
+
       document.getElementById("top-logo").src = STATE.profilePic;
       document.getElementById("hero-logo").src = STATE.profilePic;
       document.getElementById("adm-profile-preview").src = STATE.profilePic;
@@ -1956,7 +2211,7 @@
               <span class="stock-badge" style="color:${statusColor}">${statusText}</span>
               <img class="prod-img" src="${prod.img}" alt="${prod.name}" />
               <div style="font-size:10.5px;font-weight:700;opacity:0.9;">
-                ${prod.autoDelivery ? '⚡ Entrega Automática' : '✍️ Activación Manual'}
+                ${prod.autoDelivery ? '⚡ Entrega a tu WhatsApp' : '✍️ Activación Manual'}
               </div>
             </div>
             <div class="prod-body">
@@ -1999,13 +2254,19 @@
     }
 
     /* =========================================================
-       FLUJO DE COMPRA SINCRONIZADO EN FIREBASE
+       FLUJO DE COMPRA + ENVÍO AUTOMÁTICO AL WHATSAPP DEL CLIENTE
        ========================================================= */
     function openBuyModal(prodId) {
+      const me = getMyClient();
+      if (!me.registered) {
+        alert("👤 Primero crea tu usuario con tu correo y número de WhatsApp para guardar tu saldo y enviarte tu cuenta automáticamente.");
+        openAuthModal();
+        return;
+      }
+
       const prod = STATE.products.find(p => p.id === prodId);
       if (!prod) return;
       pendingBuyProdId = prodId;
-      const me = getMyClient();
 
       document.getElementById("buy-modal-title").innerText = "Comprar " + prod.name;
       document.getElementById("buy-modal-desc").innerText = `Precio: $${prod.price} MXN • Tu saldo actual: $${Number(me.balance || 0).toFixed(2)}`;
@@ -2014,7 +2275,7 @@
       document.getElementById("buy-ask-pass-wrap").style.display = prod.askPass ? "block" : "none";
       document.getElementById("buy-ask-id-wrap").style.display = prod.askId ? "block" : "none";
 
-      document.getElementById("buy-client-email").value = "";
+      document.getElementById("buy-client-email").value = me.email || "";
       document.getElementById("buy-client-pass").value = "";
       document.getElementById("buy-client-id").value = "";
 
@@ -2022,8 +2283,36 @@
       openModal("modal-buy-confirm");
     }
 
+    function buildClientWhatsAppMessage(pur) {
+      let lines = [
+        `🎉 *¡Hola ${pur.clientName || 'Cliente'}! Aquí tienes tu cuenta de ${STATE.storeName}*`,
+        `📦 *Plataforma:* ${pur.prodName}`,
+        ``
+      ];
+      if (pur.showEmail !== false && pur.email) lines.push(`📧 *Correo / Usuario:* ${pur.email}`);
+      if (pur.showPass !== false && pur.pass) lines.push(`🔑 *Contraseña:* ${pur.pass}`);
+      if (pur.showProfile !== false && pur.profile) lines.push(`👤 *Perfil y PIN:* ${pur.profile}`);
+      if (pur.showId && pur.customId) lines.push(`🆔 *ID:* ${pur.customId}`);
+      if (pur.showCodeUrl !== false && pur.codeUrl) lines.push(`🔗 *Generar códigos:* ${pur.codeUrl}`);
+
+      if (pur.postBuyMsg) {
+        lines.push(``);
+        lines.push(`📝 *Descripción / Reglas de uso:*`);
+        lines.push(pur.postBuyMsg);
+      }
+      return lines.join("\n");
+    }
+
+    function sendAccountToClientWhatsApp(pur, clientPhone) {
+      const targetPhone = normalizePhoneForWA(clientPhone || (getMyClient().phone) || "");
+      const text = buildClientWhatsAppMessage(pur);
+      const waUrl = targetPhone
+        ? `https://wa.me/${targetPhone}?text=${encodeURIComponent(text)}`
+        : `https://wa.me/?text=${encodeURIComponent(text)}`;
+      window.open(waUrl, "_blank");
+    }
+
     async function executePurchase() {
-      // Traer la versión más reciente de Firebase antes de vender una cuenta para evitar duplicados
       await pullStateFromFirebase();
 
       const prod = STATE.products.find(p => p.id === pendingBuyProdId);
@@ -2046,6 +2335,7 @@
       if (prod.askId && !clientId) return alert("Por favor ingresa tu ID.");
 
       if (!Array.isArray(me.purchases)) me.purchases = [];
+      const postMsg = (prod.postBuyMsg && prod.postBuyMsg.trim()) ? prod.postBuyMsg.trim() : (STATE.defaultPostBuyMsg || "");
 
       if (prod.autoDelivery) {
         const freeAcc = STATE.accountsStock.find(a => a.prodId === prod.id && !a.used);
@@ -2060,6 +2350,8 @@
           id: "pur_" + Date.now(),
           prodId: prod.id,
           prodName: prod.name,
+          clientName: me.name,
+          clientPhone: me.phone,
           date: new Date().toLocaleString(),
           type: "auto",
           email: freeAcc.email,
@@ -2067,6 +2359,7 @@
           profile: freeAcc.profile,
           customId: freeAcc.customId || clientId,
           codeUrl: freeAcc.codeUrl || STATE.defaultCodeUrl,
+          postBuyMsg: postMsg,
           showEmail: prod.showEmail,
           showPass: prod.showPass,
           showProfile: prod.showProfile,
@@ -2075,10 +2368,13 @@
         };
 
         me.purchases.unshift(purchaseRecord);
-        pushAdminNotification(`🛒 Venta automática: ${prod.name} entregada a ${me.name}`);
-        await saveState();
+        pushAdminNotification(`🛒 Venta automática: ${prod.name} entregada a ${me.name} (${me.phone})`);
         closeModal("modal-buy-confirm");
         showDeliveryModal(purchaseRecord);
+
+        // Enviar automáticamente al WhatsApp registrado del cliente
+        sendAccountToClientWhatsApp(purchaseRecord, me.phone);
+        await saveState();
       } else {
         if (prod.manualStock <= 0) return alert("Sin cupos disponibles.");
         prod.manualStock -= 1;
@@ -2088,10 +2384,10 @@
         const syncReport = {
           id: "rep_" + Date.now(),
           clientId: MY_CLIENT_ID,
-          clientName: me.name,
+          clientName: `${me.name} (${me.phone || me.email})`,
           type: "sync",
           platform: prod.name,
-          desc: `Sincronización manual pagada ($${prod.price}). Datos del cliente -> Correo: ${clientEmail || 'N/A'} | Clave: ${clientPass || 'N/A'} | ID: ${clientId || 'N/A'}`,
+          desc: `Sincronización manual pagada ($${prod.price}). Cliente: ${me.name} | WA: ${me.phone} -> Correo a vincular: ${clientEmail || 'N/A'} | Clave: ${clientPass || 'N/A'} | ID: ${clientId || 'N/A'}`,
           capture: "",
           status: "Pendiente",
           date: new Date().toLocaleString(),
@@ -2103,6 +2399,8 @@
           id: "pur_" + Date.now(),
           prodId: prod.id,
           prodName: prod.name,
+          clientName: me.name,
+          clientPhone: me.phone,
           date: new Date().toLocaleString(),
           type: "manual",
           email: clientEmail || "En proceso de activación manual",
@@ -2110,6 +2408,7 @@
           profile: "Activación en curso por Administradora",
           customId: clientId,
           codeUrl: STATE.defaultCodeUrl,
+          postBuyMsg: postMsg,
           showEmail: true,
           showPass: Boolean(clientPass),
           showProfile: true,
@@ -2121,8 +2420,8 @@
         pushAdminNotification("👑 Nueva Sincronización Manual: " + prod.name + " para " + (clientEmail || clientId));
         await saveState();
         closeModal("modal-buy-confirm");
-        alert("¡Compra registrada! Tus datos fueron enviados a la administradora para vincular tu cuenta.");
-        notifyWhatsApp(`Hola, acabo de comprar *${prod.name}* (Sincronización manual). Mis datos: Correo: ${clientEmail} ${clientId ? 'ID: '+clientId : ''}`);
+        showDeliveryModal(purchaseRecord);
+        notifyWhatsApp(`Hola, soy *${me.name}* (${me.phone}). Acabo de comprar *${prod.name}* (Sincronización manual). Mis datos: Correo: ${clientEmail} ${clientId ? 'ID: '+clientId : ''}`);
       }
     }
 
@@ -2178,6 +2477,16 @@
 
       box.innerHTML = html;
 
+      // Mostrar breve mensaje / descripción post-compra abajo
+      const postWrap = document.getElementById("deliv-postbuy-wrap");
+      const msgToShow = pur.postBuyMsg || STATE.defaultPostBuyMsg || "";
+      if (msgToShow.trim()) {
+        postWrap.style.display = "block";
+        postWrap.innerText = msgToShow;
+      } else {
+        postWrap.style.display = "none";
+      }
+
       const urlWrap = document.getElementById("deliv-codeurl-wrap");
       const urlBtn = document.getElementById("deliv-codeurl-btn");
       if (pur.showCodeUrl !== false && (pur.codeUrl || STATE.defaultCodeUrl)) {
@@ -2187,6 +2496,11 @@
         urlWrap.style.display = "none";
       }
 
+      const waBtn = document.getElementById("deliv-wa-client-btn");
+      waBtn.onclick = function() {
+        sendAccountToClientWhatsApp(pur, pur.clientPhone || getMyClient().phone);
+      };
+
       openModal("modal-account-delivery");
     }
 
@@ -2195,17 +2509,20 @@
       const me = getMyClient();
       const myPurchases = Array.isArray(me.purchases) ? me.purchases : [];
       if (!myPurchases.length) {
-        list.innerHTML = `<p style="font-size:13px;color:var(--muted);">Aún no tienes compras registradas en este dispositivo.</p>`;
+        list.innerHTML = `<p style="font-size:13px;color:var(--muted);">Aún no tienes compras registradas en tu cuenta.</p>`;
         return;
       }
       list.innerHTML = myPurchases.map(p => `
-        <div class="copy-row" style="margin-bottom:10px;">
-          <div>
-            <div style="font-weight:800;font-size:14px;color:var(--secondary);">${p.prodName}</div>
-            <div style="font-size:11.5px;color:#cbd5e1;">Correo: ${p.email}</div>
-            <div style="font-size:10.5px;color:var(--muted);">${p.date}</div>
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px;margin-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+            <div>
+              <div style="font-weight:800;font-size:14px;color:var(--secondary);">${p.prodName}</div>
+              <div style="font-size:11.5px;color:#cbd5e1;">Correo: ${p.email}</div>
+              <div style="font-size:10.5px;color:var(--muted);">${p.date}</div>
+            </div>
+            <button class="btn-main" style="width:auto;padding:7px 12px;" onclick='showDeliveryById("${p.id}")'>🔑 Ver Cuenta</button>
           </div>
-          <button class="btn-main" style="width:auto;padding:7px 12px;" onclick='showDeliveryById("${p.id}")'>🔑 Ver Cuenta</button>
+          ${p.postBuyMsg ? `<div class="post-buy-box" style="margin-top:8px;font-size:11.5px;">${p.postBuyMsg}</div>` : ''}
         </div>
       `).join("");
     }
@@ -2217,7 +2534,7 @@
     }
 
     /* =========================================================
-       RECARGAS DE SALDO EN VIVO
+       RECARGAS DE SALDO EN VIVO (REQUIERE USUARIO REGISTRADO)
        ========================================================= */
     function generateNewRefCode() {
       const code = Math.floor(1000000 + Math.random() * 9000000).toString();
@@ -2225,7 +2542,14 @@
     }
 
     async function submitRechargeRequest() {
-      const name = document.getElementById("rec-client-name").value.trim() || ("Cliente " + MY_CLIENT_ID.slice(-4));
+      const me = getMyClient();
+      if (!me.registered) {
+        alert("👤 Por favor regístrate primero con tu correo y número de teléfono para que tu saldo quede guardado en tu cuenta.");
+        openAuthModal();
+        return;
+      }
+
+      const name = document.getElementById("rec-client-name").value.trim() || `${me.name} (${me.phone})`;
       const amount = Number(document.getElementById("rec-amount").value);
       const refCode = document.getElementById("recharge-ref-code").innerText;
 
@@ -2233,12 +2557,11 @@
       if (!window.recCaptureData) return alert("Por favor sube la captura de pantalla de tu transferencia desde tu galería.");
 
       await pullStateFromFirebase();
-      ensureClientRecord(MY_CLIENT_ID, name);
 
       const req = {
         id: "rec_" + Date.now(),
         clientId: MY_CLIENT_ID,
-        clientName: name,
+        clientName: `${me.name} | ${me.phone}`,
         amount: amount,
         refCode: refCode,
         capture: window.recCaptureData,
@@ -2247,15 +2570,15 @@
       };
 
       STATE.rechargeRequests.unshift(req);
-      pushAdminNotification(`💳 Nueva recarga de ${name} por $${amount} (Ref: ${refCode})`);
+      pushAdminNotification(`💳 Nueva recarga de ${me.name} (${me.phone}) por $${amount} (Ref: ${refCode})`);
       window.recCaptureData = "";
       document.getElementById("rec-capture-preview").style.display = "none";
       document.getElementById("rec-amount").value = "";
       generateNewRefCode();
       await saveState();
 
-      alert("✅ Captura enviada en vivo. En cuanto la administradora la apruebe, tu saldo aparecerá automáticamente arriba.");
-      notifyWhatsApp(`Hola, envié una solicitud de recarga por *$${amount} MXN* con el código de referencia *${refCode}* (ID: ${MY_CLIENT_ID}).`);
+      alert("✅ Captura enviada en vivo. En cuanto la administradora la apruebe, tu saldo aparecerá automáticamente en tu cuenta.");
+      notifyWhatsApp(`Hola, soy *${me.name}* (${me.phone}). Envié una solicitud de recarga por *$${amount} MXN* con referencia *${refCode}*.`);
     }
 
     /* =========================================================
@@ -2272,7 +2595,7 @@
       const rep = {
         id: "rep_" + Date.now(),
         clientId: MY_CLIENT_ID,
-        clientName: me.name,
+        clientName: `${me.name} ${me.phone ? '('+me.phone+')' : ''}`,
         type: "falla",
         platform: plat,
         desc: desc,
@@ -2291,7 +2614,7 @@
       await saveState();
 
       alert("📨 Reporte enviado en vivo. Recibirás una notificación aquí mismo cuando la administradora te envíe tu nueva cuenta.");
-      notifyWhatsApp(`Hola, envié un reporte de falla sobre: *${plat}* (${desc}).`);
+      notifyWhatsApp(`Hola, soy *${me.name}*. Envié un reporte de falla sobre: *${plat}* (${desc}).`);
     }
 
     function renderClientReports() {
@@ -2375,12 +2698,11 @@
       const catOpts = STATE.categories.filter(c => c.id !== "all").map(c => `<option value="${c.id}">${c.name}</option>`).join("");
       document.getElementById("p-cat").innerHTML = catOpts;
 
-      // Lista de clientes para ajuste manual de saldo
       ensureClientRecord(MY_CLIENT_ID);
       const clientEntries = Object.values(STATE.clients || {});
       document.getElementById("adm-target-client").innerHTML = clientEntries.map(c => `
         <option value="${c.id}" ${c.id === MY_CLIENT_ID ? 'selected' : ''}>
-          ${c.name} (${c.id}) — Saldo: $${Number(c.balance || 0).toFixed(2)}
+          ${c.name} ${c.email ? '| ' + c.email : ''} ${c.phone ? '| WA: ' + c.phone : ''} — Saldo: $${Number(c.balance || 0).toFixed(2)}
         </option>
       `).join("");
 
@@ -2388,7 +2710,7 @@
       recBox.innerHTML = STATE.rechargeRequests.length ? STATE.rechargeRequests.map(r => `
         <div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:12px;margin-bottom:10px;">
           <div style="display:flex;justify-content:space-between;align-items:center;">
-            <b>${r.clientName} (${r.clientId || ''}) — $${r.amount} MXN</b>
+            <b>${r.clientName} — $${r.amount} MXN</b>
             <span style="font-size:11px;color:${r.status==='Aprobada'?'#34d399':'#fbbf24'};font-weight:800;">${r.status}</span>
           </div>
           <div style="font-size:12px;color:var(--secondary);">Referencia 7 dígitos: <b>${r.refCode}</b></div>
@@ -2421,7 +2743,7 @@
             <img src="${p.img}" style="width:36px;height:36px;border-radius:8px;object-fit:cover;" />
             <div>
               <div style="font-weight:800;font-size:13px;">${p.name} ($${p.price})</div>
-              <div style="font-size:11px;color:var(--muted);">${p.autoDelivery ? 'Entrega Automática' : 'Sincronización Manual'}</div>
+              <div style="font-size:11px;color:var(--muted);">${p.autoDelivery ? 'Entrega Automática + WhatsApp' : 'Sincronización Manual'}</div>
             </div>
           </div>
           <div style="display:flex;gap:6px;">
@@ -2461,6 +2783,7 @@
       document.getElementById("cfg-store-slogan").value = STATE.storeSlogan;
       document.getElementById("cfg-wa-number").value = STATE.waNumber;
       document.getElementById("cfg-code-url").value = STATE.defaultCodeUrl;
+      document.getElementById("cfg-default-post-buy-msg").value = STATE.defaultPostBuyMsg || "";
       document.getElementById("cfg-bank-info").value = STATE.bankInfo;
       document.getElementById("cfg-col-primary").value = STATE.colors.primary;
       document.getElementById("cfg-col-secondary").value = STATE.colors.secondary;
@@ -2549,6 +2872,7 @@
       const price = Number(document.getElementById("p-price").value);
       const cat = document.getElementById("p-cat").value || "streaming";
       const desc = document.getElementById("p-desc").value.trim();
+      const postBuyMsg = document.getElementById("p-post-buy-msg").value.trim();
       const tagsRaw = document.getElementById("p-tags").value.trim();
       const tags = tagsRaw ? tagsRaw.split(",").map(t => t.trim()).filter(Boolean) : [];
       const gradient = document.getElementById("p-gradient").value;
@@ -2561,6 +2885,7 @@
         price,
         cat,
         desc,
+        postBuyMsg,
         tags,
         gradient,
         img: window.prodImgData || (editId ? (STATE.products.find(x => x.id === editId)?.img || STATE.profilePic) : STATE.profilePic),
@@ -2599,6 +2924,7 @@
       document.getElementById("p-price").value = p.price;
       document.getElementById("p-cat").value = p.cat;
       document.getElementById("p-desc").value = p.desc || "";
+      document.getElementById("p-post-buy-msg").value = p.postBuyMsg || "";
       document.getElementById("p-tags").value = (p.tags || []).join(", ");
       document.getElementById("p-gradient").value = p.gradient;
       document.getElementById("p-auto-delivery").checked = p.autoDelivery !== false;
@@ -2625,6 +2951,7 @@
       document.getElementById("p-name").value = "";
       document.getElementById("p-price").value = "";
       document.getElementById("p-desc").value = "";
+      document.getElementById("p-post-buy-msg").value = "";
       document.getElementById("p-tags").value = "";
       window.prodImgData = "";
       document.getElementById("p-img-preview").style.display = "none";
@@ -2676,12 +3003,15 @@
           id: "pur_rep_" + Date.now(),
           prodId: "rep",
           prodName: "Reposición / Activación: " + rep.platform,
+          clientName: cli.name,
+          clientPhone: cli.phone,
           date: new Date().toLocaleString(),
           type: "auto",
           email,
           pass,
           profile,
           codeUrl: STATE.defaultCodeUrl,
+          postBuyMsg: msg || STATE.defaultPostBuyMsg,
           showEmail: true,
           showPass: true,
           showProfile: true,
@@ -2732,6 +3062,7 @@
       STATE.storeSlogan = document.getElementById("cfg-store-slogan").value.trim();
       STATE.waNumber = document.getElementById("cfg-wa-number").value.trim();
       STATE.defaultCodeUrl = document.getElementById("cfg-code-url").value.trim();
+      STATE.defaultPostBuyMsg = document.getElementById("cfg-default-post-buy-msg").value.trim();
       STATE.bankInfo = document.getElementById("cfg-bank-info").value;
       STATE.colors.primary = document.getElementById("cfg-col-primary").value;
       STATE.colors.secondary = document.getElementById("cfg-col-secondary").value;
@@ -2744,7 +3075,7 @@
         STATE.background.dataUrl = vidUrl;
       }
       saveState();
-      alert("Diseño publicado en vivo para todos los clientes.");
+      alert("Diseño y descripción post-compra publicados en vivo para todos los clientes.");
     }
 
     function adminClearBackground() {
@@ -2893,17 +3224,16 @@
       const me = getMyClient();
       setTimeout(() => {
         const q = question.toLowerCase();
-        if (q.includes("recarg")) {
+        if (q.includes("registr") || q.includes("usuario")) {
+          appendAssistantMsg("Toca el botón <b>👤 Registrarme / Mi Cuenta</b> arriba para crear tu usuario con tu correo y WhatsApp. Así tu saldo siempre quedará guardado.", false);
+        } else if (q.includes("recarg")) {
           appendAssistantMsg("Para recargar, entra a <b>💳 Recargar Saldo</b>, pon tu código de referencia de 7 dígitos en el concepto de tu transferencia SPEI y sube tu captura desde la galería.", false);
-        } else if (q.includes("entrega") || q.includes("inmediata")) {
-          appendAssistantMsg("¡Sí! ⚡ Al comprar cualquier plataforma con entrega automática, recibes al instante tu correo, contraseña, perfil y el enlace para generar códigos.", false);
+        } else if (q.includes("entrega") || q.includes("inmediata") || q.includes("whatsapp")) {
+          appendAssistantMsg("¡Sí! ⚡ Al comprar cualquier plataforma con entrega automática, recibes al instante en pantalla y directo en tu <b>WhatsApp</b> el correo, contraseña, perfil/PIN y las indicaciones.", false);
         } else if (q.includes("falla") || q.includes("report")) {
           appendAssistantMsg("Ve a la pestaña <b>⚠️ Reportar Falla</b>. En cuanto la administradora resuelva tu reporte, te llegará una notificación con tu nueva cuenta.", false);
-        } else if (q.includes("whatsapp")) {
-          appendAssistantMsg("¡Claro! Te abro el chat de WhatsApp directo con la administradora.", false);
-          notifyWhatsApp("Hola, vengo de la página web y necesito ayuda.");
         } else {
-          appendAssistantMsg(`¡Aquí estoy para ayudarte! 🐾 Tu saldo actual es de <b>$${Number(me.balance || 0).toFixed(2)}</b>. Puedes comprar en el catálogo, recargar saldo o escribirnos por WhatsApp.`, false);
+          appendAssistantMsg(`¡Aquí estoy para ayudarte! 🐾 Tu saldo actual es de <b>$${Number(me.balance || 0).toFixed(2)}</b>. Puedes crear tu usuario, comprar en el catálogo o recargar saldo.`, false);
         }
       }, 350);
     }
