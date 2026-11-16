@@ -5,22 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Michelle Streaming VIP</title>
 
-  <!-- ESCUDO ANTI-BADGE DE NETLIFY (INTERCEPTA SHADOW DOM E INYECCIONES EXTERNAS) -->
-  <script data-michelle-app="true">
+  <!-- BLOQUEADOR SEGURO DE ETIQUETA EXTERNA DE NETLIFY (NO TOCA LA PÁGINA) -->
+  <script>
     (function() {
       const origAttachShadow = Element.prototype.attachShadow;
-      Element.prototype.attachShadow = function(init) {
-        const sr = origAttachShadow.call(this, { mode: 'open' });
-        if (!this.hasAttribute('data-michelle-app') && !this.closest('[data-michelle-app="true"]')) {
-          this.style.cssText = 'display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;clip-path:inset(100%)!important;transform:scale(0)!important;position:fixed!important;left:-99999px!important;top:-99999px!important;width:0!important;height:0!important;z-index:-999999!important;';
-          setTimeout(() => { try { this.remove(); } catch(e){} }, 0);
-        }
-        return sr;
-      };
+      if (origAttachShadow) {
+        Element.prototype.attachShadow = function(init) {
+          if (this.tagName !== 'BODY' && this.tagName !== 'HTML' && !this.hasAttribute('data-app')) {
+            this.style.setProperty('display', 'none', 'important');
+            this.style.setProperty('visibility', 'hidden', 'important');
+            this.style.setProperty('opacity', '0', 'important');
+            this.style.setProperty('pointer-events', 'none', 'important');
+          }
+          return origAttachShadow.call(this, init);
+        };
+      }
     })();
   </script>
 
-  <style data-michelle-app="true">
+  <style>
     :root {
       --bg-color: #080b14;
       --card-bg: rgba(17, 23, 38, 0.88);
@@ -42,29 +45,15 @@
       --doll-aura: rgba(255, 225, 53, 0.45);
     }
 
-    /* REGLA ESTRICTA: OCULTA CUALQUIER BOTÓN O ETIQUETA EXTERNA INYECTADA POR NETLIFY */
-    body > *:not([data-michelle-app="true"]):not(script):not(style),
-    html > *:not(head):not(body),
+    /* Ocultar únicamente enlaces o widgets externos de Netlify */
     a[href*="netlify.com"],
-    a[href*="netlify.app"][target="_blank"]:not(.btn-main):not(.btn-outline),
-    iframe[src*="netlify"],
-    div[class*="netlify"],
-    div[id*="netlify"] {
+    iframe[src*="netlify.com"],
+    div[id*="netlify"],
+    div[class*="netlify"] {
       display: none !important;
       visibility: hidden !important;
       opacity: 0 !important;
       pointer-events: none !important;
-      clip-path: inset(100%) !important;
-      transform: scale(0) !important;
-      width: 0 !important;
-      height: 0 !important;
-      max-width: 0 !important;
-      max-height: 0 !important;
-      overflow: hidden !important;
-      position: fixed !important;
-      left: -99999px !important;
-      top: -99999px !important;
-      z-index: -2147483647 !important;
     }
 
     * {
@@ -687,7 +676,7 @@
     }
 
     /* =====================================================
-       ASISTENTE VIRTUAL PERRITO CAPUCHA AMARILLA (ESQUINA INFERIOR DERECHA)
+       ASISTENTE VIRTUAL PERRITO CAPUCHA AMARILLA (ESQUINA DERECHA)
        ===================================================== */
     .doll-widget {
       position: fixed;
@@ -871,17 +860,17 @@
 <body>
 
   <!-- FONDO ANIMADO (VIDEO / IMAGEN / PARTÍCULAS) -->
-  <div id="bg-media-container" data-michelle-app="true">
+  <div id="bg-media-container" data-app="michelle">
     <video id="bg-video" autoplay loop muted playsinline></video>
   </div>
-  <div id="bg-overlay" data-michelle-app="true"></div>
-  <canvas id="bg-canvas" data-michelle-app="true"></canvas>
+  <div id="bg-overlay" data-app="michelle"></div>
+  <canvas id="bg-canvas" data-app="michelle"></canvas>
 
   <!-- INPUT GLOBAL RÁPIDO PARA FOTO DE PERFIL -->
-  <input type="file" id="quick-profile-input" data-michelle-app="true" accept="image/*" style="display:none" onchange="handleQuickProfileUpload(event)" />
+  <input type="file" id="quick-profile-input" data-app="michelle" accept="image/*" style="display:none" onchange="handleQuickProfileUpload(event)" />
 
   <!-- BARRA SUPERIOR -->
-  <header class="topbar" data-michelle-app="true">
+  <header class="topbar" data-app="michelle">
     <div class="brand-mini">
       <img id="top-logo" src="" alt="Logo" onclick="onProfilePicClick()" />
       <div style="min-width:0;">
@@ -907,7 +896,7 @@
   </header>
 
   <!-- PESTAÑAS DE NAVEGACIÓN -->
-  <nav class="quick-nav" data-michelle-app="true">
+  <nav class="quick-nav" data-app="michelle">
     <button class="nav-tab active" data-view="tienda" onclick="switchView('tienda')">🛍️ Catálogo</button>
     <button class="nav-tab" data-view="recargar" onclick="switchView('recargar')">💳 Recargar Saldo</button>
     <button class="nav-tab" data-view="compras" onclick="switchView('compras')">📦 Mis Compras</button>
@@ -917,7 +906,7 @@
   </nav>
 
   <!-- PORTADA CON RADAR Y CONTADORES -->
-  <section class="hero-box" data-michelle-app="true">
+  <section class="hero-box" data-app="michelle">
     <div class="radar-wrap">
       <div class="radar-ring"></div>
       <div class="radar-ring r2"></div>
@@ -948,7 +937,7 @@
   </section>
 
   <!-- CONTENEDOR PRINCIPAL -->
-  <main class="container" data-michelle-app="true">
+  <main class="container" data-app="michelle">
 
     <!-- 1. VISTA TIENDA / CATÁLOGO -->
     <section id="view-tienda" class="view-section active">
@@ -1395,7 +1384,7 @@
   </main>
 
   <!-- REPRODUCTOR DE MÚSICA FLOTANTE -->
-  <div class="music-fab" data-michelle-app="true">
+  <div class="music-fab" data-app="michelle">
     <button onclick="toggleMusicPlay()" id="music-play-btn">▶️</button>
     <div class="music-title" id="music-current-title">Música VIP</div>
     <button onclick="nextSong()" style="background:rgba(255,255,255,0.12);">⏭️</button>
@@ -1405,7 +1394,7 @@
   <!-- =========================================================
        ASISTENTE VIRTUAL PERRITO CAPUCHA AMARILLA
        ========================================================= -->
-  <div class="doll-widget" data-michelle-app="true">
+  <div class="doll-widget" data-app="michelle">
     <div class="assistant-chat" id="assistant-chat">
       <div class="chat-head">
         <div>🐾 <span id="chat-doll-name">Chimmy VIP</span></div>
@@ -1481,10 +1470,10 @@
   </div>
 
   <!-- =========================================================
-       MODALES (TODOS PROTEGIDOS CON data-michelle-app="true")
+       MODALES
        ========================================================= -->
 
-  <div class="modal-backdrop" id="modal-client-auth" data-michelle-app="true">
+  <div class="modal-backdrop" id="modal-client-auth" data-app="michelle">
     <div class="modal-box" style="max-width:410px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
         <h3 style="font-size:17px;">👤 Cuenta de Cliente VIP</h3>
@@ -1548,7 +1537,7 @@
     </div>
   </div>
 
-  <div class="modal-backdrop" id="modal-admin-login" data-michelle-app="true">
+  <div class="modal-backdrop" id="modal-admin-login" data-app="michelle">
     <div class="modal-box" style="max-width:360px;text-align:center;">
       <h3 style="margin-bottom:10px;">🔒 Acceso Administradora</h3>
       <div class="field-group">
@@ -1562,7 +1551,7 @@
     </div>
   </div>
 
-  <div class="modal-backdrop" id="modal-buy-confirm" data-michelle-app="true">
+  <div class="modal-backdrop" id="modal-buy-confirm" data-app="michelle">
     <div class="modal-box" style="max-width:420px;">
       <h3 id="buy-modal-title" style="margin-bottom:6px;">Confirmar Compra</h3>
       <p id="buy-modal-desc" style="font-size:12.5px;color:var(--muted);margin-bottom:12px;"></p>
@@ -1589,7 +1578,7 @@
     </div>
   </div>
 
-  <div class="modal-backdrop" id="modal-account-delivery" data-michelle-app="true">
+  <div class="modal-backdrop" id="modal-account-delivery" data-app="michelle">
     <div class="modal-box">
       <div style="text-align:center;margin-bottom:12px;">
         <div style="font-size:34px;">🎉</div>
@@ -1617,7 +1606,7 @@
     </div>
   </div>
 
-  <div class="modal-backdrop" id="modal-notifications" data-michelle-app="true">
+  <div class="modal-backdrop" id="modal-notifications" data-app="michelle">
     <div class="modal-box">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
         <h3>🔔 Centro de Notificaciones</h3>
@@ -1627,7 +1616,7 @@
     </div>
   </div>
 
-  <div class="modal-backdrop" id="modal-resolve-report" data-michelle-app="true">
+  <div class="modal-backdrop" id="modal-resolve-report" data-app="michelle">
     <div class="modal-box">
       <h3 style="margin-bottom:6px;">✅ Resolver Reporte y Entregar Nueva Cuenta</h3>
       <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">
@@ -1667,38 +1656,28 @@
     </div>
   </div>
 
-  <script data-michelle-app="true">
+  <script data-app="michelle">
     /* =========================================================
-       DESTRUCTOR AUTOMÁTICO DE ELEMENTOS EXTERNOS (NETLIFY BADGE)
+       FILTRO SEGURO PARA OCULTAR EL BOTÓN "POWERED BY NETLIFY"
+       (Solo revisa hijos directos extraños al final de body)
        ========================================================= */
-    function purgeForeignElements() {
-      const allowedTags = new Set(['HEAD', 'BODY', 'STYLE', 'SCRIPT', 'LINK', 'META', 'TITLE']);
-      // 1. Eliminar cualquier hijo directo de <html> o <body> que no sea parte de nuestra tienda
-      Array.from(document.documentElement.children).forEach(el => {
-        if (!allowedTags.has(el.tagName) && el.getAttribute('data-michelle-app') !== 'true') {
-          el.style.cssText = 'display:none!important;clip-path:inset(100%)!important;transform:scale(0)!important;position:fixed!important;left:-99999px!important;';
-          try { el.remove(); } catch(e) {}
-        }
-      });
-      if (document.body) {
-        Array.from(document.body.children).forEach(el => {
-          if (!allowedTags.has(el.tagName) && el.getAttribute('data-michelle-app') !== 'true') {
-            el.style.cssText = 'display:none!important;clip-path:inset(100%)!important;transform:scale(0)!important;position:fixed!important;left:-99999px!important;';
-            try { el.remove(); } catch(e) {}
-          }
-        });
-      }
-      // 2. Revisar cualquier elemento fijo o con ShadowRoot fuera de nuestra tienda
-      document.querySelectorAll('*').forEach(el => {
-        if (allowedTags.has(el.tagName)) return;
-        if (el.getAttribute('data-michelle-app') === 'true' || el.closest('[data-michelle-app="true"]')) return;
-        el.style.cssText = 'display:none!important;clip-path:inset(100%)!important;transform:scale(0)!important;position:fixed!important;left:-99999px!important;';
-        try { el.remove(); } catch(e) {}
+    function hideNetlifyWidgetSafely() {
+      if (!document.body) return;
+      Array.from(document.body.children).forEach(el => {
+        const tag = el.tagName;
+        if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'LINK') return;
+        if (el.getAttribute('data-app') === 'michelle') return;
+
+        // Si es un elemento inyectado por fuera de nuestra app (como el badge de Netlify)
+        el.style.setProperty('display', 'none', 'important');
+        el.style.setProperty('visibility', 'hidden', 'important');
+        el.style.setProperty('opacity', '0', 'important');
+        el.style.setProperty('pointer-events', 'none', 'important');
       });
     }
-    purgeForeignElements();
-    new MutationObserver(purgeForeignElements).observe(document.documentElement, { childList: true, subtree: true });
-    setInterval(purgeForeignElements, 200);
+    hideNetlifyWidgetSafely();
+    new MutationObserver(hideNetlifyWidgetSafely).observe(document.body, { childList: true });
+    setInterval(hideNetlifyWidgetSafely, 600);
 
     /* =========================================================
        CONEXIÓN EN TIEMPO REAL CON FIREBASE REALTIME DATABASE
@@ -3372,7 +3351,7 @@
         alert("📋 Copiado: " + txt);
       }).catch(() => {
         const t = document.createElement("textarea");
-        t.setAttribute("data-michelle-app", "true");
+        t.setAttribute("data-app", "michelle");
         t.value = txt;
         document.body.appendChild(t);
         t.select();
@@ -3393,7 +3372,7 @@
       if (downloadFile) {
         const blob = new Blob([updatedHtml], { type: "text/html;charset=utf-8" });
         const a = document.createElement("a");
-        a.setAttribute("data-michelle-app", "true");
+        a.setAttribute("data-app", "michelle");
         a.href = URL.createObjectURL(blob);
         a.download = "index.html";
         document.body.appendChild(a);
