@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Catálogo Digital VIP</title>
+  <title>Michelle Streaming VIP</title>
   <style>
     :root {
       --bg-color: #080b14;
@@ -24,6 +24,23 @@
       --doll-blush: #ffb3c6;
       --doll-face: #ffffff;
       --doll-aura: rgba(255, 225, 53, 0.45);
+    }
+
+    /* BLOQUEADOR AUTOMÁTICO DE "POWERED BY NETLIFY" */
+    a[href*="netlify.com"],
+    a[href*="netlify.app"][target="_blank"]:not(.btn-main):not(.btn-outline),
+    div[class*="netlify"],
+    div[id*="netlify"],
+    iframe[src*="netlify"],
+    .netlify-badge,
+    #netlify-badge {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      overflow: hidden !important;
     }
 
     * {
@@ -646,13 +663,13 @@
     }
 
     /* =====================================================
-       ASISTENTE VIRTUAL PERRITO CAPUCHA AMARILLA (CHIMMY STYLE)
+       ASISTENTE VIRTUAL PERRITO CAPUCHA AMARILLA (ESQUINA INFERIOR DERECHA LIMPIA)
        ===================================================== */
     .doll-widget {
       position: fixed;
-      right: 10px;
-      bottom: 8px;
-      z-index: 180;
+      right: 12px;
+      bottom: 12px;
+      z-index: 2147483640;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
@@ -844,7 +861,7 @@
     <div class="brand-mini">
       <img id="top-logo" src="" alt="Logo" onclick="onProfilePicClick()" />
       <div style="min-width:0;">
-        <div class="brand-mini-title" id="top-store-name">Streaming VIP</div>
+        <div class="brand-mini-title" id="top-store-name">Michelle Streaming VIP</div>
         <div style="font-size:10px;color:#34d399;" id="sync-status-mini">● En línea 24/7</div>
       </div>
     </div>
@@ -883,8 +900,8 @@
       <img id="hero-logo" class="hero-avatar" src="" alt="Perfil" onclick="onProfilePicClick()" />
       <label for="quick-profile-input" id="hero-edit-chip" class="avatar-edit-chip">📷 Foto</label>
     </div>
-    <h1 class="hero-title" id="hero-store-name">Streaming VIP</h1>
-    <p class="hero-sub" id="hero-store-slogan">Entrega inmediata 24/7 • Cuentas 100% Garantizadas</p>
+    <h1 class="hero-title" id="hero-store-name">Michelle Streaming VIP</h1>
+    <p class="hero-sub" id="hero-store-slogan">Cuentas Premium y Combos • Entrega Automática 24/7</p>
 
     <div class="stats-grid">
       <div class="stat-card">
@@ -1006,7 +1023,7 @@
           <div>
             <h2 style="font-size:18px;color:var(--warning);">👑 Modo Administradora Activo</h2>
             <div id="firebase-status-banner" style="font-size:12px;color:#34d399;font-weight:700;margin-top:2px;">
-              🟢 Sincronizado en vivo con Firebase (michellestore)
+              🟢 Sincronizado en vivo con Firebase
             </div>
           </div>
           <button class="btn-outline" onclick="logoutAdmin()">🔒 Salir de Edición</button>
@@ -1127,7 +1144,6 @@
             <input type="file" id="p-img-input" accept="image/*" style="display:none" onchange="previewUpload(event, 'p-img-preview', 'prodImgData')" />
           </div>
 
-          <!-- CONFIGURACIÓN DE ENTREGA Y CAMPOS OCULTOS / VISIBLES -->
           <div style="background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.25);padding:12px;border-radius:12px;margin-bottom:12px;">
             <div style="font-weight:800;font-size:13px;margin-bottom:8px;color:var(--secondary);">⚙️ Modo de Entrega y Campos Visibles / Ocultos</div>
             <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;margin-bottom:8px;">
@@ -1452,7 +1468,6 @@
         <button class="btn-outline" style="padding:4px 9px;" onclick="closeModal('modal-client-auth')">✕</button>
       </div>
 
-      <!-- Vista cuando ya inició sesión -->
       <div id="auth-logged-view" style="display:none;">
         <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.4);padding:12px;border-radius:12px;margin-bottom:12px;font-size:13px;line-height:1.6;">
           <div><b>👤 Usuario:</b> <span id="prof-view-name"></span></div>
@@ -1463,14 +1478,12 @@
         <button class="btn-outline" style="width:100%;color:#f87171;border-color:rgba(239,68,68,0.4);" onclick="logoutClientAccount()">🚪 Cerrar sesión en este dispositivo</button>
       </div>
 
-      <!-- Vista de Formulario Registro / Login -->
       <div id="auth-forms-view">
         <div style="display:flex;gap:6px;margin-bottom:12px;">
           <button class="nav-tab active" id="tab-btn-reg" style="flex:1;" onclick="switchAuthMode('register')">✨ Crear Usuario</button>
           <button class="nav-tab" id="tab-btn-log" style="flex:1;" onclick="switchAuthMode('login')">🔑 Iniciar Sesión</button>
         </div>
 
-        <!-- Formulario Crear Cuenta -->
         <div id="form-client-register">
           <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">
             Regístrate con tu correo y WhatsApp para guardar tu saldo en la nube y recibir tus cuentas automáticamente en tu WhatsApp al comprar.
@@ -1494,7 +1507,6 @@
           <button class="btn-main" onclick="registerClientAccount()">✅ Crear mi Usuario y Guardar Saldo</button>
         </div>
 
-        <!-- Formulario Iniciar Sesión -->
         <div id="form-client-login" style="display:none;">
           <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">
             Ingresa con tu correo, usuario o número de teléfono para recuperar tu saldo y tus compras.
@@ -1565,7 +1577,6 @@
 
       <div id="deliv-fields-container"></div>
 
-      <!-- BREVE MENSAJE / DESCRIPCIÓN ABAJO CUANDO YA COMPRARON -->
       <div id="deliv-postbuy-wrap" class="post-buy-box" style="display:none;"></div>
 
       <div id="deliv-codeurl-wrap" style="margin-top:12px;">
@@ -1635,6 +1646,31 @@
   </div>
 
   <script>
+    /* =========================================================
+       ELIMINADOR EN VIVO DEL BOTÓN "POWERED BY NETLIFY"
+       ========================================================= */
+    function removeNetlifyBranding() {
+      document.querySelectorAll('a, div, span, button, footer, aside, iframe').forEach(el => {
+        if (el.closest('main, header, .doll-widget, .music-fab, .modal-backdrop')) return;
+        const txt = (el.innerText || el.textContent || '').trim().toLowerCase();
+        const href = (el.getAttribute('href') || el.getAttribute('src') || '').toLowerCase();
+        if (
+          txt === 'powered by netlify' ||
+          (txt.includes('powered by netlify') && el.children.length <= 4) ||
+          href.includes('netlify.com')
+        ) {
+          el.style.setProperty('display', 'none', 'important');
+          el.style.setProperty('visibility', 'hidden', 'important');
+          el.style.setProperty('opacity', '0', 'important');
+          el.style.setProperty('pointer-events', 'none', 'important');
+          el.remove();
+        }
+      });
+    }
+    removeNetlifyBranding();
+    new MutationObserver(removeNetlifyBranding).observe(document.documentElement, { childList: true, subtree: true });
+    setInterval(removeNetlifyBranding, 500);
+
     /* =========================================================
        CONEXIÓN EN TIEMPO REAL CON FIREBASE REALTIME DATABASE
        ========================================================= */
@@ -1878,7 +1914,7 @@
           body: JSON.stringify(STATE)
         });
         if (res.ok) {
-          updateFirebaseBanner("🟢 Cambios publicados en vivo para todos los clientes", "#34d399");
+          updateFirebaseBanner("🟢 Sincronizado en vivo con Firebase", "#34d399");
         } else if (res.status === 401 || res.status === 403) {
           updateFirebaseBanner("⚠️ Permiso denegado en Firebase: Ve a Reglas (Rules) y pon .read: true y .write: true", "#ef4444");
         } else {
@@ -1972,7 +2008,6 @@
 
       await pullStateFromFirebase();
 
-      // Verificar si ya existe ese correo o teléfono
       const existing = Object.values(STATE.clients || {}).find(c =>
         c.registered && (
           (c.email && c.email.toLowerCase() === email) ||
@@ -2372,7 +2407,6 @@
         closeModal("modal-buy-confirm");
         showDeliveryModal(purchaseRecord);
 
-        // Enviar automáticamente al WhatsApp registrado del cliente
         sendAccountToClientWhatsApp(purchaseRecord, me.phone);
         await saveState();
       } else {
@@ -2477,7 +2511,6 @@
 
       box.innerHTML = html;
 
-      // Mostrar breve mensaje / descripción post-compra abajo
       const postWrap = document.getElementById("deliv-postbuy-wrap");
       const msgToShow = pur.postBuyMsg || STATE.defaultPostBuyMsg || "";
       if (msgToShow.trim()) {
@@ -2534,7 +2567,7 @@
     }
 
     /* =========================================================
-       RECARGAS DE SALDO EN VIVO (REQUIERE USUARIO REGISTRADO)
+       RECARGAS DE SALDO EN VIVO
        ========================================================= */
     function generateNewRefCode() {
       const code = Math.floor(1000000 + Math.random() * 9000000).toString();
