@@ -483,6 +483,7 @@
       background: rgba(0, 0, 0, 0.72); color: #fff; white-space: nowrap; backdrop-filter: blur(4px);
     }
     .prod-body { padding: 11px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .prod-stock-mini { font-size: 11px; font-weight: 700; color: var(--secondary); margin-bottom: -2px; }
     .prod-title { font-size: 14px; font-weight: 800; }
     .prod-desc { font-size: 11.5px; color: var(--muted); line-height: 1.3; }
     .combo-tags { display: flex; flex-wrap: wrap; gap: 4px; }
@@ -827,6 +828,8 @@
           <div class="field-group"><label>Tienda</label><input type="text" id="cfg-store-name" /></div>
           <div class="field-group"><label>Eslogan</label><input type="text" id="cfg-store-slogan" /></div>
           <div class="field-group"><label>WhatsApp Admin</label><input type="text" id="cfg-wa-number" /></div>
+          <div class="field-group"><label>Telegram Bot Token</label><input type="text" id="cfg-tg-token" placeholder="Ej. 123456789:ABCdef..." /></div>
+          <div class="field-group"><label>Telegram Chat ID</label><input type="text" id="cfg-tg-chat-id" value="5762852775" /></div>
           <div class="field-group"><label>UltraMsg Instance ID</label><input type="text" id="cfg-wa-api-instance" /></div>
           <div class="field-group"><label>UltraMsg Token</label><input type="text" id="cfg-wa-api-token" /></div>
           <button class="btn-main" onclick="adminSaveDesign()">💾 Guardar</button>
@@ -857,7 +860,7 @@
     <audio id="audio-player" onended="nextSong()"></audio>
   </div>
 
-  <!-- ASISTENTE VIRTUAL CON GORRITO NAVIDEÑO AUTOMÁTICO (DE HOY HASTA EL 25 DE DICIEMBRE DE 2026) -->
+  <!-- ASISTENTE VIRTUAL CHIMMY (CON MÚLTIPLES GESTOS CLÁSICOS Y GORRO EXACTO DE BT21) -->
   <div class="doll-widget" data-app="michelle">
     <div class="assistant-chat" id="assistant-chat">
       <div class="chat-head">
@@ -866,22 +869,23 @@
       </div>
       <div class="chat-body" id="chat-messages"></div>
       <div class="chat-quick">
-        <span class="chat-chip" onclick="askAssistant('¿Cómo me registro?')">Registro</span>
+        <span class="chat-chip" onclick="askAssistant('Hola')">Hola</span>
         <span class="chat-chip" onclick="askAssistant('¿Cómo recargo?')">Recargar</span>
+        <span class="chat-chip" onclick="askAssistant('Ver catálogo')">Catálogo</span>
       </div>
       <div class="chat-input-row">
-        <input type="text" id="chat-user-input" placeholder="Duda..." onkeydown="if(event.key==='Enter')sendUserChat()" />
+        <input type="text" id="chat-user-input" placeholder="Escribe tu duda..." onkeydown="if(event.key==='Enter')sendUserChat()" />
         <button onclick="sendUserChat()">Enviar</button>
       </div>
     </div>
     <div class="doll-Speech" id="doll-speech-bubble" onclick="toggleAssistantChat()">¡Hola! ¿Te ayudo? 💛</div>
-    <div class="doll-avatar-btn" onclick="toggleAssistantChat()">
-      <svg class="doll-svg" viewBox="-10 -25 140 175">
-        <!-- GORRITO NAVIDEÑO AUTOMÁTICO (CORRECTAMENTE POSICIONADO Y VISIBLE SOBRE LA CABEZA) -->
+    <div class="doll-avatar-btn" onclick="toggleAssistantChat(); cycleChimmyExpression();">
+      <svg class="doll-svg" viewBox="-12 -30 144 180">
+        <!-- GORRITO NAVIDEÑO EXACTO AL DE LA IMAGEN (AUTOMÁTICO HASTA EL 25 DE DIC) -->
         <g id="christmas-hat" style="display:none;">
-          <path d="M 42 12 Q 52 -18 90 -12 Q 102 -8 95 14 Z" fill="#ef4444" stroke="#111" stroke-width="4" stroke-linejoin="round" />
-          <circle cx="95" cy="-12" r="8" fill="#ffffff" stroke="#111" stroke-width="4" />
-          <path d="M 32 10 Q 60 0 88 10 L 88 22 Q 60 12 32 22 Z" fill="#ffffff" stroke="#111" stroke-width="4" stroke-linejoin="round" />
+          <path d="M 40 10 Q 45 -22 92 -15 Q 105 -10 98 12 Z" fill="#ef4444" stroke="#111" stroke-width="4" stroke-linejoin="round" />
+          <circle cx="103" cy="-12" r="9" fill="#ffffff" stroke="#111" stroke-width="4" />
+          <path d="M 28 8 Q 60 -3 92 8 L 92 22 Q 60 10 28 20 Z" fill="#ffffff" stroke="#111" stroke-width="4" stroke-linejoin="round" />
         </g>
 
         <!-- PERRITO CHIMMY -->
@@ -894,9 +898,16 @@
         <path d="M 60 10 C 26 10, 14 32, 16 58 C 18 82, 34 92, 60 92 C 86 92, 102 82, 104 58 C 106 32, 94 10, 60 10 Z" fill="var(--doll-hoodie)" stroke="#111" stroke-width="4.8" />
         <path d="M 60 24 C 38 24, 30 37, 29 53 C 26 60, 26 71, 35 77 C 43 82, 51 83, 60 83 C 69 83, 77 82, 85 77 C 94 71, 94 60, 91 53 C 90 37, 82 24, 60 24 Z" fill="var(--doll-face)" stroke="#111" stroke-width="4.5" />
         <circle cx="38" cy="64" r="8.2" fill="var(--doll-blush)" /><circle cx="82" cy="64" r="8.2" fill="var(--doll-blush)" />
-        <g id="doll-eyes-group" class="chimmy-eyes-normal"><circle cx="48" cy="55" r="4.8" fill="#111" /><circle cx="72" cy="55" r="4.8" fill="#111" /></g>
-        <ellipse cx="60" cy="60.5" rx="4.5" ry="3.1" fill="#111" />
-        <g id="doll-mouth" class="chimmy-mouth-group"><path d="M 52 67 Q 60 72 68 67" stroke="#111" stroke-width="4" stroke-linecap="round" fill="none" /></g>
+
+        <!-- GESTOS FACIALES DINÁMICOS DE CHIMMY -->
+        <g id="chimmy-dynamic-face">
+          <!-- Se actualiza dinámicamente con JS -->
+          <text x="41" y="58" font-size="14" font-weight="900" fill="#111" font-family="sans-serif">></text>
+          <text x="71" y="58" font-size="14" font-weight="900" fill="#111" font-family="sans-serif"><</text>
+          <ellipse cx="60" cy="59" rx="3.8" ry="2.6" fill="#111" />
+          <path d="M 52 64 Q 60 69 68 64" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="none" />
+          <path d="M 57 66 C 57 71, 63 71, 63 66 Z" fill="#ff477e" stroke="#111" stroke-width="2.5" />
+        </g>
       </svg>
     </div>
   </div>
@@ -999,12 +1010,53 @@
 
     const FIREBASE_DB_URL = "https://michellestore-default-rtdb.firebaseio.com/store_v1.json";
     const FIREBASE_VIDEO_URL = "https://michellestore-default-rtdb.firebaseio.com/store_video_bg.json";
+    const FIREBASE_STOCK_URL = "https://michellestore-default-rtdb.firebaseio.com/store_stock_v1.json";
+
     const STORAGE_KEY = "MICHELLE_VIP_FIREBASE_CACHE_V1";
+    const STOCK_STORAGE_KEY = "MICHELLE_VIP_STOCK_CACHE_V1";
     const CLIENT_ID_KEY = "MICHELLE_CLIENT_DEVICE_ID";
     const ADMIN_PASS = "426153";
 
     let loadedVideoId = "";
     let wantVideoSound = true;
+
+    // GESTOS Y EXPRESIONES CLÁSICAS DE CHIMMY (BT21)
+    const chimmyExpressions = [
+      // 1. Carita >< con lengüita
+      { eyes: '<text x="41" y="58" font-size="14" font-weight="900" fill="#111" font-family="sans-serif">></text><text x="71" y="58" font-size="14" font-weight="900" fill="#111" font-family="sans-serif"><</text><ellipse cx="60" cy="59" rx="3.8" ry="2.6" fill="#111"/>', mouth: '<path d="M 52 64 Q 60 69 68 64" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="none"/><path d="M 57 66 C 57 71, 63 71, 63 66 Z" fill="#ff477e" stroke="#111" stroke-width="2.5"/>' },
+      // 2. Sonrisa alegre ^ ^
+      { eyes: '<path d="M 39 54 Q 45 46 51 54" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="none"/><path d="M 69 54 Q 75 46 81 54" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="none"/><ellipse cx="60" cy="59" rx="3.8" ry="2.6" fill="#111"/>', mouth: '<path d="M 50 63 Q 60 74 70 63" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="#ff477e"/>' },
+      // 3. Guiño alegre >-
+      { eyes: '<text x="41" y="58" font-size="14" font-weight="900" fill="#111" font-family="sans-serif">></text><path d="M 69 56 L 79 56" stroke="#111" stroke-width="3.5" stroke-linecap="round"/><ellipse cx="60" cy="59" rx="3.8" ry="2.6" fill="#111"/>', mouth: '<path d="M 52 64 Q 60 71 68 64" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="none"/>' },
+      // 4. Ojitos estrellados ✨
+      { eyes: '<text x="39" y="60" font-size="15" font-weight="900" fill="#111" font-family="sans-serif">★</text><text x="70" y="60" font-size="15" font-weight="900" fill="#111" font-family="sans-serif">★</text><ellipse cx="60" cy="59" rx="3.8" ry="2.6" fill="#111"/>', mouth: '<path d="M 50 63 Q 60 73 70 63" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="#ff477e"/>' }
+    ];
+    let currentExprIdx = 0;
+
+    function cycleChimmyExpression() {
+      currentExprIdx = (currentExprIdx + 1) % chimmyExpressions.length;
+      const expr = chimmyExpressions[currentExprIdx];
+      const faceGroup = document.getElementById("chimmy-dynamic-face");
+      if (faceGroup) {
+        faceGroup.innerHTML = expr.eyes + expr.mouth;
+      }
+    }
+
+    // Cambiar expresión automáticamente cada 6 segundos para darle vida
+    setInterval(cycleChimmyExpression, 6000);
+
+    async function sendTelegramNotification(text) {
+      const token = (STATE.tgToken || "").trim();
+      const chatId = (STATE.tgChatId || "5762852775").trim();
+      if (!token || !chatId) return;
+      try {
+        await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ chat_id: chatId, text: text, parse_mode: "Markdown" })
+        });
+      } catch (e) {}
+    }
 
     function openVideoCacheDB() {
       return new Promise((resolve, reject) => {
@@ -1172,6 +1224,7 @@
       profilePic: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&auto=format&fit=crop&q=80",
       waNumber: "5215500000000",
       waApiInstance: "", waApiToken: "",
+      tgToken: "", tgChatId: "5762852775",
       defaultCodeUrl: "https://mis-codigos-vip.com",
       defaultPostBuyMsg: "📌 Importante: Ingresa únicamente en el perfil asignado.",
       bankInfo: "🏦 Banco: Nu México / SPEI\n💳 CLABE: 6381 8000 0000 0000 01",
@@ -1188,11 +1241,45 @@
       products: [
         { id: "p_netflix", name: "Netflix Perfil", price: 55, cat: "streaming", desc: "25 días garantizado", postBuyMsg: "Usa tu perfil.", tags: ["Netflix"], gradient: "transparent", img: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=600&auto=format&fit=crop&q=80", autoDelivery: true, manualStock: 0, askEmail: false, askPass: false, askId: false, showEmail: true, showPass: true, showProfile: true, showId: false, showCodeUrl: true }
       ],
-      accountsStock: [], clients: {}, salesHistory: [], rechargeRequests: [], reports: [], adminNotifications: [],
+      clients: {}, salesHistory: [], rechargeRequests: [], reports: [], adminNotifications: [],
       songs: [{ title: "Synthwave Chill VIP", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" }]
     };
 
     let STATE = loadLocalCache();
+    let accountsStock = loadLocalStockCache();
+
+    function loadLocalStockCache() {
+      try { const saved = localStorage.getItem(STOCK_STORAGE_KEY); if (saved) { const parsed = JSON.parse(saved); if (Array.isArray(parsed)) return parsed; } } catch (e) {}
+      return [];
+    }
+    function saveLocalStockCache() { try { localStorage.setItem(STOCK_STORAGE_KEY, JSON.stringify(accountsStock)); } catch (e) {} }
+
+    async function saveStockState() {
+      saveLocalStockCache();
+      try {
+        await fetch(FIREBASE_STOCK_URL, {
+          method: "PUT", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(accountsStock)
+        });
+      } catch (e) {}
+    }
+
+    async function pullStockFromFirebase() {
+      try {
+        const res = await fetch(FIREBASE_STOCK_URL + "?t=" + Date.now(), { cache: "no-store" });
+        if (res.ok) {
+          const cloudStock = await res.json();
+          if (Array.isArray(cloudStock)) {
+            if (cloudStock.length >= accountsStock.length) {
+              accountsStock = cloudStock;
+              saveLocalStockCache();
+              renderAll();
+            }
+          }
+        }
+      } catch (e) {}
+    }
+
     let isAdmin = false; let currentCat = "all"; let pendingBuyProdId = null; let currentSongIdx = 0; let isSavingToCloud = false;
     window.recCaptureData = ""; window.repCaptureData = ""; window.prodImgData = ""; window.catImgData = "";
 
@@ -1214,7 +1301,6 @@
       merged.doll = Object.assign({}, DEFAULT_STATE.doll, (raw && raw.doll) || {});
       merged.categories = Array.isArray(merged.categories) ? merged.categories : DEFAULT_STATE.categories;
       merged.products = Array.isArray(merged.products) ? merged.products : [];
-      merged.accountsStock = Array.isArray(merged.accountsStock) ? merged.accountsStock : [];
       merged.salesHistory = Array.isArray(merged.salesHistory) ? merged.salesHistory : [];
       merged.rechargeRequests = Array.isArray(merged.rechargeRequests) ? merged.rechargeRequests : [];
       merged.reports = Array.isArray(merged.reports) ? merged.reports : [];
@@ -1407,7 +1493,7 @@
 
     function getProductStockCount(prod) {
       if (!prod.autoDelivery) return Number(prod.manualStock || 0);
-      return STATE.accountsStock.filter(a => a.prodId === prod.id && !a.used).length;
+      return accountsStock.filter(a => a.prodId === prod.id && !a.used).length;
     }
 
     function renderAll() {
@@ -1463,8 +1549,9 @@
 
       grid.innerHTML = list.map(prod => {
         const stk = getProductStockCount(prod);
-        const statusColor = stk > 3 ? "#10b981" : (stk > 0 ? "#f59e0b" : "#ef4444");
-        const statusText = stk > 3 ? `Disponible (${stk})` : (stk > 0 ? `¡Últimos!` : "Agotado");
+        // "¡Últimos!" aparece cuando quedan 2 cuentas o menos (stk <= 2 y stk > 0)
+        const statusColor = stk > 2 ? "#10b981" : (stk > 0 ? "#f59e0b" : "#ef4444");
+        const statusText = stk > 2 ? `Disponible (${stk})` : (stk > 0 ? `¡Últimos!` : "Agotado");
         return `
           <div class="prod-card">
             <div class="prod-head">
@@ -1473,6 +1560,7 @@
               <div class="delivery-type-badge">${prod.autoDelivery ? '⚡ Inmediata' : '✍️ Manual'}</div>
             </div>
             <div class="prod-body">
+              <div class="prod-stock-mini">Stock: ${stk} disponibles</div>
               <div class="prod-title">${prod.name}</div>
               <div class="prod-desc">${prod.desc || ''}</div>
               <div class="prod-price">$${Number(prod.price).toFixed(2)}</div>
@@ -1566,7 +1654,7 @@
     }
 
     async function executePurchase() {
-      await pullStateFromFirebase();
+      await pullStockFromFirebase();
       const prod = STATE.products.find(p => p.id === pendingBuyProdId);
       if (!prod) return;
       const me = getMyClient();
@@ -1580,9 +1668,11 @@
       const postMsg = (prod.postBuyMsg && prod.postBuyMsg.trim()) ? prod.postBuyMsg.trim() : (STATE.defaultPostBuyMsg || "");
 
       if (prod.autoDelivery) {
-        const freeAcc = STATE.accountsStock.find(a => a.prodId === prod.id && !a.used);
+        const freeAcc = accountsStock.find(a => a.prodId === prod.id && !a.used);
         if (!freeAcc) return showPurpleToast("⚠️ Sin stock disponible");
         freeAcc.used = true;
+        await saveStockState();
+
         me.balance = Number(me.balance) - Number(prod.price);
         STATE.deliveredCount = Number(STATE.deliveredCount || 0) + 1;
         const purchaseRecord = {
@@ -1594,6 +1684,9 @@
         me.purchases.unshift(purchaseRecord);
         STATE.salesHistory.unshift(purchaseRecord);
         pushAdminNotification(`🛒 Venta: ${prod.name} a ${me.name}`, purchaseRecord.id);
+        
+        sendTelegramNotification(`🛒 *¡NUEVA VENTA!*\n📦 ${prod.name}\n👤 ${me.name}\n💵 $${prod.price} MXN`);
+
         closeModal("modal-buy-confirm"); showPurpleToast("✨ Compra exitosa");
         showDeliveryModal(purchaseRecord);
         dispatchAutomaticWhatsAppInBackground(purchaseRecord);
@@ -1610,6 +1703,9 @@
         };
         me.purchases.unshift(purchaseRecord); STATE.salesHistory.unshift(purchaseRecord);
         pushAdminNotification(`👑 Sincronización: ${prod.name} (${me.name})`, purchaseRecord.id);
+
+        sendTelegramNotification(`🛒 *¡NUEVA VENTA MANUAL!*\n📦 ${prod.name}\n👤 ${me.name}\n💵 $${prod.price} MXN`);
+
         await saveState(); closeModal("modal-buy-confirm"); showPurpleToast("✨ Se guardó con éxito");
         showDeliveryModal(purchaseRecord);
       }
@@ -1663,6 +1759,9 @@
       STATE.rechargeRequests.unshift(req);
       pushAdminNotification(`💳 Recarga de ${me.name} por $${amount}`);
       notifyAdminRechargeOnWhatsApp(req);
+
+      sendTelegramNotification(`💳 *¡NUEVA RECARGA!*\n👤 ${me.name}\n💰 $${amount} MXN\nRef: ${req.refCode}`);
+
       window.recCaptureData = ""; document.getElementById("rec-amount").value = "";
       generateNewRefCode(); await saveState(); showPurpleToast("✨ Se guardó con éxito");
     }
@@ -1673,6 +1772,9 @@
       if (!plat || !desc) return showPurpleToast("⚠️ Llena los campos");
       await pullStateFromFirebase();
       STATE.reports.unshift({ id: "rep_" + Date.now(), clientId: MY_CLIENT_ID, clientName: getMyClient().name, type: "falla", platform: plat, desc, status: "Pendiente", date: new Date().toLocaleString() });
+
+      sendTelegramNotification(`⚠️ *¡REPORTE DE FALLA!*\n📱 Plataforma: ${plat}\n👤 ${getMyClient().name}\n📝 ${desc}`);
+
       document.getElementById("rep-platform").value = ""; document.getElementById("rep-desc").value = "";
       await saveState(); showPurpleToast("✨ Se guardó con éxito");
     }
@@ -1720,7 +1822,7 @@
         </div>
       `).join("");
 
-      document.getElementById("adm-stock-list").innerHTML = STATE.accountsStock.map(a => `
+      document.getElementById("adm-stock-list").innerHTML = accountsStock.map(a => `
         <div class="copy-row"><span>${a.email}</span><button class="btn-outline" style="color:#ef4444;" onclick="adminDeleteStock('${a.id}')">🗑️</button></div>
       `).join("");
 
@@ -1747,17 +1849,25 @@
       saveState(); showPurpleToast("✨ Saldo actualizado");
     }
 
-    function adminAddAccountStock() {
+    async function adminAddAccountStock() {
       const prodId = document.getElementById("stk-prod-id").value;
       const email = document.getElementById("stk-email").value.trim();
       const pass = document.getElementById("stk-pass").value.trim();
       const profile = document.getElementById("stk-profile").value.trim();
       if (!email) return showPurpleToast("📧 Falta correo");
-      STATE.accountsStock.push({ id: "acc_" + Date.now(), prodId, email, pass, profile, used: false });
-      saveState(); showPurpleToast("✨ Cuenta guardada");
+      accountsStock.push({ id: "acc_" + Date.now(), prodId, email, pass, profile, used: false });
+      await saveStockState();
+      renderAll();
+      showPurpleToast("✨ Cuenta guardada en la nube");
     }
 
-    function adminDeleteStock(id) { STATE.accountsStock = STATE.accountsStock.filter(a => a.id !== id); saveState(); showPurpleToast("✨ Eliminado"); }
+    async function adminDeleteStock(id) {
+      accountsStock = accountsStock.filter(a => a.id !== id);
+      await saveStockState();
+      renderAll();
+      showPurpleToast("✨ Cuenta eliminada");
+    }
+
     function toggleManualStockInput() { document.getElementById("manual-stock-wrap").style.display = document.getElementById("p-auto-delivery").checked ? "none" : "block"; }
 
     function adminSaveProduct() {
@@ -1811,6 +1921,8 @@
       STATE.storeName = document.getElementById("cfg-store-name").value.trim() || STATE.storeName;
       STATE.storeSlogan = document.getElementById("cfg-store-slogan").value.trim() || STATE.storeSlogan;
       STATE.waNumber = document.getElementById("cfg-wa-number").value.trim() || STATE.waNumber;
+      STATE.tgToken = document.getElementById("cfg-tg-token").value.trim() || STATE.tgToken;
+      STATE.tgChatId = document.getElementById("cfg-tg-chat-id").value.trim() || STATE.tgChatId;
       STATE.waApiInstance = document.getElementById("cfg-wa-api-instance").value.trim();
       STATE.waApiToken = document.getElementById("cfg-wa-api-token").value.trim();
       const vidUrl = document.getElementById("cfg-bg-vid-url").value.trim();
@@ -1874,15 +1986,32 @@
       chat.classList.toggle("open");
     }
 
+    /* ASISTENTE VIRTUAL CON CONVERSACIÓN FLUIDA E INTELIGENTE */
     function askAssistant(txt) {
       const chatMsgs = document.getElementById("chat-messages");
+      const lower = txt.toLowerCase();
       chatMsgs.innerHTML += `<div class="msg-user">${txt}</div>`;
-      let reply = "¡Hola! Para cualquier duda con tus compras o recargas, puedes escribirnos por WhatsApp.";
-      if (txt.includes("registro")) reply = "Para registrarte, toca el menú ☰ arriba a la izquierda, selecciona 'Mi Cuenta' y llena tus datos.";
-      if (txt.includes("recargo")) reply = "Para recargar saldo, ve al menú ☰, selecciona 'Recargar Saldo', realiza tu SPEI y sube tu comprobante.";
+      
+      let reply = "¡Hola! Soy Chimmy VIP 🐾 ¿Cómo estás? Estoy aquí para ayudarte con cualquier duda sobre nuestras cuentas de streaming o recargas.";
+      
+      if (lower.includes("hola") || lower.includes("buenas") || lower.includes("saludos")) {
+        reply = "¡Hola! 😊 ¿Cómo estás? Dime, ¿en qué te puedo ayudar hoy con tu cuenta o suscripción?";
+      } else if (lower.includes("recargar") || lower.includes("saldo") || lower.includes("pagar")) {
+        reply = "💳 Para recargar saldo, ve al menú ☰ arriba a la izquierda, selecciona 'Recargar Saldo', realiza tu transferencia SPEI con tu código único y sube tu captura de pago.";
+      } else if (lower.includes("registro") || lower.includes("cuenta") || lower.includes("registrar")) {
+        reply = "👤 Para registrarte y guardar tus pedidos, toca el menú ☰ y entra en 'Mi Cuenta' para crear tu usuario en segundos.";
+      } else if (lower.includes("catalogo") || lower.includes("productos") || lower.includes("precio") || lower.includes("netflix") || lower.includes("disney") || lower.includes("spotify")) {
+        reply = "🎬 Tenemos las mejores plataformas y combos VIP con entrega inmediata 24/7. Puedes explorarlas todas directamente aquí en el catálogo principal de la tienda.";
+      } else if (lower.includes("falla") || lower.includes("problema") || lower.includes("ayuda") || lower.includes("soporte")) {
+        reply = "⚠️ Si tienes algún inconveniente con una cuenta, ve al menú ☰ y selecciona 'Reportar Falla' para atenderte de inmediato.";
+      } else {
+        reply = `¡Entendido sobre "${txt}"! 💛 Si necesitas comprar una cuenta o recargar saldo, dime y te guío con mucho gusto.`;
+      }
+
       setTimeout(() => {
         chatMsgs.innerHTML += `<div class="msg-bot">${reply}</div>`;
         chatMsgs.scrollTop = chatMsgs.scrollHeight;
+        cycleChimmyExpression(); // Cambia de gesto al responder
       }, 400);
       chatMsgs.scrollTop = chatMsgs.scrollHeight;
     }
@@ -1902,7 +2031,11 @@
     generateNewRefCode();
     renderAll();
     pullStateFromFirebase();
-    setInterval(pullStateFromFirebase, 4000);
+    pullStockFromFirebase();
+    setInterval(() => {
+      pullStateFromFirebase();
+      pullStockFromFirebase();
+    }, 4000);
   </script>
 </body>
 </html>
