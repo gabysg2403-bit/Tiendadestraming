@@ -35,7 +35,7 @@
       --success: #10b981;
       --warning: #f59e0b;
       --danger: #ef4444;
-      --overlay-opacity: 0.72;
+      --overlay-opacity: 0.55;
       --doll-hoodie: #ffe135;
       --doll-ears: #111111;
       --doll-buttons: #f26d40;
@@ -100,7 +100,7 @@
       transform: translateX(-50%) translateY(0) scale(1);
     }
 
-    /* FONDO MULTIMEDIA CON VIDEO Y AUDIO */
+    /* FONDO MULTIMEDIA CON VIDEO Y MÚSICA */
     #bg-media-container {
       position: fixed;
       inset: 0;
@@ -121,7 +121,7 @@
       position: fixed;
       inset: 0;
       z-index: -2;
-      background: radial-gradient(circle at 50% 15%, rgba(20, 28, 52, 0.45), rgba(6, 9, 18, var(--overlay-opacity)));
+      background: radial-gradient(circle at 50% 15%, rgba(20, 28, 52, 0.35), rgba(6, 9, 18, var(--overlay-opacity)));
       pointer-events: none;
     }
     #bg-canvas {
@@ -330,14 +330,14 @@
     /* PORTADA / HERO */
     .hero-box {
       text-align: center;
-      padding: 22px 16px 16px;
+      padding: 20px 16px 14px;
       position: relative;
     }
     .radar-wrap {
       position: relative;
       width: 132px;
       height: 132px;
-      margin: 0 auto 14px;
+      margin: 0 auto 12px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -486,7 +486,10 @@
       box-shadow: 0 0 12px rgba(0, 229, 255, 0.25);
     }
 
-    /* CATÁLOGO DE PRODUCTOS CON IMÁGENES SIN FONDO */
+    /* =========================================================
+       TARJETAS DE PRODUCTOS: SIN FONDO DE COLOR DETRÁS DE LA FOTO
+       LA IMAGEN QUE SUBES ABARCA TODO EL CUADRO SUPERIOR
+       ========================================================= */
     .products-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(162px, 1fr));
@@ -500,39 +503,57 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     }
     .prod-head {
-      padding: 14px 10px 10px;
+      padding: 0 !important;
+      background: transparent !important;
       position: relative;
-      min-height: 122px;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      max-height: 175px;
+      overflow: hidden;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      text-align: center;
     }
-    /* IMAGEN DE PRODUCTO LIMPIA Y SIN FONDO */
     .prod-img {
-      width: 82px;
-      height: 82px;
-      object-fit: contain;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
       background: transparent !important;
       border: none !important;
       box-shadow: none !important;
       border-radius: 0 !important;
-      margin-bottom: 6px;
-      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.45));
+      margin: 0 !important;
+      display: block;
     }
     .stock-badge {
       position: absolute;
       top: 8px;
       right: 8px;
+      z-index: 3;
       font-size: 10px;
       font-weight: 800;
-      padding: 3px 7px;
+      padding: 4px 8px;
       border-radius: 999px;
-      background: rgba(0, 0, 0, 0.65);
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+    }
+    .delivery-type-badge {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.72);
+      color: #fff;
+      white-space: nowrap;
+      backdrop-filter: blur(4px);
     }
     .prod-body {
       padding: 11px;
@@ -833,12 +854,12 @@
   <!-- ANUNCIO MORADO DE 1 SEGUNDO (REEMPLAZA PANTALLAS GRISES) -->
   <div id="purple-toast" data-app="michelle">✨ Se guardó con éxito</div>
 
-  <!-- BOTÓN FLOTANTE PARA ENCENDER/APAGAR AUDIO DEL VIDEO DE FONDO -->
+  <!-- BOTÓN FLOTANTE PARA ENCENDER/APAGAR MÚSICA DEL VIDEO DE FONDO -->
   <button id="video-audio-toggle" class="video-audio-btn" onclick="toggleVideoAudio()" data-app="michelle">
-    🔇 Sonido Video: Apagado
+    🔊 Música Video: Activada
   </button>
 
-  <!-- FONDO ANIMADO (SOPORTA VIDEO CON MÚSICA, IMAGEN O PARTÍCULAS) -->
+  <!-- FONDO ANIMADO (SOPORTA VIDEO SUBIDO DESDE GALERÍA CON MÚSICA) -->
   <div id="bg-media-container" data-app="michelle">
     <video id="bg-video" autoplay loop playsinline></video>
   </div>
@@ -1080,7 +1101,7 @@
         <div id="adm-recargas" class="adm-tab">
           <h3 style="font-size:15px;margin-bottom:8px;color:#34d399;">📤 Ventas Recientes (Enviar Cuenta desde TU WhatsApp al Cliente)</h3>
           <p style="font-size:11.5px;color:var(--muted);margin-bottom:8px;">
-            Si no tienes un Bot API conectado, toca el botón verde de cualquier compra para que el mensaje salga desde <b>tu WhatsApp</b> directo al teléfono del cliente.
+            Toca el botón verde de cualquier compra para que el mensaje salga desde <b>tu WhatsApp</b> directo al teléfono del cliente.
           </p>
           <div id="adm-recent-sales-list" style="margin-bottom:16px;"></div>
 
@@ -1138,18 +1159,18 @@
           <div id="adm-stock-list"></div>
         </div>
 
-        <!-- TAB ADMIN 3: PRODUCTOS, IMAGEN SIN FONDO Y MENSAJE POST-COMPRA -->
+        <!-- TAB ADMIN 3: PRODUCTOS (LA IMAGEN ABARCA TODO SIN FONDO DE COLOR) -->
         <div id="adm-productos" class="adm-tab" style="display:none;">
           <h3 style="font-size:15px;margin-bottom:10px;">📦 Crear / Editar Producto o Combo</h3>
           <input type="hidden" id="edit-prod-id" />
           <div class="field-group">
             <label>Nombre del Producto / Combo</label>
-            <input type="text" id="p-name" placeholder="Ej. Netflix 1 Perfil / Canva Pro" />
+            <input type="text" id="p-name" placeholder="Ej. Netflix Perfil / Disney+" />
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
             <div class="field-group">
               <label>Precio ($ MXN)</label>
-              <input type="number" id="p-price" placeholder="95" />
+              <input type="number" id="p-price" placeholder="55" />
             </div>
             <div class="field-group">
               <label>Categoría</label>
@@ -1157,32 +1178,21 @@
             </div>
           </div>
           <div class="field-group">
-            <label>Descripción corta en el catálogo (ej. 30 Días | 1 Pantalla)</label>
-            <input type="text" id="p-desc" placeholder="30 Días Garantizados" />
+            <label>Descripción corta en el catálogo (ej. 25 días garantizado)</label>
+            <input type="text" id="p-desc" placeholder="25 días garantizado" />
           </div>
           <div class="field-group">
             <label style="color:#fde047;">📝 Breve mensaje / descripción abajo cuando YA compraron (aparece en la entrega y en WhatsApp)</label>
-            <textarea id="p-post-buy-msg" rows="3" placeholder="Ej. 📌 Importante: No cambiar contraseña ni modificar otros perfiles. Prohibido abrir en más de 1 dispositivo. Garantía de 30 días."></textarea>
+            <textarea id="p-post-buy-msg" rows="3" placeholder="Ej. 📌 Importante: No cambiar contraseña ni modificar otros perfiles. Prohibido abrir en más de 1 dispositivo."></textarea>
           </div>
           <div class="field-group">
             <label>Etiquetas de Combo (separadas por coma, opcional)</label>
-            <input type="text" id="p-tags" placeholder="Ej. Netflix, Disney+, Vix" />
+            <input type="text" id="p-tags" placeholder="Ej. Netflix, 4K" />
           </div>
           <div class="field-group">
-            <label>Color Degradado de la Tarjeta</label>
-            <select id="p-gradient">
-              <option value="linear-gradient(135deg, #e50914, #7f1d1d)">Rojo Netflix</option>
-              <option value="linear-gradient(135deg, #1d4ed8, #06b6d4)">Azul Disney / Max</option>
-              <option value="linear-gradient(135deg, #f97316, #db2777)">Naranja Crunchyroll</option>
-              <option value="linear-gradient(135deg, #7c3aed, #ec4899)">Violeta / Canva</option>
-              <option value="linear-gradient(135deg, #10b981, #047857)">Verde Spotify</option>
-              <option value="linear-gradient(135deg, #eab308, #b45309)">Dorado VIP</option>
-            </select>
-          </div>
-          <div class="field-group">
-            <label>Imagen del Producto (Se guarda SIN fondo y respeta transparencia)</label>
+            <label>Imagen del Producto (Abarca todo el cuadro superior SIN fondo de color detrás)</label>
             <label for="p-img-input" class="upload-label">
-              📸 Toca aquí para elegir imagen del producto desde tu Galería
+              📸 Toca aquí para elegir la imagen del producto desde tu Galería
               <img id="p-img-preview" class="upload-preview" />
             </label>
             <input type="file" id="p-img-input" accept="image/*" style="display:none" onchange="previewUpload(event, 'p-img-preview', 'prodImgData', true)" />
@@ -1243,7 +1253,7 @@
             <input type="text" id="cat-icon-input" placeholder="🎬" />
           </div>
           <div class="field-group">
-            <label>Imagen de la Categoría (Sin fondo desde tu Galería)</label>
+            <label>Imagen de la Categoría (Desde tu Galería)</label>
             <label for="cat-img-input" class="upload-label">
               📸 Subir imagen de categoría desde mi Galería
               <img id="cat-img-preview" class="upload-preview" />
@@ -1255,9 +1265,35 @@
           <div id="adm-cats-list"></div>
         </div>
 
-        <!-- TAB ADMIN 6: FOTO, FONDO VIDEO CON SONIDO Y BOT DE WHATSAPP EN AUTOMÁTICO -->
+        <!-- TAB ADMIN 6: SUBIR VIDEO DE FONDO CON MÚSICA DESDE GALERÍA + BOT WA -->
         <div id="adm-diseno" class="adm-tab" style="display:none;">
-          <h3 style="font-size:15px;margin-bottom:10px;">🎨 Diseño, Video con Música y Bot Automático de WhatsApp</h3>
+          <h3 style="font-size:15px;margin-bottom:10px;">🎨 Subir Video de Fondo con Música, Fotos y Bot WA</h3>
+
+          <!-- SUBIR VIDEO CON MÚSICA DESDE LA GALERÍA DEL TELÉFONO -->
+          <div class="field-group" style="background:rgba(124,58,237,0.14);border:1.5px solid rgba(168,85,247,0.5);padding:12px;border-radius:14px;">
+            <label style="color:#e9d5ff;font-size:13px;">🎬 VIDEO DE FONDO DE PANTALLA CON MÚSICA (Desde tu Galería)</label>
+            <p style="font-size:11.5px;color:#cbd5e1;margin-bottom:8px;">
+              Elige un video <b>.mp4</b> directo de la galería de tu teléfono. Se pondrá de fondo de pantalla y reproducirá su propia música.
+            </p>
+            <label for="adm-bg-vid-file-input" class="upload-label" style="border-color:#c084fc;color:#e9d5ff;background:rgba(124,58,237,0.2);">
+              🎬 Toca aquí para subir un VIDEO con música desde tu Galería
+            </label>
+            <input type="file" id="adm-bg-vid-file-input" accept="video/mp4,video/webm,video/*" style="display:none" onchange="handleBgVideoGalleryUpload(event)" />
+            <div id="bg-video-upload-status" style="font-size:11.5px;color:#34d399;margin-top:6px;font-weight:700;"></div>
+
+            <div class="field-group" style="margin-top:10px;margin-bottom:0;">
+              <label>O pega un enlace directo .mp4 (Opcional si no subes desde galería)</label>
+              <input type="text" id="cfg-bg-vid-url" placeholder="https://.../video.mp4" />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label>Fondo de Pantalla en Imagen o GIF (Desde tu Galería)</label>
+            <label for="adm-bg-img-input" class="upload-label">
+              🖼️ Subir Imagen o GIF de Fondo desde mi Galería
+            </label>
+            <input type="file" id="adm-bg-img-input" accept="image/*" style="display:none" onchange="handleBgImageUpload(event)" />
+          </div>
 
           <div class="field-group">
             <label>Foto de Perfil de la Tienda (Desde tu Galería)</label>
@@ -1281,18 +1317,18 @@
             <input type="text" id="cfg-wa-number" placeholder="52155..." />
           </div>
 
-          <!-- CONFIGURACIÓN DE ENVÍO AUTOMÁTICO DE WHATSAPP AL CLIENTE (API / BOT) -->
+          <!-- CONFIGURACIÓN DE ENVÍO AUTOMÁTICO DE WHATSAPP AL CLIENTE Y AVISO DE RECARGAS -->
           <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.35);padding:12px;border-radius:12px;margin-bottom:12px;">
-            <div style="font-weight:800;font-size:13px;color:#34d399;margin-bottom:4px;">🤖 Envío 100% Automático de WhatsApp al Cliente (En Segundo Plano)</div>
+            <div style="font-weight:800;font-size:13px;color:#34d399;margin-bottom:4px;">🤖 Envío 100% Automático de WhatsApp (Cuentas y Alertas de Recarga)</div>
             <p style="font-size:11.5px;color:var(--muted);margin-bottom:8px;">
-              Para que cuando el cliente compre le llegue un mensaje normal de WhatsApp desde tu número automáticamente sin que tú presiones enviar, conecta tu instancia de <b>UltraMsg</b> o un <b>Webhook</b> (ej. Make / Evolution API). Si lo dejas vacío, podrás enviárselo tú con 1 toque desde la pestaña <b>Recargas & Envíos WA</b>.
+              Al poner tu instancia de <b>UltraMsg</b>, tu número enviará las cuentas automáticamente al WhatsApp del cliente y te mandará a ti la foto cuando alguien recargue saldo.
             </p>
             <div class="field-group">
-              <label>UltraMsg Instance ID (Ej. instance12345) o URL de tu Webhook</label>
-              <input type="text" id="cfg-wa-api-instance" placeholder="Ej. instance12345 o https://hook.us1.make.com/..." />
+              <label>UltraMsg Instance ID (Ej. instance12345) o URL Webhook</label>
+              <input type="text" id="cfg-wa-api-instance" placeholder="Ej. instance12345" />
             </div>
             <div class="field-group" style="margin-bottom:0;">
-              <label>UltraMsg Token (Dejar vacío si usas Webhook directo)</label>
+              <label>UltraMsg Token</label>
               <input type="text" id="cfg-wa-api-token" placeholder="Tu token de UltraMsg..." />
             </div>
           </div>
@@ -1326,21 +1362,8 @@
           </div>
 
           <div class="field-group">
-            <label>Fondo de Pantalla (Imagen o GIF desde tu Galería)</label>
-            <label for="adm-bg-img-input" class="upload-label">
-              🖼️ Subir Imagen o GIF de Fondo desde mi Galería
-            </label>
-            <input type="file" id="adm-bg-img-input" accept="image/*" style="display:none" onchange="handleBgImageUpload(event)" />
-          </div>
-
-          <div class="field-group">
-            <label>Fondo Animado en Video con Música (Enlace directo .mp4)</label>
-            <input type="text" id="cfg-bg-vid-url" placeholder="Pega aquí el link directo de un video .mp4 con sonido" />
-          </div>
-
-          <div class="field-group">
-            <label>Oscuridad sobre el fondo (para que resalten las tarjetas)</label>
-            <input type="range" id="cfg-overlay-opacity" min="0.2" max="0.95" step="0.05" value="0.72" />
+            <label>Oscuridad sobre el video/imagen de fondo (para que resalten las tarjetas)</label>
+            <input type="range" id="cfg-overlay-opacity" min="0.1" max="0.9" step="0.05" value="0.55" />
           </div>
 
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -1440,7 +1463,7 @@
   </div>
 
   <!-- =========================================================
-       ASISTENTE VIRTUAL PERRITO CAPUCHA AMARILLA (COMPLETO)
+       ASISTENTE VIRTUAL PERRITO CAPUCHA AMARILLA
        ========================================================= -->
   <div class="doll-widget" data-app="michelle">
     <div class="assistant-chat" id="assistant-chat">
@@ -1724,34 +1747,202 @@
     };
 
     /* =========================================================
-       CONTROL DE SONIDO DEL VIDEO DE FONDO (.MP4)
+       BASE DE DATOS LOCAL INDEXED-DB + NUBE PARA VIDEO CON MÚSICA
        ========================================================= */
-    function toggleVideoAudio() {
+    const FIREBASE_DB_URL = "https://michellestore-default-rtdb.firebaseio.com/store_v1.json";
+    const FIREBASE_VIDEO_URL = "https://michellestore-default-rtdb.firebaseio.com/store_video_bg.json";
+    const STORAGE_KEY = "MICHELLE_VIP_FIREBASE_CACHE_V1";
+    const CLIENT_ID_KEY = "MICHELLE_CLIENT_DEVICE_ID";
+    const ADMIN_PASS = "426153";
+
+    let loadedVideoId = "";
+    let wantVideoSound = true;
+
+    function openVideoCacheDB() {
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open("MichelleVideoCacheDB", 1);
+        req.onupgradeneeded = e => {
+          e.target.result.createObjectStore("videos");
+        };
+        req.onsuccess = e => resolve(e.target.result);
+        req.onerror = e => reject(e);
+      });
+    }
+
+    async function saveVideoLocally(vidId, dataUrl) {
+      try {
+        const db = await openVideoCacheDB();
+        const tx = db.transaction("videos", "readwrite");
+        tx.objectStore("videos").put(dataUrl, vidId);
+      } catch (e) {}
+    }
+
+    async function getLocalVideo(vidId) {
+      try {
+        const db = await openVideoCacheDB();
+        return await new Promise(resolve => {
+          const req = db.transaction("videos", "readonly").objectStore("videos").get(vidId);
+          req.onsuccess = () => resolve(req.result || "");
+          req.onerror = () => resolve("");
+        });
+      } catch (e) {
+        return "";
+      }
+    }
+
+    // Desbloquea automáticamente la música del video de fondo al primer toque en la pantalla
+    function unlockVideoSoundOnInteraction() {
       const vid = document.getElementById("bg-video");
-      const btn = document.getElementById("video-audio-toggle");
-      if (!vid) return;
-      if (vid.muted) {
+      if (!vid || vid.style.display === "none") return;
+      if (wantVideoSound && vid.muted) {
         vid.muted = false;
         vid.volume = 1.0;
         vid.play().catch(() => {});
-        btn.innerText = "🔊 Sonido Video: Encendido";
-        showPurpleToast("🔊 Sonido del video activado");
+        checkVideoHasAudio();
+      }
+    }
+    document.addEventListener("touchstart", unlockVideoSoundOnInteraction, { passive: true });
+    document.addEventListener("click", unlockVideoSoundOnInteraction, { passive: true });
+
+    function toggleVideoAudio() {
+      const vid = document.getElementById("bg-video");
+      if (!vid) return;
+      wantVideoSound = !wantVideoSound;
+      if (wantVideoSound) {
+        vid.muted = false;
+        vid.volume = 1.0;
+        vid.play().catch(() => {});
+        showPurpleToast("🔊 Música del video activada");
       } else {
         vid.muted = true;
-        btn.innerText = "🔇 Sonido Video: Apagado";
-        showPurpleToast("🔇 Sonido del video silenciado");
+        showPurpleToast("🔇 Música del video silenciada");
       }
+      checkVideoHasAudio();
     }
 
     function checkVideoHasAudio() {
       const vid = document.getElementById("bg-video");
       const btn = document.getElementById("video-audio-toggle");
       if (!vid || !btn) return;
-      if (STATE.background && STATE.background.type === "video" && STATE.background.dataUrl) {
+      if (STATE.background && STATE.background.type === "video" && (STATE.background.dataUrl || STATE.background.videoId)) {
         btn.style.display = "flex";
-        btn.innerText = vid.muted ? "🔇 Sonido Video: Apagado" : "🔊 Sonido Video: Encendido";
+        btn.innerText = (!vid.muted && wantVideoSound) ? "🔊 Música Video: ON" : "🔇 Activar Música Video";
       } else {
         btn.style.display = "none";
+      }
+    }
+
+    async function handleBgVideoGalleryUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      const statusEl = document.getElementById("bg-video-upload-status");
+      if (file.size > 22 * 1024 * 1024) {
+        showPurpleToast("⚠️ Elige un video menor a 20 MB");
+        return;
+      }
+
+      if (statusEl) statusEl.innerText = "⏳ Cargando video con música desde tu galería...";
+      showPurpleToast("⏳ Subiendo video con música...");
+
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        const videoDataUrl = e.target.result;
+        const newVidId = "vid_" + Date.now();
+
+        // Guardar en caché del teléfono al instante
+        await saveVideoLocally(newVidId, videoDataUrl);
+        loadedVideoId = newVidId;
+
+        // Reproducir de inmediato con música
+        const bgVideo = document.getElementById("bg-video");
+        const bgContainer = document.getElementById("bg-media-container");
+        bgContainer.style.backgroundImage = "none";
+        bgVideo.style.display = "block";
+        bgVideo.src = videoDataUrl;
+        wantVideoSound = true;
+        bgVideo.muted = false;
+        bgVideo.volume = 1.0;
+        bgVideo.play().catch(() => {
+          bgVideo.muted = true;
+          bgVideo.play().catch(() => {});
+        });
+
+        STATE.background.type = "video";
+        STATE.background.videoId = newVidId;
+        STATE.background.dataUrl = "";
+        checkVideoHasAudio();
+
+        // Subir a Firebase en nodo dedicado para que todos los clientes lo vean y escuchen
+        try {
+          await fetch(FIREBASE_VIDEO_URL, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: newVidId, dataUrl: videoDataUrl })
+          });
+          await saveState();
+          if (statusEl) statusEl.innerText = "✅ Video con música activo y publicado en vivo";
+          showPurpleToast("✨ Se guardó con éxito");
+        } catch (err) {
+          await saveState();
+          if (statusEl) statusEl.innerText = "✅ Video activo en tu tienda";
+          showPurpleToast("✨ Se guardó con éxito");
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function ensureBackgroundVideoLoaded() {
+      const bgVideo = document.getElementById("bg-video");
+      if (!STATE.background || STATE.background.type !== "video") return;
+
+      // Caso 1: Video subido desde la galería (guardado por videoId)
+      if (STATE.background.videoId) {
+        const vidId = STATE.background.videoId;
+        if (loadedVideoId === vidId && bgVideo.src) return;
+
+        let dataUrl = await getLocalVideo(vidId);
+        if (!dataUrl) {
+          try {
+            const res = await fetch(FIREBASE_VIDEO_URL + "?t=" + vidId);
+            if (res.ok) {
+              const cloudVid = await res.json();
+              if (cloudVid && cloudVid.dataUrl) {
+                dataUrl = cloudVid.dataUrl;
+                await saveVideoLocally(vidId, dataUrl);
+              }
+            }
+          } catch (e) {}
+        }
+
+        if (dataUrl) {
+          loadedVideoId = vidId;
+          bgVideo.style.display = "block";
+          bgVideo.src = dataUrl;
+          bgVideo.muted = !wantVideoSound;
+          bgVideo.volume = 1.0;
+          bgVideo.play().catch(() => {
+            bgVideo.muted = true;
+            bgVideo.play().catch(() => {});
+          });
+          checkVideoHasAudio();
+        }
+        return;
+      }
+
+      // Caso 2: Video por enlace directo .mp4
+      if (STATE.background.dataUrl) {
+        bgVideo.style.display = "block";
+        if (bgVideo.src !== STATE.background.dataUrl) {
+          bgVideo.src = STATE.background.dataUrl;
+          bgVideo.muted = !wantVideoSound;
+          bgVideo.volume = 1.0;
+          bgVideo.play().catch(() => {
+            bgVideo.muted = true;
+            bgVideo.play().catch(() => {});
+          });
+        }
+        checkVideoHasAudio();
       }
     }
 
@@ -1791,14 +1982,6 @@
     new MutationObserver(hideNetlifyWidgetSafely).observe(document.body, { childList: true });
     setInterval(hideNetlifyWidgetSafely, 600);
 
-    /* =========================================================
-       CONEXIÓN EN TIEMPO REAL CON FIREBASE REALTIME DATABASE
-       ========================================================= */
-    const FIREBASE_DB_URL = "https://michellestore-default-rtdb.firebaseio.com/store_v1.json";
-    const STORAGE_KEY = "MICHELLE_VIP_FIREBASE_CACHE_V1";
-    const CLIENT_ID_KEY = "MICHELLE_CLIENT_DEVICE_ID";
-    const ADMIN_PASS = "426153";
-
     let MY_CLIENT_ID = localStorage.getItem(CLIENT_ID_KEY);
     if (!MY_CLIENT_ID) {
       MY_CLIENT_ID = "cli_" + Math.floor(100000 + Math.random() * 900000);
@@ -1820,11 +2003,12 @@
         primary: "#ff2a85",
         secondary: "#00e5ff",
         bg: "#080b14",
-        overlayOpacity: 0.72
+        overlayOpacity: 0.55
       },
       background: {
         type: "particles",
-        dataUrl: ""
+        dataUrl: "",
+        videoId: ""
       },
       doll: {
         name: "Chimmy VIP",
@@ -1846,14 +2030,14 @@
       products: [
         {
           id: "p_netflix",
-          name: "Netflix Premium 4K",
-          price: 95,
+          name: "Netflix Perfil",
+          price: 55,
           cat: "streaming",
-          desc: "1 Perfil con PIN | 30 Días",
-          postBuyMsg: "📌 Reglas Netflix: Usa únicamente tu perfil asignado y no modifiques la contraseña. Garantía de 30 días.",
-          tags: ["4K Ultra HD", "Entrega Automática"],
-          gradient: "linear-gradient(135deg, #e50914, #7f1d1d)",
-          img: "https://cdn-icons-png.flaticon.com/512/732/732228.png",
+          desc: "25 días garantizado",
+          postBuyMsg: "📌 Reglas Netflix: Usa únicamente tu perfil asignado y no modifiques la contraseña.",
+          tags: ["Netflix"],
+          gradient: "transparent",
+          img: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=600&auto=format&fit=crop&q=80",
           autoDelivery: true,
           manualStock: 0,
           askEmail: false,
@@ -1867,14 +2051,14 @@
         },
         {
           id: "p_disney",
-          name: "Disney+ Estándar",
-          price: 65,
+          name: "Disney perfil Hulu",
+          price: 35,
           cat: "streaming",
-          desc: "1 Pantalla | 30 Días",
+          desc: "25 días de garantía",
           postBuyMsg: "📌 Reglas Disney+: Ingresa solo en 1 dispositivo a la vez en el perfil indicado.",
-          tags: ["ESPN incluido", "30 Días"],
-          gradient: "linear-gradient(135deg, #1d4ed8, #06b6d4)",
-          img: "https://cdn-icons-png.flaticon.com/512/5977/5977590.png",
+          tags: ["Disney"],
+          gradient: "transparent",
+          img: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&auto=format&fit=crop&q=80",
           autoDelivery: true,
           manualStock: 0,
           askEmail: false,
@@ -1885,51 +2069,9 @@
           showProfile: true,
           showId: false,
           showCodeUrl: true
-        },
-        {
-          id: "p_canva",
-          name: "Canva Pro (A tu correo)",
-          price: 45,
-          cat: "diseno",
-          desc: "Activación directa en tu propio correo | 30 Días",
-          postBuyMsg: "📌 Revisa la bandeja de entrada de tu correo para aceptar la invitación a Canva Pro.",
-          tags: ["Sincronización Manual", "A tu correo"],
-          gradient: "linear-gradient(135deg, #7c3aed, #ec4899)",
-          img: "https://cdn-icons-png.flaticon.com/512/5968/5968705.png",
-          autoDelivery: false,
-          manualStock: 10,
-          askEmail: true,
-          askPass: false,
-          askId: false,
-          showEmail: true,
-          showPass: false,
-          showProfile: true,
-          showId: false,
-          showCodeUrl: false
         }
       ],
-      accountsStock: [
-        {
-          id: "acc_1",
-          prodId: "p_netflix",
-          email: "cliente1@netflixvip.com",
-          pass: "Vip2026*",
-          profile: "Perfil 1 - PIN 1020",
-          customId: "",
-          codeUrl: "https://mis-codigos-vip.com",
-          used: false
-        },
-        {
-          id: "acc_2",
-          prodId: "p_disney",
-          email: "disney1@streamingvip.com",
-          pass: "Disney2026#",
-          profile: "Perfil 3 - PIN 4455",
-          customId: "",
-          codeUrl: "https://mis-codigos-vip.com",
-          used: false
-        }
-      ],
+      accountsStock: [],
       clients: {},
       salesHistory: [],
       rechargeRequests: [],
@@ -2191,7 +2333,7 @@
     }
 
     /* =========================================================
-       COMPRESOR DE IMÁGENES QUE CONSERVA FONDO TRANSPARENTE (PNG)
+       COMPRESOR DE IMÁGENES DE ALTA CALIDAD
        ========================================================= */
     function compressImageFile(file, maxW, quality, keepTransparency, callback) {
       if (!file) return;
@@ -2209,7 +2351,7 @@
           canvas.width = w;
           canvas.height = h;
           const ctx = canvas.getContext("2d");
-          ctx.clearRect(0, 0, w, h); // Mantiene la transparencia limpia
+          ctx.clearRect(0, 0, w, h);
           ctx.drawImage(img, 0, 0, w, h);
           const mime = keepTransparency ? "image/png" : "image/jpeg";
           callback(keepTransparency ? canvas.toDataURL("image/png") : canvas.toDataURL(mime, quality));
@@ -2222,7 +2364,7 @@
     function previewUpload(event, previewImgId, globalVarName, keepTransparency = true) {
       const file = event.target.files && event.target.files[0];
       if (!file) return;
-      compressImageFile(file, 480, 0.78, keepTransparency, function(dataUrl) {
+      compressImageFile(file, 600, 0.85, keepTransparency, function(dataUrl) {
         window[globalVarName] = dataUrl;
         const previewEl = document.getElementById(previewImgId);
         if (previewEl) {
@@ -2242,7 +2384,7 @@
     function handleQuickProfileUpload(event) {
       const file = event.target.files && event.target.files[0];
       if (!file) return;
-      compressImageFile(file, 360, 0.82, true, function(dataUrl) {
+      compressImageFile(file, 360, 0.85, true, function(dataUrl) {
         STATE.profilePic = dataUrl;
         saveState();
         showPurpleToast("✨ Se guardó con éxito");
@@ -2257,7 +2399,7 @@
       r.style.setProperty("--primary", STATE.colors.primary);
       r.style.setProperty("--secondary", STATE.colors.secondary);
       r.style.setProperty("--bg-color", STATE.colors.bg);
-      r.style.setProperty("--overlay-opacity", STATE.colors.overlayOpacity ?? 0.72);
+      r.style.setProperty("--overlay-opacity", STATE.colors.overlayOpacity ?? 0.55);
 
       r.style.setProperty("--doll-hoodie", STATE.doll.hoodie || "#ffe135");
       r.style.setProperty("--doll-ears", STATE.doll.ears || "#111111");
@@ -2272,19 +2414,16 @@
         bgVideo.style.display = "none";
         bgVideo.pause();
         bgContainer.style.backgroundImage = `url('${STATE.background.dataUrl}')`;
-      } else if (STATE.background.type === "video" && STATE.background.dataUrl) {
+        checkVideoHasAudio();
+      } else if (STATE.background.type === "video") {
         bgContainer.style.backgroundImage = "none";
-        bgVideo.style.display = "block";
-        if (bgVideo.src !== STATE.background.dataUrl) {
-          bgVideo.src = STATE.background.dataUrl;
-          bgVideo.muted = true; // Inicia en silencio por política del navegador hasta tocar el botón 🔊
-          bgVideo.play().catch(() => {});
-        }
+        ensureBackgroundVideoLoaded();
       } else {
         bgVideo.style.display = "none";
+        bgVideo.pause();
         bgContainer.style.backgroundImage = "none";
+        checkVideoHasAudio();
       }
-      checkVideoHasAudio();
     }
 
     function getProductStockCount(prod) {
@@ -2359,6 +2498,9 @@
       renderCatalog();
     }
 
+    /* =========================================================
+       RENDERIZADO DEL CATÁLOGO: LA IMAGEN ABARCA TODO SIN FONDO DE COLOR
+       ========================================================= */
     function renderCatalog() {
       const q = (document.getElementById("search-input").value || "").toLowerCase();
       const grid = document.getElementById("products-grid");
@@ -2376,10 +2518,10 @@
 
         return `
           <div class="prod-card">
-            <div class="prod-head" style="background:${prod.gradient}">
+            <div class="prod-head">
               <span class="stock-badge" style="color:${statusColor}">${statusText}</span>
               <img class="prod-img" src="${prod.img}" alt="${prod.name}" />
-              <div style="font-size:10.5px;font-weight:700;opacity:0.9;">
+              <div class="delivery-type-badge">
                 ${prod.autoDelivery ? '⚡ Entrega Inmediata' : '✍️ Activación Manual'}
               </div>
             </div>
@@ -2413,7 +2555,7 @@
     function quickProdPhotoUpload(event, prodId) {
       const file = event.target.files && event.target.files[0];
       if (!file) return;
-      compressImageFile(file, 450, 0.85, true, function(dataUrl) {
+      compressImageFile(file, 600, 0.88, true, function(dataUrl) {
         const p = STATE.products.find(x => x.id === prodId);
         if (p) {
           p.img = dataUrl;
@@ -2424,7 +2566,7 @@
     }
 
     /* =========================================================
-       ENVÍO DE LA CUENTA AL WHATSAPP DEL CLIENTE (DESDE BOT O DESDE ADMIN)
+       ENVÍO DE LA CUENTA AL WHATSAPP DEL CLIENTE + AVISO DE RECARGA A ADMIN
        ========================================================= */
     function buildClientWhatsAppMessage(pur) {
       let lines = [
@@ -2446,7 +2588,6 @@
       return lines.join("\n");
     }
 
-    // 1. Envío 100% Automático en Segundo Plano (Si la administradora conectó UltraMsg o Webhook)
     async function dispatchAutomaticWhatsAppInBackground(pur) {
       const instance = (STATE.waApiInstance || "").trim();
       const token = (STATE.waApiToken || "").trim();
@@ -2457,7 +2598,6 @@
 
       try {
         if (instance.startsWith("http://") || instance.startsWith("https://")) {
-          // Webhook personalizado (ej. Make, n8n, Evolution API)
           await fetch(instance, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -2474,7 +2614,6 @@
           });
           return true;
         } else if (token) {
-          // UltraMsg API directo
           const cleanInst = instance.replace(/^instance/i, "");
           const url = `https://api.ultramsg.com/instance${cleanInst}/messages/chat`;
           const params = new URLSearchParams();
@@ -2492,7 +2631,31 @@
       return false;
     }
 
-    // 2. Envío desde el WhatsApp de la Administradora hacia el teléfono del cliente
+    async function notifyAdminRechargeOnWhatsApp(req) {
+      const instance = (STATE.waApiInstance || "").trim();
+      const token = (STATE.waApiToken || "").trim();
+      const adminPhone = normalizePhoneForWA(STATE.waNumber || "");
+      if (!instance || !adminPhone || !token) return;
+
+      const cleanInst = instance.replace(/^instance/i, "");
+      const caption = `💳 *¡NUEVA SOLICITUD DE RECARGA!*\n\n👤 *Cliente:* ${req.clientName}\n💰 *Monto:* $${req.amount} MXN\n🔢 *Referencia:* ${req.refCode}\n🕒 *Hora:* ${req.date}\n\nEntra a tu panel para aprobarla en 1 toque.`;
+
+      try {
+        const url = `https://api.ultramsg.com/instance${cleanInst}/messages/image`;
+        const params = new URLSearchParams();
+        params.append("token", token);
+        params.append("to", "+" + adminPhone);
+        params.append("image", req.capture);
+        params.append("caption", caption);
+
+        await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: params
+        });
+      } catch (e) {}
+    }
+
     function adminOpenWhatsAppToClient(pur) {
       const targetPhone = normalizePhoneForWA(pur.clientPhone || "");
       const text = buildClientWhatsAppMessage(pur);
@@ -2510,7 +2673,7 @@
     }
 
     /* =========================================================
-       FLUJO DE COMPRA (ENTREGA EN PANTALLA + MIS PEDIDOS + NOTIF ADMIN)
+       FLUJO DE COMPRA
        ========================================================= */
     function openBuyModal(prodId) {
       const me = getMyClient();
@@ -2604,7 +2767,6 @@
         showPurpleToast("✨ Compra realizada con éxito");
         showDeliveryModal(purchaseRecord);
 
-        // Si hay Bot API configurado, lo envía automáticamente en segundo plano al WhatsApp del cliente
         dispatchAutomaticWhatsAppInBackground(purchaseRecord);
         await saveState();
       } else {
@@ -2730,7 +2892,6 @@
         urlWrap.style.display = "none";
       }
 
-      // El botón de enviar por WhatsApp solo le aparece a la Administradora para enviarlo ella al cliente
       const admWaWrap = document.getElementById("deliv-admin-wa-wrap");
       const admWaBtn = document.getElementById("deliv-wa-admin-btn");
       if (isAdmin) {
@@ -2811,6 +2972,8 @@
 
       STATE.rechargeRequests.unshift(req);
       pushAdminNotification(`💳 Nueva recarga de ${me.name} (${me.phone}) por $${amount} (Ref: ${refCode})`);
+      notifyAdminRechargeOnWhatsApp(req);
+
       window.recCaptureData = "";
       document.getElementById("rec-capture-preview").style.display = "none";
       document.getElementById("rec-amount").value = "";
@@ -2947,7 +3110,6 @@
         </option>
       `).join("");
 
-      // Lista de Ventas Recientes para que la Administradora envíe la cuenta desde SU WhatsApp al cliente
       const salesBox = document.getElementById("adm-recent-sales-list");
       const sales = STATE.salesHistory || [];
       salesBox.innerHTML = sales.length ? sales.slice(0, 15).map(s => `
@@ -2997,7 +3159,7 @@
       pBox.innerHTML = STATE.products.map(p => `
         <div class="copy-row">
           <div style="display:flex;align-items:center;gap:8px;">
-            <img src="${p.img}" style="width:36px;height:36px;object-fit:contain;background:transparent;" />
+            <img src="${p.img}" style="width:40px;height:40px;object-fit:cover;border-radius:8px;" />
             <div>
               <div style="font-weight:800;font-size:13px;">${p.name} ($${p.price})</div>
               <div style="font-size:11px;color:var(--muted);">${p.autoDelivery ? 'Entrega Automática' : 'Sincronización Manual'}</div>
@@ -3047,8 +3209,8 @@
       document.getElementById("cfg-col-primary").value = STATE.colors.primary;
       document.getElementById("cfg-col-secondary").value = STATE.colors.secondary;
       document.getElementById("cfg-col-bg").value = STATE.colors.bg;
-      document.getElementById("cfg-overlay-opacity").value = STATE.colors.overlayOpacity ?? 0.72;
-      document.getElementById("cfg-bg-vid-url").value = STATE.background.type === "video" ? (STATE.background.dataUrl || "") : "";
+      document.getElementById("cfg-overlay-opacity").value = STATE.colors.overlayOpacity ?? 0.55;
+      document.getElementById("cfg-bg-vid-url").value = (STATE.background.type === "video" && !STATE.background.videoId) ? (STATE.background.dataUrl || "") : "";
 
       document.getElementById("doll-cfg-name").value = STATE.doll.name;
       document.getElementById("doll-cfg-bubble").value = STATE.doll.bubble;
@@ -3138,7 +3300,6 @@
       const postBuyMsg = document.getElementById("p-post-buy-msg").value.trim();
       const tagsRaw = document.getElementById("p-tags").value.trim();
       const tags = tagsRaw ? tagsRaw.split(",").map(t => t.trim()).filter(Boolean) : [];
-      const gradient = document.getElementById("p-gradient").value;
 
       if (!name || isNaN(price)) return showPurpleToast("📦 Completa el nombre y el precio");
 
@@ -3150,7 +3311,7 @@
         desc,
         postBuyMsg,
         tags,
-        gradient,
+        gradient: "transparent",
         img: window.prodImgData || (editId ? (STATE.products.find(x => x.id === editId)?.img || STATE.profilePic) : STATE.profilePic),
         autoDelivery: document.getElementById("p-auto-delivery").checked,
         manualStock: Number(document.getElementById("p-manual-stock").value || 10),
@@ -3189,7 +3350,6 @@
       document.getElementById("p-desc").value = p.desc || "";
       document.getElementById("p-post-buy-msg").value = p.postBuyMsg || "";
       document.getElementById("p-tags").value = (p.tags || []).join(", ");
-      document.getElementById("p-gradient").value = p.gradient;
       document.getElementById("p-auto-delivery").checked = p.autoDelivery !== false;
       document.getElementById("p-manual-stock").value = p.manualStock ?? 10;
       toggleManualStockInput();
@@ -3293,7 +3453,6 @@
       closeModal("modal-resolve-report");
       showPurpleToast("✨ Se guardó con éxito");
 
-      // Enviar por Bot en segundo plano o abrir el WhatsApp de la Administradora hacia el cliente
       dispatchAutomaticWhatsAppInBackground(replacementRecord).then(sentByBot => {
         if (!sentByBot && replacementRecord.clientPhone) {
           adminOpenWhatsAppToClient(replacementRecord);
@@ -3331,6 +3490,7 @@
       compressImageFile(file, 960, 0.78, false, function(dataUrl) {
         STATE.background.type = "image";
         STATE.background.dataUrl = dataUrl;
+        STATE.background.videoId = "";
         saveState();
         showPurpleToast("✨ Se guardó con éxito");
       });
@@ -3354,6 +3514,7 @@
       if (vidUrl) {
         STATE.background.type = "video";
         STATE.background.dataUrl = vidUrl;
+        STATE.background.videoId = "";
       }
       saveState();
       showPurpleToast("✨ Se guardó con éxito");
@@ -3362,7 +3523,10 @@
     function adminClearBackground() {
       STATE.background.type = "particles";
       STATE.background.dataUrl = "";
+      STATE.background.videoId = "";
       document.getElementById("cfg-bg-vid-url").value = "";
+      const statusEl = document.getElementById("bg-video-upload-status");
+      if (statusEl) statusEl.innerText = "";
       saveState();
       showPurpleToast("✨ Se guardó con éxito");
     }
