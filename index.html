@@ -860,7 +860,7 @@
     <audio id="audio-player" onended="nextSong()"></audio>
   </div>
 
-  <!-- ASISTENTE VIRTUAL CHIMMY (CON MÚLTIPLES GESTOS CLÁSICOS Y GORRO EXACTO DE BT21) -->
+  <!-- ASISTENTE VIRTUAL CHIMMY (CON GORRO EXACTO Y MÚLTIPLES GESTOS DINÁMICOS) -->
   <div class="doll-widget" data-app="michelle">
     <div class="assistant-chat" id="assistant-chat">
       <div class="chat-head">
@@ -881,7 +881,7 @@
     <div class="doll-Speech" id="doll-speech-bubble" onclick="toggleAssistantChat()">¡Hola! ¿Te ayudo? 💛</div>
     <div class="doll-avatar-btn" onclick="toggleAssistantChat(); cycleChimmyExpression();">
       <svg class="doll-svg" viewBox="-12 -30 144 180">
-        <!-- GORRITO NAVIDEÑO EXACTO AL DE LA IMAGEN (AUTOMÁTICO HASTA EL 25 DE DIC) -->
+        <!-- GORRITO NAVIDEÑO AUTOMÁTICO HASTA EL 25 DE DICIEMBRE -->
         <g id="christmas-hat" style="display:none;">
           <path d="M 40 10 Q 45 -22 92 -15 Q 105 -10 98 12 Z" fill="#ef4444" stroke="#111" stroke-width="4" stroke-linejoin="round" />
           <circle cx="103" cy="-12" r="9" fill="#ffffff" stroke="#111" stroke-width="4" />
@@ -901,7 +901,6 @@
 
         <!-- GESTOS FACIALES DINÁMICOS DE CHIMMY -->
         <g id="chimmy-dynamic-face">
-          <!-- Se actualiza dinámicamente con JS -->
           <text x="41" y="58" font-size="14" font-weight="900" fill="#111" font-family="sans-serif">></text>
           <text x="71" y="58" font-size="14" font-weight="900" fill="#111" font-family="sans-serif"><</text>
           <ellipse cx="60" cy="59" rx="3.8" ry="2.6" fill="#111" />
@@ -1020,41 +1019,13 @@
     let loadedVideoId = "";
     let wantVideoSound = true;
 
-    // GESTOS Y EXPRESIONES CLÁSICAS DE CHIMMY (BT21)
-    const chimmyExpressions = [
-      // 1. Carita >< con lengüita
-      { eyes: '<text x="41" y="58" font-size="14" font-weight="900" fill="#111" font-family="sans-serif">></text><text x="71" y="58" font-size="14" font-weight="900" fill="#111" font-family="sans-serif"><</text><ellipse cx="60" cy="59" rx="3.8" ry="2.6" fill="#111"/>', mouth: '<path d="M 52 64 Q 60 69 68 64" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="none"/><path d="M 57 66 C 57 71, 63 71, 63 66 Z" fill="#ff477e" stroke="#111" stroke-width="2.5"/>' },
-      // 2. Sonrisa alegre ^ ^
-      { eyes: '<path d="M 39 54 Q 45 46 51 54" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="none"/><path d="M 69 54 Q 75 46 81 54" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="none"/><ellipse cx="60" cy="59" rx="3.8" ry="2.6" fill="#111"/>', mouth: '<path d="M 50 63 Q 60 74 70 63" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="#ff477e"/>' },
-      // 3. Guiño alegre >-
-      { eyes: '<text x="41" y="58" font-size="14" font-weight="900" fill="#111" font-family="sans-serif">></text><path d="M 69 56 L 79 56" stroke="#111" stroke-width="3.5" stroke-linecap="round"/><ellipse cx="60" cy="59" rx="3.8" ry="2.6" fill="#111"/>', mouth: '<path d="M 52 64 Q 60 71 68 64" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="none"/>' },
-      // 4. Ojitos estrellados ✨
-      { eyes: '<text x="39" y="60" font-size="15" font-weight="900" fill="#111" font-family="sans-serif">★</text><text x="70" y="60" font-size="15" font-weight="900" fill="#111" font-family="sans-serif">★</text><ellipse cx="60" cy="59" rx="3.8" ry="2.6" fill="#111"/>', mouth: '<path d="M 50 63 Q 60 73 70 63" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="#ff477e"/>' }
-    ];
-    let currentExprIdx = 0;
-
-    function cycleChimmyExpression() {
-      currentExprIdx = (currentExprIdx + 1) % chimmyExpressions.length;
-      const expr = chimmyExpressions[currentExprIdx];
-      const faceGroup = document.getElementById("chimmy-dynamic-face");
-      if (faceGroup) {
-        faceGroup.innerHTML = expr.eyes + expr.mouth;
-      }
-    }
-
-    // Cambiar expresión automáticamente cada 6 segundos para darle vida
-    setInterval(cycleChimmyExpression, 6000);
-
     async function sendTelegramNotification(text) {
       const token = (STATE.tgToken || "").trim();
       const chatId = (STATE.tgChatId || "5762852775").trim();
       if (!token || !chatId) return;
       try {
-        await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ chat_id: chatId, text: text, parse_mode: "Markdown" })
-        });
+        const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}&parse_mode=Markdown`;
+        await fetch(url);
       } catch (e) {}
     }
 
