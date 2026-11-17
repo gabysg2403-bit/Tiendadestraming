@@ -435,7 +435,7 @@
     }
 
     /* =========================================================
-       PRODUCTOS: IMAGEN LIMPIA SIN FONDO DE COLOR (ABARCA TODO)
+       PRODUCTOS: IMAGEN OCUPANDO TODO EL RECUADRO SIN FONDOS
        ========================================================= */
     .products-grid {
       display: grid;
@@ -460,9 +460,7 @@
       aspect-ratio: 1 / 1;
       max-height: 175px;
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: block;
     }
     .prod-img {
       width: 100% !important;
@@ -473,7 +471,7 @@
       box-shadow: none !important;
       border-radius: 0 !important;
       margin: 0 !important;
-      display: block;
+      display: block !important;
     }
     .stock-badge {
       position: absolute; top: 8px; right: 8px; z-index: 3; font-size: 10px; font-weight: 800;
@@ -859,7 +857,7 @@
     <audio id="audio-player" onended="nextSong()"></audio>
   </div>
 
-  <!-- ASISTENTE VIRTUAL CON GORRITO NAVIDEÑO AUTOMÁTICO (DICIEMBRE 2026) -->
+  <!-- ASISTENTE VIRTUAL CON GORRITO NAVIDEÑO AUTOMÁTICO (DE HOY HASTA EL 25 DE DICIEMBRE DE 2026) -->
   <div class="doll-widget" data-app="michelle">
     <div class="assistant-chat" id="assistant-chat">
       <div class="chat-head">
@@ -879,7 +877,7 @@
     <div class="doll-Speech" id="doll-speech-bubble" onclick="toggleAssistantChat()">¡Hola! ¿Te ayudo? 💛</div>
     <div class="doll-avatar-btn" onclick="toggleAssistantChat()">
       <svg class="doll-svg" viewBox="0 0 120 150">
-        <!-- GORRITO NAVIDEÑO (APARECE AUTOMÁTICO DESDE HOY HASTA EL 25 DE DICIEMBRE DE 2026) -->
+        <!-- GORRITO NAVIDEÑO AUTOMÁTICO -->
         <g id="christmas-hat" style="display:none;">
           <path d="M 52 16 Q 60 -2 78 8 Q 88 15 92 24 L 38 24 Z" fill="#ef4444" stroke="#111" stroke-width="4" stroke-linejoin="round" />
           <path d="M 32 20 Q 60 12 96 22 L 96 32 Q 60 22 32 30 Z" fill="#ffffff" stroke="#111" stroke-width="4" stroke-linejoin="round" />
@@ -956,7 +954,7 @@
         <div class="field-group" id="buy-ask-pass-wrap" style="display:none;"><label>Contraseña</label><input type="text" id="buy-client-pass" /></div>
         <div class="field-group" id="buy-ask-id-wrap" style="display:none;"><label>ID</label><input type="text" id="buy-client-id" /></div>
       </div>
-      <div style="display:flex;gap:8px;margin-top:10px;"><button class="btn-main" id="buy-confirm-btn">Comprar</button><button class="btn-outline" onclick="closeModal('modal-buy-confirm')">Cancelar</button></div>
+      <div style="display:flex;gap:8px;margin-top:10px;"><button class="btn-main" id="buy-confirm-btn" onclick="executePurchase()">Comprar</button><button class="btn-outline" onclick="closeModal('modal-buy-confirm')">Cancelar</button></div>
     </div>
   </div>
 
@@ -981,7 +979,7 @@
       <input type="hidden" id="res-report-id" />
       <div class="field-group"><label>Tomar stock</label><div style="display:flex;gap:6px;"><select id="res-stock-prod" style="flex:1;"></select><button class="btn-outline" onclick="pullStockForResolution()">Tomar</button></div></div>
       <div class="field-group"><label>Correo</label><input type="text" id="res-new-email" /></div>
-      <div class="field-group"><label>Nueva Contraseña</label><input type="text" id="res-new-pass" /></div>
+      <div class="field-group"><label>Contraseña</label><input type="text" id="res-new-pass" /></div>
       <div class="field-group"><label>Perfil</label><input type="text" id="res-new-profile" /></div>
       <div style="display:flex;gap:8px;"><button class="btn-main" onclick="confirmResolveReport()">Resolver</button><button class="btn-outline" onclick="closeModal('modal-resolve-report')">Cancelar</button></div>
     </div>
@@ -1167,7 +1165,7 @@
     let MY_CLIENT_ID = localStorage.getItem(CLIENT_ID_KEY);
     if (!MY_CLIENT_ID) { MY_CLIENT_ID = "cli_" + Math.floor(100000 + Math.random() * 900000); localStorage.setItem(CLIENT_ID_KEY, MY_CLIENT_ID); }
 
-    const DEFAULT_STATE = /*__INITIAL_STATE_START__*/ {
+    const DEFAULT_STATE = {
       lastUpdated: 0,
       storeName: "Michelle Streaming VIP",
       storeSlogan: "Cuentas Premium y Combos • Entrega Automática 24/7",
@@ -1192,7 +1190,7 @@
       ],
       accountsStock: [], clients: {}, salesHistory: [], rechargeRequests: [], reports: [], adminNotifications: [],
       songs: [{ title: "Synthwave Chill VIP", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" }]
-    } /*__INITIAL_STATE_END__*/;
+    };
 
     let STATE = loadLocalCache();
     let isAdmin = false; let currentCat = "all"; let pendingBuyProdId = null; let currentSongIdx = 0; let isSavingToCloud = false;
@@ -1251,6 +1249,28 @@
       } catch (e) {}
     }
     function forcePushToFirebase() { saveState().then(() => showPurpleToast("✨ Se guardó con éxito")); }
+
+    function pushAdminNotification(text, linkId) {
+      if (!Array.isArray(STATE.adminNotifications)) STATE.adminNotifications = [];
+      STATE.adminNotifications.unshift({ text, linkId, date: new Date().toLocaleTimeString() });
+      const badge = document.getElementById("notif-badge");
+      if (badge) {
+        badge.innerText = STATE.adminNotifications.length;
+        badge.style.display = "flex";
+      }
+    }
+
+    function openNotificationsModal() {
+      const listEl = document.getElementById("notifications-list");
+      if (listEl) {
+        listEl.innerHTML = (STATE.adminNotifications || []).length ? STATE.adminNotifications.map(n => `
+          <div style="background:rgba(255,255,255,0.05);padding:8px;border-radius:8px;margin-bottom:6px;font-size:12.5px;">
+            <div>${n.text}</div><div style="font-size:10px;color:var(--muted);">${n.date}</div>
+          </div>
+        `).join("") : `<p style="font-size:12px;color:var(--muted);">Sin notificaciones.</p>`;
+      }
+      openModal("modal-notifications");
+    }
 
     function openAuthModal() {
       const me = getMyClient();
@@ -1370,12 +1390,14 @@
         checkVideoHasAudio();
       }
 
-      // CONTROL AUTOMÁTICO DE GORRITO NAVIDEÑO HASTA EL 25 DE DICIEMBRE DE 2026
+      // GORRITO NAVIDEÑO AUTOMÁTICO (DEL 17 DE NOV HASTA EL 25 DE DICIEMBRE DE 2026)
       const hatEl = document.getElementById("christmas-hat");
       if (hatEl) {
-        const today = new Date();
-        const deadline = new Date(2026, 11, 25, 23, 59, 59); // 25 de diciembre de 2026
-        if (today <= deadline) {
+        const now = new Date();
+        const startDate = new Date(2026, 10, 17, 0, 0, 0); // 17 de noviembre de 2026
+        const endDate = new Date(2026, 11, 25, 23, 59, 59); // 25 de diciembre de 2026
+
+        if (now >= startDate && now <= endDate) {
           hatEl.style.display = "block";
         } else {
           hatEl.style.display = "none";
@@ -1391,7 +1413,6 @@
     function renderAll() {
       applyThemeAndBackground();
       const me = getMyClient();
-      document.getElementById("my-client-id-lbl").innerText = MY_CLIENT_ID;
       document.getElementById("drawer-user-name").innerText = me.registered ? me.name : "Invitado";
       document.getElementById("drawer-user-contact").innerText = me.registered ? `${me.email}` : "Toca para iniciar sesión";
       document.getElementById("drawer-user-balance").innerText = "$" + Number(me.balance || 0).toFixed(2);
@@ -1402,7 +1423,6 @@
 
       document.getElementById("top-logo").src = STATE.profilePic;
       document.getElementById("hero-logo").src = STATE.profilePic;
-      document.getElementById("adm-profile-preview").src = STATE.profilePic;
       document.getElementById("top-store-name").innerText = STATE.storeName;
       document.getElementById("hero-store-name").innerText = STATE.storeName;
       document.getElementById("hero-store-slogan").innerText = STATE.storeSlogan;
@@ -1716,6 +1736,17 @@
       saveState(); showPurpleToast("✨ Recarga aprobada");
     }
 
+    function adminAddBalance(isSum) {
+      const clientId = document.getElementById("adm-target-client").value;
+      const amt = Number(document.getElementById("adm-manual-bal").value);
+      if (!clientId || isNaN(amt)) return showPurpleToast("⚠️ Datos incompletos");
+      const client = STATE.clients[clientId];
+      if (!client) return showPurpleToast("⚠️ Cliente no encontrado");
+      if (isSum) client.balance = Number(client.balance || 0) + amt;
+      else client.balance = amt;
+      saveState(); showPurpleToast("✨ Saldo actualizado");
+    }
+
     function adminAddAccountStock() {
       const prodId = document.getElementById("stk-prod-id").value;
       const email = document.getElementById("stk-email").value.trim();
@@ -1725,6 +1756,7 @@
       STATE.accountsStock.push({ id: "acc_" + Date.now(), prodId, email, pass, profile, used: false });
       saveState(); showPurpleToast("✨ Cuenta guardada");
     }
+
     function adminDeleteStock(id) { STATE.accountsStock = STATE.accountsStock.filter(a => a.id !== id); saveState(); showPurpleToast("✨ Eliminado"); }
     function toggleManualStockInput() { document.getElementById("manual-stock-wrap").style.display = document.getElementById("p-auto-delivery").checked ? "none" : "block"; }
 
@@ -1744,7 +1776,124 @@
       else { STATE.products.push(prodObj); }
       saveState(); showPurpleToast("✨ Se guardó con éxito");
     }
+
+    function adminLoadProductToEdit(id) {
+      const p = STATE.products.find(x => x.id === id);
+      if (!p) return;
+      document.getElementById("edit-prod-id").value = p.id;
+      document.getElementById("p-name").value = p.name;
+      document.getElementById("p-price").value = p.price;
+      document.getElementById("p-cat").value = p.cat;
+      document.getElementById("p-desc").value = p.desc || "";
+      document.getElementById("p-post-buy-msg").value = p.postBuyMsg || "";
+      document.getElementById("p-auto-delivery").checked = p.autoDelivery;
+      document.getElementById("p-manual-stock").value = p.manualStock || 10;
+      toggleManualStockInput();
+      switchAdminTab("adm-productos", null);
+      showPurpleToast("✏️ Producto cargado para editar");
+    }
+
     function adminDeleteProduct(id) { STATE.products = STATE.products.filter(p => p.id !== id); saveState(); showPurpleToast("✨ Eliminado"); }
+
+    function adminAddCategory() {
+      const name = document.getElementById("cat-name-input").value.trim();
+      const icon = document.getElementById("cat-icon-input").value.trim() || "📁";
+      if (!name) return showPurpleToast("⚠️ Ingresa nombre de categoría");
+      const newCat = { id: "cat_" + Date.now(), name, icon, img: window.catImgData || "" };
+      STATE.categories.push(newCat);
+      window.catImgData = "";
+      document.getElementById("cat-name-input").value = "";
+      document.getElementById("cat-icon-input").value = "";
+      saveState(); showPurpleToast("✨ Categoría creada");
+    }
+
+    function adminSaveDesign() {
+      STATE.storeName = document.getElementById("cfg-store-name").value.trim() || STATE.storeName;
+      STATE.storeSlogan = document.getElementById("cfg-store-slogan").value.trim() || STATE.storeSlogan;
+      STATE.waNumber = document.getElementById("cfg-wa-number").value.trim() || STATE.waNumber;
+      STATE.waApiInstance = document.getElementById("cfg-wa-api-instance").value.trim();
+      STATE.waApiToken = document.getElementById("cfg-wa-api-token").value.trim();
+      const vidUrl = document.getElementById("cfg-bg-vid-url").value.trim();
+      if (vidUrl) {
+        STATE.background.type = "video";
+        STATE.background.dataUrl = vidUrl;
+        STATE.background.videoId = "";
+      }
+      saveState(); showPurpleToast("✨ Diseño guardado");
+    }
+
+    function adminSaveDoll() {
+      const name = document.getElementById("doll-cfg-name").value.trim();
+      if (name) STATE.doll.name = name;
+      saveState(); showPurpleToast("✨ Asistente guardado");
+    }
+
+    function adminAddSong() {
+      const title = document.getElementById("song-title-input").value.trim();
+      const url = document.getElementById("song-url-input").value.trim();
+      if (!title || !url) return showPurpleToast("⚠️ Ingresa título y URL");
+      if (!Array.isArray(STATE.songs)) STATE.songs = [];
+      STATE.songs.push({ title, url });
+      document.getElementById("song-title-input").value = "";
+      document.getElementById("song-url-input").value = "";
+      saveState(); showPurpleToast("✨ Canción agregada");
+    }
+
+    let isMusicPlaying = false;
+    function toggleMusicPlay() {
+      const audio = document.getElementById("audio-player");
+      const btn = document.getElementById("music-play-btn");
+      if (!Array.isArray(STATE.songs) || !STATE.songs.length) return showPurpleToast("⚠️ No hay canciones");
+      if (!audio.src) {
+        audio.src = STATE.songs[currentSongIdx].url;
+        document.getElementById("music-current-title").innerText = STATE.songs[currentSongIdx].title;
+      }
+      if (isMusicPlaying) {
+        audio.pause();
+        isMusicPlaying = false;
+        btn.innerText = "▶️";
+      } else {
+        audio.play().then(() => {
+          isMusicPlaying = true;
+          btn.innerText = "⏸️";
+        }).catch(() => showPurpleToast("⚠️ Error reproduciendo música"));
+      }
+    }
+
+    function nextSong() {
+      if (!Array.isArray(STATE.songs) || !STATE.songs.length) return;
+      currentSongIdx = (currentSongIdx + 1) % STATE.songs.length;
+      const audio = document.getElementById("audio-player");
+      audio.src = STATE.songs[currentSongIdx].url;
+      document.getElementById("music-current-title").innerText = STATE.songs[currentSongIdx].title;
+      if (isMusicPlaying) audio.play().catch(() => {});
+    }
+
+    function toggleAssistantChat() {
+      const chat = document.getElementById("assistant-chat");
+      chat.classList.toggle("open");
+    }
+
+    function askAssistant(txt) {
+      const chatMsgs = document.getElementById("chat-messages");
+      chatMsgs.innerHTML += `<div class="msg-user">${txt}</div>`;
+      let reply = "¡Hola! Para cualquier duda con tus compras o recargas, puedes escribirnos por WhatsApp.";
+      if (txt.includes("registro")) reply = "Para registrarte, toca el menú ☰ arriba a la izquierda, selecciona 'Mi Cuenta' y llena tus datos.";
+      if (txt.includes("recargo")) reply = "Para recargar saldo, ve al menú ☰, selecciona 'Recargar Saldo', realiza tu SPEI y sube tu comprobante.";
+      setTimeout(() => {
+        chatMsgs.innerHTML += `<div class="msg-bot">${reply}</div>`;
+        chatMsgs.scrollTop = chatMsgs.scrollHeight;
+      }, 400);
+      chatMsgs.scrollTop = chatMsgs.scrollHeight;
+    }
+
+    function sendUserChat() {
+      const input = document.getElementById("chat-user-input");
+      const val = input.value.trim();
+      if (!val) return;
+      input.value = "";
+      askAssistant(val);
+    }
 
     function openModal(id) { document.getElementById(id).classList.add("open"); }
     function closeModal(id) { document.getElementById(id).classList.remove("open"); }
