@@ -794,6 +794,17 @@
           <div class="field-group"><label>Descripción</label><input type="text" id="p-desc" /></div>
           <div class="field-group"><label style="color:#fde047;">📝 Mensaje post-compra</label><textarea id="p-post-buy-msg" rows="3"></textarea></div>
           <div class="field-group"><label>Etiquetas</label><input type="text" id="p-tags" /></div>
+          
+          <!-- CONFIGURACIÓN DE CAMPOS SOLICITADOS POR EL CLIENTE AL COMPRAR -->
+          <div style="background:rgba(255,255,255,0.04);padding:12px;border-radius:12px;margin-bottom:12px;">
+            <label style="font-size:12.5px;color:var(--secondary);font-weight:800;margin-bottom:8px;display:block;">⚙️ ¿Qué datos pedirá este producto al cliente?</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;">
+              <label><input type="checkbox" id="p-ask-email" /> Pedir Correo</label>
+              <label><input type="checkbox" id="p-ask-pass" /> Pedir Contraseña</label>
+              <label><input type="checkbox" id="p-ask-id" /> Pedir ID / Perfil</label>
+            </div>
+          </div>
+
           <div class="field-group">
             <label>Imagen (Abarca todo el cuadro superior sin fondo)</label>
             <label for="p-img-input" class="upload-label">📸 Subir imagen<img id="p-img-preview" class="upload-preview" /></label>
@@ -810,10 +821,11 @@
         <div id="adm-reportes" class="adm-tab" style="display:none;"><div id="adm-reports-list"></div></div>
 
         <div id="adm-categorias" class="adm-tab" style="display:none;">
-          <div class="field-group"><label>Nombre</label><input type="text" id="cat-name-input" /></div>
+          <input type="hidden" id="edit-cat-id" />
+          <div class="field-group"><label>Nombre de Categoría</label><input type="text" id="cat-name-input" /></div>
           <div class="field-group"><label>Icono</label><input type="text" id="cat-icon-input" /></div>
           <div class="field-group"><label>Imagen</label><label for="cat-img-input" class="upload-label">📸 Subir<img id="cat-img-preview" class="upload-preview" /></label><input type="file" id="cat-img-input" accept="image/*" style="display:none" onchange="previewUpload(event, 'cat-img-preview', 'catImgData', true)" /></div>
-          <button class="btn-main" onclick="adminAddCategory()">+ Categoría</button>
+          <button class="btn-main" onclick="adminSaveCategory()">💾 Guardar Categoría</button>
           <div id="adm-cats-list" style="margin-top:10px;"></div>
         </div>
 
@@ -860,7 +872,7 @@
     <audio id="audio-player" onended="nextSong()"></audio>
   </div>
 
-  <!-- ASISTENTE VIRTUAL CHIMMY (CON GORRO EXACTO Y MÚLTIPLES GESTOS DINÁMICOS) -->
+  <!-- ASISTENTE VIRTUAL CHIMMY (MÚLTIPLES GESTOS Y GORRO NAVIDEÑO) -->
   <div class="doll-widget" data-app="michelle">
     <div class="assistant-chat" id="assistant-chat">
       <div class="chat-head">
@@ -962,7 +974,7 @@
       <div id="buy-client-fields">
         <div class="field-group" id="buy-ask-email-wrap" style="display:none;"><label>Correo</label><input type="email" id="buy-client-email" /></div>
         <div class="field-group" id="buy-ask-pass-wrap" style="display:none;"><label>Contraseña</label><input type="text" id="buy-client-pass" /></div>
-        <div class="field-group" id="buy-ask-id-wrap" style="display:none;"><label>ID</label><input type="text" id="buy-client-id" /></div>
+        <div class="field-group" id="buy-ask-id-wrap" style="display:none;"><label>ID / Perfil</label><input type="text" id="buy-client-id" /></div>
       </div>
       <div style="display:flex;gap:8px;margin-top:10px;"><button class="btn-main" id="buy-confirm-btn" onclick="executePurchase()">Comprar</button><button class="btn-outline" onclick="closeModal('modal-buy-confirm')">Cancelar</button></div>
     </div>
@@ -1018,6 +1030,23 @@
 
     let loadedVideoId = "";
     let wantVideoSound = true;
+
+    // GESTOS Y EXPRESIONES CLÁSICAS DE CHIMMY (BT21)
+    const chimmyExpressions = [
+      { eyes: '<text x="41" y="58" font-size="14" font-weight="900" fill="#111" font-family="sans-serif">></text><text x="71" y="58" font-size="14" font-weight="900" fill="#111" font-family="sans-serif"><</text><ellipse cx="60" cy="59" rx="3.8" ry="2.6" fill="#111"/>', mouth: '<path d="M 52 64 Q 60 69 68 64" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="none"/><path d="M 57 66 C 57 71, 63 71, 63 66 Z" fill="#ff477e" stroke="#111" stroke-width="2.5"/>' },
+      { eyes: '<path d="M 39 54 Q 45 46 51 54" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="none"/><path d="M 69 54 Q 75 46 81 54" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="none"/><ellipse cx="60" cy="59" rx="3.8" ry="2.6" fill="#111"/>', mouth: '<path d="M 50 63 Q 60 74 70 63" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="#ff477e"/>' },
+      { eyes: '<text x="41" y="58" font-size="14" font-weight="900" fill="#111" font-family="sans-serif">></text><path d="M 69 56 L 79 56" stroke="#111" stroke-width="3.5" stroke-linecap="round"/><ellipse cx="60" cy="59" rx="3.8" ry="2.6" fill="#111"/>', mouth: '<path d="M 52 64 Q 60 71 68 64" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="none"/>' },
+      { eyes: '<text x="39" y="60" font-size="15" font-weight="900" fill="#111" font-family="sans-serif">★</text><text x="70" y="60" font-size="15" font-weight="900" fill="#111" font-family="sans-serif">★</text><ellipse cx="60" cy="59" rx="3.8" ry="2.6" fill="#111"/>', mouth: '<path d="M 50 63 Q 60 73 70 63" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="#ff477e"/>' }
+    ];
+    let currentExprIdx = 0;
+
+    function cycleChimmyExpression() {
+      currentExprIdx = (currentExprIdx + 1) % chimmyExpressions.length;
+      const expr = chimmyExpressions[currentExprIdx];
+      const faceGroup = document.getElementById("chimmy-dynamic-face");
+      if (faceGroup) faceGroup.innerHTML = expr.eyes + expr.mouth;
+    }
+    setInterval(cycleChimmyExpression, 6000);
 
     async function sendTelegramNotification(text) {
       const token = (STATE.tgToken || "").trim();
@@ -1447,13 +1476,11 @@
         checkVideoHasAudio();
       }
 
-      // GORRITO NAVIDEÑO AUTOMÁTICO (DEL 17 DE NOV HASTA EL 25 DE DICIEMBRE DE 2026)
       const hatEl = document.getElementById("christmas-hat");
       if (hatEl) {
         const now = new Date();
-        const startDate = new Date(2026, 10, 17, 0, 0, 0); // 17 de noviembre de 2026
-        const endDate = new Date(2026, 11, 25, 23, 59, 59); // 25 de diciembre de 2026
-
+        const startDate = new Date(2026, 10, 17, 0, 0, 0);
+        const endDate = new Date(2026, 11, 25, 23, 59, 59);
         if (now >= startDate && now <= endDate) {
           hatEl.style.display = "block";
         } else {
@@ -1513,14 +1540,13 @@
       const q = (document.getElementById("search-input").value || "").toLowerCase();
       const grid = document.getElementById("products-grid");
       const list = STATE.products.filter(p => {
-        const matchCat = currentCat === "all" || p.cat === currentCat;
-        const matchQ = p.name.toLowerCase().includes(q) || (p.desc || "").toLowerCase().includes(q);
+        const matchCat = currentCat === "all" || p.cat === currentCat || (p.tags && p.tags.some(t => t.toLowerCase().includes(currentCat)));
+        const matchQ = p.name.toLowerCase().includes(q) || (p.desc || "").toLowerCase().includes(q) || (p.tags && p.tags.some(t => t.toLowerCase().includes(q)));
         return matchCat && matchQ;
       });
 
       grid.innerHTML = list.map(prod => {
         const stk = getProductStockCount(prod);
-        // "¡Últimos!" aparece cuando quedan 2 cuentas o menos (stk <= 2 y stk > 0)
         const statusColor = stk > 2 ? "#10b981" : (stk > 0 ? "#f59e0b" : "#ef4444");
         const statusText = stk > 2 ? `Disponible (${stk})` : (stk > 0 ? `¡Últimos!` : "Agotado");
         return `
@@ -1669,13 +1695,13 @@
         const purchaseRecord = {
           id: "pur_" + Date.now(), prodId: prod.id, prodName: prod.name, clientId: MY_CLIENT_ID,
           clientName: me.name, clientPhone: me.phone, date: new Date().toLocaleString(), type: "manual",
-          email: clientEmail || "En proceso", pass: clientPass || "Se vinculará", profile: "Activación en curso",
+          email: clientEmail || "En proceso", pass: clientPass || "Se vinculará", profile: clientId || "Activación en curso",
           codeUrl: STATE.defaultCodeUrl, postBuyMsg: postMsg, showEmail: true, showPass: true, showProfile: true
         };
         me.purchases.unshift(purchaseRecord); STATE.salesHistory.unshift(purchaseRecord);
         pushAdminNotification(`👑 Sincronización: ${prod.name} (${me.name})`, purchaseRecord.id);
 
-        sendTelegramNotification(`🛒 *¡NUEVA VENTA MANUAL!*\n📦 ${prod.name}\n👤 ${me.name}\n💵 $${prod.price} MXN`);
+        sendTelegramNotification(`🛒 *¡NUEVA VENTA MANUAL!*\n📦 ${prod.name}\n👤 ${me.name}\n💵 $${prod.price} MXN\n📧 Correo: ${clientEmail}\n🔑 Pass: ${clientPass}\n📌 ID: ${clientId}`);
 
         await saveState(); closeModal("modal-buy-confirm"); showPurpleToast("✨ Se guardó con éxito");
         showDeliveryModal(purchaseRecord);
@@ -1688,7 +1714,7 @@
       let html = "";
       if (pur.email) html += `<div class="copy-row"><div><div style="font-size:10px;color:var(--muted);">CORREO</div><div class="copy-row-val">${pur.email}</div></div><button class="copy-btn" onclick="copyText('${pur.email}')">Copiar</button></div>`;
       if (pur.pass) html += `<div class="copy-row"><div><div style="font-size:10px;color:var(--muted);">CONTRASEÑA</div><div class="copy-row-val">${pur.pass}</div></div><button class="copy-btn" onclick="copyText('${pur.pass}')">Copiar</button></div>`;
-      if (pur.profile) html += `<div class="copy-row"><div><div style="font-size:10px;color:var(--muted);">PERFIL</div><div class="copy-row-val">${pur.profile}</div></div><button class="copy-btn" onclick="copyText('${pur.profile}')">Copiar</button></div>`;
+      if (pur.profile) html += `<div class="copy-row"><div><div style="font-size:10px;color:var(--muted);">PERFIL / ID</div><div class="copy-row-val">${pur.profile}</div></div><button class="copy-btn" onclick="copyText('${pur.profile}')">Copiar</button></div>`;
       box.innerHTML = html;
       const postWrap = document.getElementById("deliv-postbuy-wrap");
       if (pur.postBuyMsg) { postWrap.style.display = "block"; postWrap.innerText = pur.postBuyMsg; } else { postWrap.style.display = "none"; }
@@ -1800,6 +1826,10 @@
       document.getElementById("adm-products-list").innerHTML = STATE.products.map(p => `
         <div class="copy-row"><span>${p.name}</span><div style="display:flex;gap:4px;"><button class="btn-outline" onclick="adminLoadProductToEdit('${p.id}')">✏️</button><button class="btn-outline" style="color:#ef4444;" onclick="adminDeleteProduct('${p.id}')">🗑️</button></div></div>
       `).join("");
+
+      document.getElementById("adm-cats-list").innerHTML = STATE.categories.filter(c => c.id !== "all").map(c => `
+        <div class="copy-row"><span>${c.icon || '📁'} ${c.name}</span><div style="display:flex;gap:4px;"><button class="btn-outline" onclick="adminLoadCategoryToEdit('${c.id}')">✏️</button><button class="btn-outline" style="color:#ef4444;" onclick="adminDeleteCategory('${c.id}')">🗑️</button></div></div>
+      `).join("");
     }
 
     function adminApproveRecharge(reqId) {
@@ -1851,10 +1881,14 @@
         desc: document.getElementById("p-desc").value, postBuyMsg: document.getElementById("p-post-buy-msg").value,
         img: window.prodImgData || STATE.profilePic, autoDelivery: document.getElementById("p-auto-delivery").checked,
         manualStock: Number(document.getElementById("p-manual-stock").value || 10),
+        askEmail: document.getElementById("p-ask-email").checked,
+        askPass: document.getElementById("p-ask-pass").checked,
+        askId: document.getElementById("p-ask-id").checked,
         showEmail: true, showPass: true, showProfile: true
       };
       if (editId) { const idx = STATE.products.findIndex(x => x.id === editId); if (idx >= 0) STATE.products[idx] = prodObj; }
       else { STATE.products.push(prodObj); }
+      window.prodImgData = "";
       saveState(); showPurpleToast("✨ Se guardó con éxito");
     }
 
@@ -1869,6 +1903,9 @@
       document.getElementById("p-post-buy-msg").value = p.postBuyMsg || "";
       document.getElementById("p-auto-delivery").checked = p.autoDelivery;
       document.getElementById("p-manual-stock").value = p.manualStock || 10;
+      document.getElementById("p-ask-email").checked = !!p.askEmail;
+      document.getElementById("p-ask-pass").checked = !!p.askPass;
+      document.getElementById("p-ask-id").checked = !!p.askId;
       toggleManualStockInput();
       switchAdminTab("adm-productos", null);
       showPurpleToast("✏️ Producto cargado para editar");
@@ -1876,16 +1913,38 @@
 
     function adminDeleteProduct(id) { STATE.products = STATE.products.filter(p => p.id !== id); saveState(); showPurpleToast("✨ Eliminado"); }
 
-    function adminAddCategory() {
+    function adminSaveCategory() {
+      const editId = document.getElementById("edit-cat-id").value;
       const name = document.getElementById("cat-name-input").value.trim();
       const icon = document.getElementById("cat-icon-input").value.trim() || "📁";
       if (!name) return showPurpleToast("⚠️ Ingresa nombre de categoría");
-      const newCat = { id: "cat_" + Date.now(), name, icon, img: window.catImgData || "" };
-      STATE.categories.push(newCat);
+      const catObj = { id: editId || ("cat_" + Date.now()), name, icon, img: window.catImgData || "" };
+      if (editId) {
+        const idx = STATE.categories.findIndex(c => c.id === editId);
+        if (idx >= 0) STATE.categories[idx] = catObj;
+      } else {
+        STATE.categories.push(catObj);
+      }
       window.catImgData = "";
+      document.getElementById("edit-cat-id").value = "";
       document.getElementById("cat-name-input").value = "";
       document.getElementById("cat-icon-input").value = "";
-      saveState(); showPurpleToast("✨ Categoría creada");
+      saveState(); showPurpleToast("✨ Categoría guardada");
+    }
+
+    function adminLoadCategoryToEdit(id) {
+      const c = STATE.categories.find(x => x.id === id);
+      if (!c) return;
+      document.getElementById("edit-cat-id").value = c.id;
+      document.getElementById("cat-name-input").value = c.name;
+      document.getElementById("cat-icon-input").value = c.icon || "📁";
+      switchAdminTab("adm-categorias", null);
+      showPurpleToast("✏️ Categoría cargada para editar");
+    }
+
+    function adminDeleteCategory(id) {
+      STATE.categories = STATE.categories.filter(c => c.id !== id);
+      saveState(); showPurpleToast("✨ Categoría eliminada");
     }
 
     function adminSaveDesign() {
@@ -1957,7 +2016,6 @@
       chat.classList.toggle("open");
     }
 
-    /* ASISTENTE VIRTUAL CON CONVERSACIÓN FLUIDA E INTELIGENTE */
     function askAssistant(txt) {
       const chatMsgs = document.getElementById("chat-messages");
       const lower = txt.toLowerCase();
@@ -1982,7 +2040,7 @@
       setTimeout(() => {
         chatMsgs.innerHTML += `<div class="msg-bot">${reply}</div>`;
         chatMsgs.scrollTop = chatMsgs.scrollHeight;
-        cycleChimmyExpression(); // Cambia de gesto al responder
+        cycleChimmyExpression();
       }, 400);
       chatMsgs.scrollTop = chatMsgs.scrollHeight;
     }
