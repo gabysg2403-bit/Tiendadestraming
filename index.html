@@ -793,7 +793,7 @@
           </div>
           <div class="field-group"><label>Descripción</label><input type="text" id="p-desc" /></div>
           <div class="field-group"><label style="color:#fde047;">📝 Mensaje post-compra</label><textarea id="p-post-buy-msg" rows="3"></textarea></div>
-          <div class="field-group"><label>Etiquetas</label><input type="text" id="p-tags" /></div>
+          <div class="field-group"><label>Etiquetas (separadas por coma, ej: HBO, HBO Max)</label><input type="text" id="p-tags" /></div>
           
           <!-- CONFIGURACIÓN DE CAMPOS SOLICITADOS POR EL CLIENTE AL COMPRAR -->
           <div style="background:rgba(255,255,255,0.04);padding:12px;border-radius:12px;margin-bottom:12px;">
@@ -1031,7 +1031,6 @@
     let loadedVideoId = "";
     let wantVideoSound = true;
 
-    // GESTOS Y EXPRESIONES CLÁSICAS DE CHIMMY (BT21)
     const chimmyExpressions = [
       { eyes: '<text x="41" y="58" font-size="14" font-weight="900" fill="#111" font-family="sans-serif">></text><text x="71" y="58" font-size="14" font-weight="900" fill="#111" font-family="sans-serif"><</text><ellipse cx="60" cy="59" rx="3.8" ry="2.6" fill="#111"/>', mouth: '<path d="M 52 64 Q 60 69 68 64" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="none"/><path d="M 57 66 C 57 71, 63 71, 63 66 Z" fill="#ff477e" stroke="#111" stroke-width="2.5"/>' },
       { eyes: '<path d="M 39 54 Q 45 46 51 54" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="none"/><path d="M 69 54 Q 75 46 81 54" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="none"/><ellipse cx="60" cy="59" rx="3.8" ry="2.6" fill="#111"/>', mouth: '<path d="M 50 63 Q 60 74 70 63" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="#ff477e"/>' },
@@ -1539,9 +1538,23 @@
     function renderCatalog() {
       const q = (document.getElementById("search-input").value || "").toLowerCase();
       const grid = document.getElementById("products-grid");
+      const activeCatObj = STATE.categories.find(c => c.id === currentCat);
+      const activeCatName = activeCatObj ? activeCatObj.name.toLowerCase() : "";
+
       const list = STATE.products.filter(p => {
-        const matchCat = currentCat === "all" || p.cat === currentCat || (p.tags && p.tags.some(t => t.toLowerCase().includes(currentCat)));
-        const matchQ = p.name.toLowerCase().includes(q) || (p.desc || "").toLowerCase().includes(q) || (p.tags && p.tags.some(t => t.toLowerCase().includes(q)));
+        const pTags = Array.isArray(p.tags) ? p.tags.map(t => String(t).toLowerCase()) : [];
+        const matchCat =
+          currentCat === "all" ||
+          p.cat === currentCat ||
+          (activeCatName && (
+            p.name.toLowerCase().includes(activeCatName) ||
+            (p.desc || "").toLowerCase().includes(activeCatName) ||
+            pTags.some(t => t.includes(activeCatName) || activeCatName.includes(t))
+          ));
+        const matchQ =
+          p.name.toLowerCase().includes(q) ||
+          (p.desc || "").toLowerCase().includes(q) ||
+          pTags.some(t => t.includes(q));
         return matchCat && matchQ;
       });
 
@@ -1876,19 +1889,39 @@
       const name = document.getElementById("p-name").value.trim();
       const price = Number(document.getElementById("p-price").value);
       if (!name || isNaN(price)) return showPurpleToast("📦 Datos incompletos");
+
+      const existingProd = editId ? STATE.products.find(x => x.id === editId) : null;
+      const rawTags = document.getElementById("p-tags").value.split(",").map(t => t.trim()).filter(Boolean);
+
       const prodObj = {
-        id: editId || ("p_" + Date.now()), name, price, cat: document.getElementById("p-cat").value,
-        desc: document.getElementById("p-desc").value, postBuyMsg: document.getElementById("p-post-buy-msg").value,
-        img: window.prodImgData || STATE.profilePic, autoDelivery: document.getElementById("p-auto-delivery").checked,
+        id: editId || ("p_" + Date.now()),
+        name,
+        price,
+        cat: document.getElementById("p-cat").value,
+        desc: document.getElementById("p-desc").value,
+        postBuyMsg: document.getElementById("p-post-buy-msg").value,
+        tags: rawTags,
+        img: window.prodImgData || (existingProd ? existingProd.img : STATE.profilePic),
+        autoDelivery: document.getElementById("p-auto-delivery").checked,
         manualStock: Number(document.getElementById("p-manual-stock").value || 10),
         askEmail: document.getElementById("p-ask-email").checked,
         askPass: document.getElementById("p-ask-pass").checked,
         askId: document.getElementById("p-ask-id").checked,
         showEmail: true, showPass: true, showProfile: true
       };
-      if (editId) { const idx = STATE.products.findIndex(x => x.id === editId); if (idx >= 0) STATE.products[idx] = prodObj; }
-      else { STATE.products.push(prodObj); }
+
+      if (editId) {
+        const idx = STATE.products.findIndex(x => x.id === editId);
+        if (idx >= 0) STATE.products[idx] = prodObj;
+      } else {
+        STATE.products.push(prodObj);
+      }
+
       window.prodImgData = "";
+      document.getElementById("edit-prod-id").value = "";
+      const prev = document.getElementById("p-img-preview");
+      if (prev) { prev.src = ""; prev.style.display = "none"; }
+
       saveState(); showPurpleToast("✨ Se guardó con éxito");
     }
 
@@ -1901,11 +1934,17 @@
       document.getElementById("p-cat").value = p.cat;
       document.getElementById("p-desc").value = p.desc || "";
       document.getElementById("p-post-buy-msg").value = p.postBuyMsg || "";
+      document.getElementById("p-tags").value = Array.isArray(p.tags) ? p.tags.join(", ") : "";
       document.getElementById("p-auto-delivery").checked = p.autoDelivery;
       document.getElementById("p-manual-stock").value = p.manualStock || 10;
       document.getElementById("p-ask-email").checked = !!p.askEmail;
       document.getElementById("p-ask-pass").checked = !!p.askPass;
       document.getElementById("p-ask-id").checked = !!p.askId;
+
+      window.prodImgData = p.img || "";
+      const prev = document.getElementById("p-img-preview");
+      if (prev && p.img) { prev.src = p.img; prev.style.display = "block"; }
+
       toggleManualStockInput();
       switchAdminTab("adm-productos", null);
       showPurpleToast("✏️ Producto cargado para editar");
@@ -1918,7 +1957,8 @@
       const name = document.getElementById("cat-name-input").value.trim();
       const icon = document.getElementById("cat-icon-input").value.trim() || "📁";
       if (!name) return showPurpleToast("⚠️ Ingresa nombre de categoría");
-      const catObj = { id: editId || ("cat_" + Date.now()), name, icon, img: window.catImgData || "" };
+      const existingCat = editId ? STATE.categories.find(c => c.id === editId) : null;
+      const catObj = { id: editId || ("cat_" + Date.now()), name, icon, img: window.catImgData || (existingCat ? existingCat.img : "") };
       if (editId) {
         const idx = STATE.categories.findIndex(c => c.id === editId);
         if (idx >= 0) STATE.categories[idx] = catObj;
