@@ -486,6 +486,7 @@
     .prod-stock-mini { font-size: 11px; font-weight: 700; color: var(--secondary); margin-bottom: -2px; }
     .prod-title { font-size: 14px; font-weight: 800; }
     .prod-desc { font-size: 11.5px; color: var(--muted); line-height: 1.3; }
+    .prod-warranty { font-size: 10.5px; font-weight: 700; color: #fde047; line-height: 1.25; }
     .combo-tags { display: flex; flex-wrap: wrap; gap: 4px; }
     .combo-tag { font-size: 9.5px; background: rgba(255, 255, 255, 0.09); padding: 2px 6px; border-radius: 6px; color: #e2e8f0; }
     .prod-price { font-size: 18px; font-weight: 900; color: #34d399; margin-top: auto; }
@@ -517,6 +518,17 @@
       background: rgba(0, 229, 255, 0.06); color: var(--secondary); font-weight: 800; font-size: 12.5px; cursor: pointer; text-align: center;
     }
     .upload-preview { max-width: 100%; max-height: 150px; margin-top: 8px; display: none; object-fit: contain; background: transparent !important; }
+
+    .report-policy-box {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 12px;
+      color: #fde68a;
+      line-height: 1.45;
+      margin-bottom: 12px;
+    }
 
     .modal-backdrop {
       position: fixed; inset: 0; background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(8px);
@@ -552,8 +564,24 @@
       font-size: 11.5px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,0.5); display: none; align-items: center; gap: 6px;
     }
 
-    /* ASISTENTE VIRTUAL PERRITO (CHIMMY STYLE) */
+    /* ASISTENTE VIRTUAL PERRITO (CHIMMY STYLE) + BURBUJA WHATSAPP */
     .doll-widget { position: fixed; right: 12px; bottom: 12px; z-index: 350; display: flex; flex-direction: column; align-items: flex-end; pointer-events: none; }
+    .wa-bubble-top {
+      pointer-events: auto;
+      background: linear-gradient(135deg, #22c55e, #15803d);
+      border: 2px solid #bbf7d0;
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 900;
+      margin-bottom: 5px;
+      box-shadow: 0 6px 16px rgba(34, 197, 94, 0.45);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
     .doll-Speech {
       pointer-events: auto; background: rgba(16, 22, 38, 0.96); border: 2px solid var(--doll-hoodie);
       color: #fff; padding: 6px 12px; border-radius: 16px 16px 4px 16px; font-size: 11.5px; font-weight: 800; margin-bottom: 4px; box-shadow: 0 4px 14px rgba(0,0,0,0.5); max-width: 195px; cursor: pointer;
@@ -720,6 +748,9 @@
           <h2 style="font-size:18px;">⚠️ Reportar una Falla</h2>
           <button class="btn-outline" style="padding:5px 10px;" onclick="switchView('tienda')">← Volver</button>
         </div>
+        <div class="report-policy-box">
+          ⚠️ El reporte puede tardar de 1 a 2 días en resolverse para darle su repuesto si es posible. Si fue por incumplimiento de las normas, no se le cumplirá ni se le aplicará la garantía.
+        </div>
         <div class="field-group"><label>Plataforma</label><input type="text" id="rep-platform" placeholder="Ej. Netflix" /></div>
         <div class="field-group"><label>Problema</label><textarea id="rep-desc" rows="3" placeholder="Describe..."></textarea></div>
         <div class="field-group">
@@ -792,10 +823,13 @@
             <div class="field-group"><label>Categoría</label><select id="p-cat"></select></div>
           </div>
           <div class="field-group"><label>Descripción</label><input type="text" id="p-desc" /></div>
+          <div class="field-group">
+            <label>Duración y Garantía (Ej. 1 mes • 25 días garantía / 3 meses • garantía extendida)</label>
+            <input type="text" id="p-warranty" placeholder="25 días garantía • +1 mes = garantía mayor según tiempo" />
+          </div>
           <div class="field-group"><label style="color:#fde047;">📝 Mensaje post-compra</label><textarea id="p-post-buy-msg" rows="3"></textarea></div>
           <div class="field-group"><label>Etiquetas (separadas por coma, ej: HBO, HBO Max)</label><input type="text" id="p-tags" /></div>
           
-          <!-- CONFIGURACIÓN DE CAMPOS SOLICITADOS POR EL CLIENTE AL COMPRAR -->
           <div style="background:rgba(255,255,255,0.04);padding:12px;border-radius:12px;margin-bottom:12px;">
             <label style="font-size:12.5px;color:var(--secondary);font-weight:800;margin-bottom:8px;display:block;">⚙️ ¿Qué datos pedirá este producto al cliente?</label>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;">
@@ -818,7 +852,10 @@
           <div id="adm-products-list" style="margin-top:10px;"></div>
         </div>
 
-        <div id="adm-reportes" class="adm-tab" style="display:none;"><div id="adm-reports-list"></div></div>
+        <div id="adm-reportes" class="adm-tab" style="display:none;">
+          <h3 style="font-size:15px;margin-bottom:10px;">🛠️ Reportes de Clientes</h3>
+          <div id="adm-reports-list"></div>
+        </div>
 
         <div id="adm-categorias" class="adm-tab" style="display:none;">
           <input type="hidden" id="edit-cat-id" />
@@ -839,7 +876,7 @@
           </div>
           <div class="field-group"><label>Tienda</label><input type="text" id="cfg-store-name" /></div>
           <div class="field-group"><label>Eslogan</label><input type="text" id="cfg-store-slogan" /></div>
-          <div class="field-group"><label>WhatsApp Admin</label><input type="text" id="cfg-wa-number" /></div>
+          <div class="field-group"><label>WhatsApp Admin (ej. 5523676793)</label><input type="text" id="cfg-wa-number" /></div>
           <div class="field-group"><label>Telegram Bot Token</label><input type="text" id="cfg-tg-token" placeholder="Ej. 123456789:ABCdef..." /></div>
           <div class="field-group"><label>Telegram Chat ID</label><input type="text" id="cfg-tg-chat-id" value="5762852775" /></div>
           <div class="field-group"><label>UltraMsg Instance ID</label><input type="text" id="cfg-wa-api-instance" /></div>
@@ -872,7 +909,7 @@
     <audio id="audio-player" onended="nextSong()"></audio>
   </div>
 
-  <!-- ASISTENTE VIRTUAL CHIMMY (MÚLTIPLES GESTOS Y GORRO NAVIDEÑO) -->
+  <!-- ASISTENTE VIRTUAL CHIMMY + BURBUJA WHATSAPP ARRIBA -->
   <div class="doll-widget" data-app="michelle">
     <div class="assistant-chat" id="assistant-chat">
       <div class="chat-head">
@@ -883,13 +920,18 @@
       <div class="chat-quick">
         <span class="chat-chip" onclick="askAssistant('Hola')">Hola</span>
         <span class="chat-chip" onclick="askAssistant('¿Cómo recargo?')">Recargar</span>
-        <span class="chat-chip" onclick="askAssistant('Ver catálogo')">Catálogo</span>
+        <span class="chat-chip" onclick="askAssistant('Garantía')">Garantía</span>
       </div>
       <div class="chat-input-row">
         <input type="text" id="chat-user-input" placeholder="Escribe tu duda..." onkeydown="if(event.key==='Enter')sendUserChat()" />
         <button onclick="sendUserChat()">Enviar</button>
       </div>
     </div>
+
+    <a id="chimmy-wa-bubble" class="wa-bubble-top" href="https://wa.me/525523676793" target="_blank" rel="noopener noreferrer" title="Ir a WhatsApp">
+      💬 WhatsApp
+    </a>
+
     <div class="doll-Speech" id="doll-speech-bubble" onclick="toggleAssistantChat()">¡Hola! ¿Te ayudo? 💛</div>
     <div class="doll-avatar-btn" onclick="toggleAssistantChat(); cycleChimmyExpression();">
       <svg class="doll-svg" viewBox="-12 -30 144 180">
@@ -970,7 +1012,7 @@
   <div class="modal-backdrop" id="modal-buy-confirm" data-app="michelle">
     <div class="modal-box" style="max-width:420px;">
       <h3 id="buy-modal-title">Confirmar Compra</h3>
-      <p id="buy-modal-desc" style="font-size:12.5px;color:var(--muted);margin-bottom:12px;"></p>
+      <p id="buy-modal-desc" style="font-size:12.5px;color:var(--muted);margin-bottom:12px;white-space:pre-line;"></p>
       <div id="buy-client-fields">
         <div class="field-group" id="buy-ask-email-wrap" style="display:none;"><label>Correo</label><input type="email" id="buy-client-email" /></div>
         <div class="field-group" id="buy-ask-pass-wrap" style="display:none;"><label>Contraseña</label><input type="text" id="buy-client-pass" /></div>
@@ -997,17 +1039,23 @@
 
   <div class="modal-backdrop" id="modal-resolve-report" data-app="michelle">
     <div class="modal-box">
-      <h3>Resolver Reporte</h3>
+      <h3 id="res-modal-title">Resolver falla</h3>
       <input type="hidden" id="res-report-id" />
       <div class="field-group"><label>Tomar stock</label><div style="display:flex;gap:6px;"><select id="res-stock-prod" style="flex:1;"></select><button class="btn-outline" onclick="pullStockForResolution()">Tomar</button></div></div>
       <div class="field-group"><label>Correo</label><input type="text" id="res-new-email" /></div>
       <div class="field-group"><label>Contraseña</label><input type="text" id="res-new-pass" /></div>
-      <div class="field-group"><label>Perfil</label><input type="text" id="res-new-profile" /></div>
-      <div style="display:flex;gap:8px;"><button class="btn-main" onclick="confirmResolveReport()">Resolver</button><button class="btn-outline" onclick="closeModal('modal-resolve-report')">Cancelar</button></div>
+      <div class="field-group"><label>Perfil / PIN</label><input type="text" id="res-new-profile" /></div>
+      <div class="field-group">
+        <label>Nota / Resolución para el cliente</label>
+        <textarea id="res-custom-note" rows="2" placeholder="Ej. Se entregó cuenta de reposición o motivo de resolución..."></textarea>
+      </div>
+      <div style="display:flex;gap:8px;"><button class="btn-main" onclick="confirmResolveReport()">Guardar resolución</button><button class="btn-outline" onclick="closeModal('modal-resolve-report')">Cancelar</button></div>
     </div>
   </div>
 
   <script data-app="michelle">
+    const REPORT_POLICY_MSG = "El reporte puede tardar de 1 a 2 días en resolverse para darle su repuesto si es posible. Si fue por incumplimiento de las normas, no se le cumplirá ni se le aplicará la garantía.";
+
     let toastTimer = null;
     function showPurpleToast(msg) {
       const el = document.getElementById("purple-toast");
@@ -1018,6 +1066,23 @@
       toastTimer = setTimeout(() => { el.classList.remove("show"); }, 1150);
     }
     window.alert = function(msg) { showPurpleToast(msg); };
+
+    function copyText(txt) {
+      if (!txt) return;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(txt).then(() => showPurpleToast("📋 Copiado")).catch(() => fallbackCopy(txt));
+      } else {
+        fallbackCopy(txt);
+      }
+    }
+    function fallbackCopy(txt) {
+      const ta = document.createElement("textarea");
+      ta.value = txt;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); showPurpleToast("📋 Copiado"); } catch (e) {}
+      document.body.removeChild(ta);
+    }
 
     const FIREBASE_DB_URL = "https://michellestore-default-rtdb.firebaseio.com/store_v1.json";
     const FIREBASE_VIDEO_URL = "https://michellestore-default-rtdb.firebaseio.com/store_video_bg.json";
@@ -1030,6 +1095,7 @@
 
     let loadedVideoId = "";
     let wantVideoSound = true;
+    let isSavingStock = false;
 
     const chimmyExpressions = [
       { eyes: '<text x="41" y="58" font-size="14" font-weight="900" fill="#111" font-family="sans-serif">></text><text x="71" y="58" font-size="14" font-weight="900" fill="#111" font-family="sans-serif"><</text><ellipse cx="60" cy="59" rx="3.8" ry="2.6" fill="#111"/>', mouth: '<path d="M 52 64 Q 60 69 68 64" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="none"/><path d="M 57 66 C 57 71, 63 71, 63 66 Z" fill="#ff477e" stroke="#111" stroke-width="2.5"/>' },
@@ -1221,11 +1287,11 @@
       storeName: "Michelle Streaming VIP",
       storeSlogan: "Cuentas Premium y Combos • Entrega Automática 24/7",
       profilePic: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&auto=format&fit=crop&q=80",
-      waNumber: "5215500000000",
+      waNumber: "5523676793",
       waApiInstance: "", waApiToken: "",
       tgToken: "", tgChatId: "5762852775",
       defaultCodeUrl: "https://mis-codigos-vip.com",
-      defaultPostBuyMsg: "📌 Importante: Ingresa únicamente en el perfil asignado.",
+      defaultPostBuyMsg: "📌 Garantía: 25 días base; si tu cuenta es de más de 1 mes, la garantía aumenta según el tiempo de la cuenta.",
       bankInfo: "🏦 Banco: Nu México / SPEI\n💳 CLABE: 6381 8000 0000 0000 01",
       colors: { primary: "#ff2a85", secondary: "#00e5ff", bg: "#080b14", overlayOpacity: 0.55 },
       background: { type: "particles", dataUrl: "", videoId: "" },
@@ -1238,7 +1304,7 @@
         { id: "diseno", name: "Diseño", icon: "🎨", img: "" }
       ],
       products: [
-        { id: "p_netflix", name: "Netflix Perfil", price: 55, cat: "streaming", desc: "25 días garantizado", postBuyMsg: "Usa tu perfil.", tags: ["Netflix"], gradient: "transparent", img: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=600&auto=format&fit=crop&q=80", autoDelivery: true, manualStock: 0, askEmail: false, askPass: false, askId: false, showEmail: true, showPass: true, showProfile: true, showId: false, showCodeUrl: true }
+        { id: "p_netflix", name: "Netflix Perfil", price: 55, cat: "streaming", desc: "25 días garantizado", warranty: "25 días garantía (mayor en planes +1 mes)", postBuyMsg: "Usa tu perfil. Garantía de 25 días (o mayor según el tiempo de tu cuenta si es de más de 1 mes).", tags: ["Netflix"], gradient: "transparent", img: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=600&auto=format&fit=crop&q=80", autoDelivery: true, manualStock: 0, askEmail: false, askPass: false, askId: false, showEmail: true, showPass: true, showProfile: true, showId: false, showCodeUrl: true }
       ],
       clients: {}, salesHistory: [], rechargeRequests: [], reports: [], adminNotifications: [],
       songs: [{ title: "Synthwave Chill VIP", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" }]
@@ -1254,22 +1320,26 @@
     function saveLocalStockCache() { try { localStorage.setItem(STOCK_STORAGE_KEY, JSON.stringify(accountsStock)); } catch (e) {} }
 
     async function saveStockState() {
+      isSavingStock = true;
       saveLocalStockCache();
       try {
         await fetch(FIREBASE_STOCK_URL, {
           method: "PUT", headers: { "Content-Type": "application/json" },
           body: JSON.stringify(accountsStock)
         });
-      } catch (e) {}
+      } catch (e) {} finally {
+        isSavingStock = false;
+      }
     }
 
     async function pullStockFromFirebase() {
+      if (isSavingStock) return;
       try {
         const res = await fetch(FIREBASE_STOCK_URL + "?t=" + Date.now(), { cache: "no-store" });
         if (res.ok) {
           const cloudStock = await res.json();
           if (Array.isArray(cloudStock)) {
-            if (cloudStock.length >= accountsStock.length) {
+            if (JSON.stringify(cloudStock) !== JSON.stringify(accountsStock)) {
               accountsStock = cloudStock;
               saveLocalStockCache();
               renderAll();
@@ -1333,7 +1403,9 @@
         }
       } catch (e) {}
     }
-    function forcePushToFirebase() { saveState().then(() => showPurpleToast("✨ Se guardó con éxito")); }
+    function forcePushToFirebase() {
+      saveState().then(() => saveStockState()).then(() => showPurpleToast("✨ Todo sincronizado en vivo"));
+    }
 
     function pushAdminNotification(text, linkId) {
       if (!Array.isArray(STATE.adminNotifications)) STATE.adminNotifications = [];
@@ -1460,6 +1532,12 @@
       r.style.setProperty("--overlay-opacity", STATE.colors.overlayOpacity ?? 0.55);
       r.style.setProperty("--doll-hoodie", STATE.doll.hoodie || "#ffe135");
 
+      const waBubble = document.getElementById("chimmy-wa-bubble");
+      if (waBubble) {
+        const waDigits = normalizePhoneForWA(STATE.waNumber || "5523676793");
+        waBubble.href = `https://wa.me/${waDigits}`;
+      }
+
       const bgContainer = document.getElementById("bg-media-container");
       const bgVideo = document.getElementById("bg-video");
 
@@ -1562,6 +1640,7 @@
         const stk = getProductStockCount(prod);
         const statusColor = stk > 2 ? "#10b981" : (stk > 0 ? "#f59e0b" : "#ef4444");
         const statusText = stk > 2 ? `Disponible (${stk})` : (stk > 0 ? `¡Últimos!` : "Agotado");
+        const warrantyTxt = prod.warranty || "25 días garantía • +1 mes = garantía mayor según tiempo";
         return `
           <div class="prod-card">
             <div class="prod-head">
@@ -1573,6 +1652,7 @@
               <div class="prod-stock-mini">Stock: ${stk} disponibles</div>
               <div class="prod-title">${prod.name}</div>
               <div class="prod-desc">${prod.desc || ''}</div>
+              <div class="prod-warranty">🛡️ ${warrantyTxt}</div>
               <div class="prod-price">$${Number(prod.price).toFixed(2)}</div>
               <button class="btn-main" ${stk <= 0 ? 'disabled' : ''} onclick="openBuyModal('${prod.id}')">${stk <= 0 ? 'Sin Stock' : '🛒 Comprar'}</button>
               ${isAdmin ? `<div style="display:flex;gap:4px;margin-top:4px;"><button class="btn-outline" style="flex:1;padding:5px;font-size:11px;" onclick="adminLoadProductToEdit('${prod.id}')">✏️ Editar</button><label class="btn-outline" style="flex:1;padding:5px;font-size:11px;cursor:pointer;">📷 Foto<input type="file" accept="image/*" style="display:none" onchange="quickProdPhotoUpload(event, '${prod.id}')" /></label></div>` : ''}
@@ -1596,6 +1676,7 @@
       if (pur.email) lines.push(`📧 *Correo:* ${pur.email}`);
       if (pur.pass) lines.push(`🔑 *Contraseña:* ${pur.pass}`);
       if (pur.profile) lines.push(`👤 *Perfil/PIN:* ${pur.profile}`);
+      if (pur.warranty) lines.push(`🛡️ *Garantía:* ${pur.warranty}`);
       if (pur.postBuyMsg) lines.push(``, `📝 *Instrucciones:*`, pur.postBuyMsg);
       return lines.join("\n");
     }
@@ -1625,7 +1706,7 @@
     async function notifyAdminRechargeOnWhatsApp(req) {
       const instance = (STATE.waApiInstance || "").trim();
       const token = (STATE.waApiToken || "").trim();
-      const adminPhone = normalizePhoneForWA(STATE.waNumber || "");
+      const adminPhone = normalizePhoneForWA(STATE.waNumber || "5523676793");
       if (!instance || !adminPhone || !token) return;
       const cleanInst = instance.replace(/^instance/i, "");
       const caption = `💳 *¡NUEVA RECARGA!*\n👤 ${req.clientName}\n💰 $${req.amount} MXN\nRef: ${req.refCode}`;
@@ -1655,8 +1736,9 @@
       const prod = STATE.products.find(p => p.id === prodId);
       if (!prod) return;
       pendingBuyProdId = prodId;
+      const wTxt = prod.warranty || "25 días garantía (mayor si es +1 mes según duración)";
       document.getElementById("buy-modal-title").innerText = "Comprar " + prod.name;
-      document.getElementById("buy-modal-desc").innerText = `Precio: $${prod.price} MXN • Saldo: $${Number(me.balance || 0).toFixed(2)}`;
+      document.getElementById("buy-modal-desc").innerText = `Precio: $${prod.price} MXN • Saldo: $${Number(me.balance || 0).toFixed(2)}\n🛡️ Garantía: ${wTxt}`;
       document.getElementById("buy-ask-email-wrap").style.display = prod.askEmail ? "block" : "none";
       document.getElementById("buy-ask-pass-wrap").style.display = prod.askPass ? "block" : "none";
       document.getElementById("buy-ask-id-wrap").style.display = prod.askId ? "block" : "none";
@@ -1664,23 +1746,50 @@
     }
 
     async function executePurchase() {
-      await pullStockFromFirebase();
       const prod = STATE.products.find(p => p.id === pendingBuyProdId);
       if (!prod) return;
       const me = getMyClient();
       if ((me.balance || 0) < prod.price) { closeModal("modal-buy-confirm"); showPurpleToast("💳 Saldo insuficiente"); switchView("recargar"); return; }
+
       const clientEmail = document.getElementById("buy-client-email").value.trim();
       const clientPass = document.getElementById("buy-client-pass").value.trim();
       const clientId = document.getElementById("buy-client-id").value.trim();
 
+      if (prod.askEmail && !clientEmail) return showPurpleToast("📧 Ingresa tu correo");
+      if (prod.askPass && !clientPass) return showPurpleToast("🔑 Ingresa tu contraseña");
+      if (prod.askId && !clientId) return showPurpleToast("📌 Ingresa tu ID o perfil");
+
       if (!Array.isArray(me.purchases)) me.purchases = [];
       if (!Array.isArray(STATE.salesHistory)) STATE.salesHistory = [];
-      const postMsg = (prod.postBuyMsg && prod.postBuyMsg.trim()) ? prod.postBuyMsg.trim() : (STATE.defaultPostBuyMsg || "");
+      const warrantyTxt = prod.warranty || "25 días garantía (mayor en planes de más de 1 mes según tiempo)";
+      const postMsg = (prod.postBuyMsg && prod.postBuyMsg.trim())
+        ? `${prod.postBuyMsg.trim()}\n🛡️ Garantía: ${warrantyTxt}`
+        : `${STATE.defaultPostBuyMsg || ""}\n🛡️ Garantía: ${warrantyTxt}`;
 
       if (prod.autoDelivery) {
-        const freeAcc = accountsStock.find(a => a.prodId === prod.id && !a.used);
-        if (!freeAcc) return showPurpleToast("⚠️ Sin stock disponible");
-        freeAcc.used = true;
+        try {
+          const res = await fetch(FIREBASE_STOCK_URL + "?t=" + Date.now(), { cache: "no-store" });
+          if (res.ok) {
+            const freshStock = await res.json();
+            if (Array.isArray(freshStock)) {
+              accountsStock = freshStock;
+            }
+          }
+        } catch (e) {}
+
+        const freeAccIndex = accountsStock.findIndex(a => a.prodId === prod.id && !a.used);
+        if (freeAccIndex === -1) {
+          saveLocalStockCache();
+          renderAll();
+          closeModal("modal-buy-confirm");
+          return showPurpleToast("⚠️ Lo sentimos, se acaba de agotar este producto");
+        }
+
+        const freeAcc = accountsStock[freeAccIndex];
+        accountsStock[freeAccIndex].used = true;
+        accountsStock[freeAccIndex].usedBy = me.name;
+        accountsStock[freeAccIndex].usedDate = new Date().toLocaleString();
+
         await saveStockState();
 
         me.balance = Number(me.balance) - Number(prod.price);
@@ -1689,7 +1798,7 @@
           id: "pur_" + Date.now(), prodId: prod.id, prodName: prod.name, clientId: MY_CLIENT_ID,
           clientName: me.name, clientPhone: me.phone, date: new Date().toLocaleString(), type: "auto",
           email: freeAcc.email, pass: freeAcc.pass, profile: freeAcc.profile, customId: freeAcc.customId || clientId,
-          codeUrl: freeAcc.codeUrl || STATE.defaultCodeUrl, postBuyMsg: postMsg, showEmail: prod.showEmail, showPass: prod.showPass, showProfile: prod.showProfile
+          codeUrl: freeAcc.codeUrl || STATE.defaultCodeUrl, warranty: warrantyTxt, postBuyMsg: postMsg, showEmail: prod.showEmail, showPass: prod.showPass, showProfile: prod.showProfile
         };
         me.purchases.unshift(purchaseRecord);
         STATE.salesHistory.unshift(purchaseRecord);
@@ -1709,7 +1818,7 @@
           id: "pur_" + Date.now(), prodId: prod.id, prodName: prod.name, clientId: MY_CLIENT_ID,
           clientName: me.name, clientPhone: me.phone, date: new Date().toLocaleString(), type: "manual",
           email: clientEmail || "En proceso", pass: clientPass || "Se vinculará", profile: clientId || "Activación en curso",
-          codeUrl: STATE.defaultCodeUrl, postBuyMsg: postMsg, showEmail: true, showPass: true, showProfile: true
+          codeUrl: STATE.defaultCodeUrl, warranty: warrantyTxt, postBuyMsg: postMsg, showEmail: true, showPass: true, showProfile: true
         };
         me.purchases.unshift(purchaseRecord); STATE.salesHistory.unshift(purchaseRecord);
         pushAdminNotification(`👑 Sincronización: ${prod.name} (${me.name})`, purchaseRecord.id);
@@ -1729,6 +1838,16 @@
       if (pur.pass) html += `<div class="copy-row"><div><div style="font-size:10px;color:var(--muted);">CONTRASEÑA</div><div class="copy-row-val">${pur.pass}</div></div><button class="copy-btn" onclick="copyText('${pur.pass}')">Copiar</button></div>`;
       if (pur.profile) html += `<div class="copy-row"><div><div style="font-size:10px;color:var(--muted);">PERFIL / ID</div><div class="copy-row-val">${pur.profile}</div></div><button class="copy-btn" onclick="copyText('${pur.profile}')">Copiar</button></div>`;
       box.innerHTML = html;
+
+      const codeWrap = document.getElementById("deliv-codeurl-wrap");
+      const codeBtn = document.getElementById("deliv-codeurl-btn");
+      if (pur.codeUrl && pur.codeUrl.trim()) {
+        codeWrap.style.display = "block";
+        codeBtn.href = pur.codeUrl.trim();
+      } else {
+        codeWrap.style.display = "none";
+      }
+
       const postWrap = document.getElementById("deliv-postbuy-wrap");
       if (pur.postBuyMsg) { postWrap.style.display = "block"; postWrap.innerText = pur.postBuyMsg; } else { postWrap.style.display = "none"; }
       const admWaWrap = document.getElementById("deliv-admin-wa-wrap");
@@ -1781,18 +1900,49 @@
       const desc = document.getElementById("rep-desc").value.trim();
       if (!plat || !desc) return showPurpleToast("⚠️ Llena los campos");
       await pullStateFromFirebase();
-      STATE.reports.unshift({ id: "rep_" + Date.now(), clientId: MY_CLIENT_ID, clientName: getMyClient().name, type: "falla", platform: plat, desc, status: "Pendiente", date: new Date().toLocaleString() });
+      const newRep = {
+        id: "rep_" + Date.now(),
+        clientId: MY_CLIENT_ID,
+        clientName: getMyClient().name,
+        type: "falla",
+        platform: plat,
+        desc,
+        capture: window.repCaptureData || "",
+        policyMsg: REPORT_POLICY_MSG,
+        status: "Pendiente",
+        date: new Date().toLocaleString()
+      };
+      STATE.reports.unshift(newRep);
 
       sendTelegramNotification(`⚠️ *¡REPORTE DE FALLA!*\n📱 Plataforma: ${plat}\n👤 ${getMyClient().name}\n📝 ${desc}`);
 
-      document.getElementById("rep-platform").value = ""; document.getElementById("rep-desc").value = "";
-      await saveState(); showPurpleToast("✨ Se guardó con éxito");
+      window.repCaptureData = "";
+      document.getElementById("rep-platform").value = "";
+      document.getElementById("rep-desc").value = "";
+      const repPrev = document.getElementById("rep-capture-preview");
+      if (repPrev) { repPrev.src = ""; repPrev.style.display = "none"; }
+
+      await saveState();
+      showPurpleToast("✨ Reporte enviado");
     }
 
     function renderClientReports() {
       const box = document.getElementById("client-reports-list");
       const myReports = STATE.reports.filter(r => !r.clientId || r.clientId === MY_CLIENT_ID);
-      box.innerHTML = myReports.length ? myReports.map(r => `<div><b>${r.platform}</b> - ${r.status}</div>`).join("") : `<p style="color:var(--muted);">Sin reportes.</p>`;
+      box.innerHTML = myReports.length ? myReports.map(r => {
+        const policyText = r.policyMsg || REPORT_POLICY_MSG;
+        return `
+          <div style="background:rgba(255,255,255,0.04);padding:10px;border-radius:10px;margin-bottom:8px;font-size:12.5px;">
+            <div><b>${r.platform}</b> - <span style="color:${r.status === 'Resuelto' ? '#34d399' : '#f59e0b'}">${r.status}</span></div>
+            <div style="color:var(--muted);margin-top:3px;">${r.desc}</div>
+            ${r.capture ? `<img src="${r.capture}" style="max-height:90px;border-radius:8px;margin-top:6px;" />` : ''}
+            <div style="margin-top:6px;padding:8px;background:rgba(245,158,11,0.1);border-radius:8px;color:#fde68a;font-size:11.5px;">
+              <b>📌 Aviso del reporte:</b> ${policyText}
+            </div>
+            ${r.resolution ? `<div style="margin-top:6px;padding:8px;background:rgba(16,185,129,0.12);border-radius:8px;color:#a7f3d0;"><b>✅ Resolución:</b><br>${r.resolution}</div>` : ''}
+          </div>
+        `;
+      }).join("") : `<p style="color:var(--muted);">Sin reportes.</p>`;
     }
 
     function handleAdminButton() { if (isAdmin) switchView("admin"); else openModal("modal-admin-login"); }
@@ -1817,6 +1967,16 @@
       document.getElementById("p-cat").innerHTML = STATE.categories.filter(c => c.id !== "all").map(c => `<option value="${c.id}">${c.name}</option>`).join("");
       document.getElementById("adm-target-client").innerHTML = Object.values(STATE.clients || {}).map(c => `<option value="${c.id}">${c.name}</option>`).join("");
 
+      document.getElementById("cfg-store-name").value = STATE.storeName || "";
+      document.getElementById("cfg-store-slogan").value = STATE.storeSlogan || "";
+      document.getElementById("cfg-wa-number").value = STATE.waNumber || "5523676793";
+      document.getElementById("cfg-tg-token").value = STATE.tgToken || "";
+      document.getElementById("cfg-tg-chat-id").value = STATE.tgChatId || "5762852775";
+      document.getElementById("cfg-wa-api-instance").value = STATE.waApiInstance || "";
+      document.getElementById("cfg-wa-api-token").value = STATE.waApiToken || "";
+      document.getElementById("cfg-bg-vid-url").value = (STATE.background && STATE.background.type === "video" && STATE.background.dataUrl) ? STATE.background.dataUrl : "";
+      document.getElementById("doll-cfg-name").value = (STATE.doll && STATE.doll.name) || "Chimmy VIP";
+
       document.getElementById("adm-recent-sales-list").innerHTML = (STATE.salesHistory || []).length ? STATE.salesHistory.slice(0, 10).map(s => `
         <div style="background:rgba(16,185,129,0.08);padding:8px;border-radius:8px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;">
           <div><b>${s.prodName}</b> - ${s.clientName}</div>
@@ -1832,27 +1992,99 @@
         </div>
       `).join("");
 
-      document.getElementById("adm-stock-list").innerHTML = accountsStock.map(a => `
-        <div class="copy-row"><span>${a.email}</span><button class="btn-outline" style="color:#ef4444;" onclick="adminDeleteStock('${a.id}')">🗑️</button></div>
-      `).join("");
+      document.getElementById("adm-stock-list").innerHTML = accountsStock.map(a => {
+        const prodObj = STATE.products.find(p => p.id === a.prodId);
+        const prodLabel = prodObj ? prodObj.name : "Producto";
+        const statusLbl = a.used ? `<span style="color:#ef4444;font-weight:bold;">(Vendida)</span>` : `<span style="color:#10b981;font-weight:bold;">(Disponible)</span>`;
+        return `<div class="copy-row"><div><b>${prodLabel}</b> ${statusLbl}<div style="font-size:11.5px;color:#cbd5e1;">${a.email}</div></div><button class="btn-outline" style="color:#ef4444;" onclick="adminDeleteStock('${a.id}')">🗑️</button></div>`;
+      }).join("");
 
       document.getElementById("adm-products-list").innerHTML = STATE.products.map(p => `
         <div class="copy-row"><span>${p.name}</span><div style="display:flex;gap:4px;"><button class="btn-outline" onclick="adminLoadProductToEdit('${p.id}')">✏️</button><button class="btn-outline" style="color:#ef4444;" onclick="adminDeleteProduct('${p.id}')">🗑️</button></div></div>
       `).join("");
 
+      document.getElementById("adm-reports-list").innerHTML = STATE.reports.length ? STATE.reports.map(r => `
+        <div style="background:rgba(255,255,255,0.05);padding:10px;border-radius:8px;margin-bottom:8px;font-size:12.5px;">
+          <div><b>${r.platform}</b> - ${r.clientName} (${r.status})</div>
+          <div style="color:var(--muted);margin:4px 0;">${r.desc}</div>
+          ${r.capture ? `<img src="${r.capture}" style="max-height:85px;border-radius:8px;margin:4px 0;" />` : ''}
+          ${r.resolution ? `<div style="color:#34d399;margin:4px 0;font-size:11.5px;"><b>Resolución:</b> ${r.resolution}</div>` : ''}
+          <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;">
+            <button class="btn-main" style="width:auto;padding:6px 10px;" onclick="openResolveReportModal('${r.id}', false)">🛠️ Resolver falla</button>
+            <button class="btn-outline" style="padding:6px 10px;" onclick="openResolveReportModal('${r.id}', true)">✏️ Editar</button>
+          </div>
+        </div>
+      `).join("") : `<p style="font-size:12px;color:var(--muted);">Sin reportes pendientes.</p>`;
+
       document.getElementById("adm-cats-list").innerHTML = STATE.categories.filter(c => c.id !== "all").map(c => `
         <div class="copy-row"><span>${c.icon || '📁'} ${c.name}</span><div style="display:flex;gap:4px;"><button class="btn-outline" onclick="adminLoadCategoryToEdit('${c.id}')">✏️</button><button class="btn-outline" style="color:#ef4444;" onclick="adminDeleteCategory('${c.id}')">🗑️</button></div></div>
       `).join("");
+
+      document.getElementById("adm-songs-list").innerHTML = (STATE.songs || []).length ? STATE.songs.map((s, idx) => `
+        <div class="copy-row"><span>🎵 ${s.title}</span><button class="btn-outline" style="color:#ef4444;" onclick="adminDeleteSong(${idx})">🗑️</button></div>
+      `).join("") : `<p style="font-size:12px;color:var(--muted);">Sin canciones.</p>`;
     }
 
-    function adminApproveRecharge(reqId) {
+    function openResolveReportModal(repId, isEdit = false) {
+      const r = STATE.reports.find(x => x.id === repId);
+      document.getElementById("res-report-id").value = repId;
+      document.getElementById("res-modal-title").innerText = isEdit ? "✏️ Editar resolución de falla" : "🛠️ Resolver falla";
+      document.getElementById("res-new-email").value = r && r.resEmail ? r.resEmail : "";
+      document.getElementById("res-new-pass").value = r && r.resPass ? r.resPass : "";
+      document.getElementById("res-new-profile").value = r && r.resProfile ? r.resProfile : "";
+      document.getElementById("res-custom-note").value = r && r.resNote ? r.resNote : "";
+      openModal("modal-resolve-report");
+    }
+
+    async function pullStockForResolution() {
+      const prodId = document.getElementById("res-stock-prod").value;
+      const freeAcc = accountsStock.find(a => a.prodId === prodId && !a.used);
+      if (!freeAcc) return showPurpleToast("⚠️ No hay stock libre para ese producto");
+      freeAcc.used = true;
+      await saveStockState();
+      document.getElementById("res-new-email").value = freeAcc.email;
+      document.getElementById("res-new-pass").value = freeAcc.pass;
+      document.getElementById("res-new-profile").value = freeAcc.profile || "";
+      renderAll();
+      showPurpleToast("🔑 Cuenta tomada del stock");
+    }
+
+    async function confirmResolveReport() {
+      const repId = document.getElementById("res-report-id").value;
+      const r = STATE.reports.find(x => x.id === repId);
+      if (!r) return;
+      const email = document.getElementById("res-new-email").value.trim();
+      const pass = document.getElementById("res-new-pass").value.trim();
+      const prof = document.getElementById("res-new-profile").value.trim();
+      const note = document.getElementById("res-custom-note").value.trim();
+
+      r.status = "Resuelto";
+      r.policyMsg = REPORT_POLICY_MSG;
+      r.resEmail = email;
+      r.resPass = pass;
+      r.resProfile = prof;
+      r.resNote = note;
+
+      const parts = [];
+      if (email) parts.push(`Correo: ${email}`);
+      if (pass) parts.push(`Pass: ${pass}`);
+      if (prof) parts.push(`Perfil/PIN: ${prof}`);
+      if (note) parts.push(`Detalle: ${note}`);
+      r.resolution = parts.length ? parts.join(" | ") : "Reporte atendido y cerrado.";
+
+      await saveState();
+      closeModal("modal-resolve-report");
+      showPurpleToast("✨ Falla resuelta");
+    }
+
+    async function adminApproveRecharge(reqId) {
       const r = STATE.rechargeRequests.find(x => x.id === reqId);
       if (!r) return; r.status = "Aprobada";
       ensureClientRecord(r.clientId || MY_CLIENT_ID, r.clientName).balance += Number(r.amount);
-      saveState(); showPurpleToast("✨ Recarga aprobada");
+      await saveState(); showPurpleToast("✨ Recarga aprobada");
     }
 
-    function adminAddBalance(isSum) {
+    async function adminAddBalance(isSum) {
       const clientId = document.getElementById("adm-target-client").value;
       const amt = Number(document.getElementById("adm-manual-bal").value);
       if (!clientId || isNaN(amt)) return showPurpleToast("⚠️ Datos incompletos");
@@ -1860,7 +2092,7 @@
       if (!client) return showPurpleToast("⚠️ Cliente no encontrado");
       if (isSum) client.balance = Number(client.balance || 0) + amt;
       else client.balance = amt;
-      saveState(); showPurpleToast("✨ Saldo actualizado");
+      await saveState(); showPurpleToast("✨ Saldo actualizado");
     }
 
     async function adminAddAccountStock() {
@@ -1868,9 +2100,20 @@
       const email = document.getElementById("stk-email").value.trim();
       const pass = document.getElementById("stk-pass").value.trim();
       const profile = document.getElementById("stk-profile").value.trim();
+      const customId = document.getElementById("stk-customid").value.trim();
+      const codeUrl = document.getElementById("stk-codeurl").value.trim();
       if (!email) return showPurpleToast("📧 Falta correo");
-      accountsStock.push({ id: "acc_" + Date.now(), prodId, email, pass, profile, used: false });
+
+      await pullStockFromFirebase();
+      accountsStock.push({ id: "acc_" + Date.now(), prodId, email, pass, profile, customId, codeUrl, used: false });
       await saveStockState();
+
+      document.getElementById("stk-email").value = "";
+      document.getElementById("stk-pass").value = "";
+      document.getElementById("stk-profile").value = "";
+      document.getElementById("stk-customid").value = "";
+      document.getElementById("stk-codeurl").value = "";
+
       renderAll();
       showPurpleToast("✨ Cuenta guardada en la nube");
     }
@@ -1899,6 +2142,7 @@
         price,
         cat: document.getElementById("p-cat").value,
         desc: document.getElementById("p-desc").value,
+        warranty: document.getElementById("p-warranty").value.trim() || "25 días garantía (mayor en planes +1 mes según duración)",
         postBuyMsg: document.getElementById("p-post-buy-msg").value,
         tags: rawTags,
         img: window.prodImgData || (existingProd ? existingProd.img : STATE.profilePic),
@@ -1933,6 +2177,7 @@
       document.getElementById("p-price").value = p.price;
       document.getElementById("p-cat").value = p.cat;
       document.getElementById("p-desc").value = p.desc || "";
+      document.getElementById("p-warranty").value = p.warranty || "25 días garantía (mayor en planes +1 mes según duración)";
       document.getElementById("p-post-buy-msg").value = p.postBuyMsg || "";
       document.getElementById("p-tags").value = Array.isArray(p.tags) ? p.tags.join(", ") : "";
       document.getElementById("p-auto-delivery").checked = p.autoDelivery;
@@ -1990,9 +2235,9 @@
     function adminSaveDesign() {
       STATE.storeName = document.getElementById("cfg-store-name").value.trim() || STATE.storeName;
       STATE.storeSlogan = document.getElementById("cfg-store-slogan").value.trim() || STATE.storeSlogan;
-      STATE.waNumber = document.getElementById("cfg-wa-number").value.trim() || STATE.waNumber;
-      STATE.tgToken = document.getElementById("cfg-tg-token").value.trim() || STATE.tgToken;
-      STATE.tgChatId = document.getElementById("cfg-tg-chat-id").value.trim() || STATE.tgChatId;
+      STATE.waNumber = document.getElementById("cfg-wa-number").value.trim() || "5523676793";
+      STATE.tgToken = document.getElementById("cfg-tg-token").value.trim();
+      STATE.tgChatId = document.getElementById("cfg-tg-chat-id").value.trim() || "5762852775";
       STATE.waApiInstance = document.getElementById("cfg-wa-api-instance").value.trim();
       STATE.waApiToken = document.getElementById("cfg-wa-api-token").value.trim();
       const vidUrl = document.getElementById("cfg-bg-vid-url").value.trim();
@@ -2019,6 +2264,12 @@
       document.getElementById("song-title-input").value = "";
       document.getElementById("song-url-input").value = "";
       saveState(); showPurpleToast("✨ Canción agregada");
+    }
+
+    function adminDeleteSong(idx) {
+      if (!Array.isArray(STATE.songs)) return;
+      STATE.songs.splice(idx, 1);
+      saveState(); showPurpleToast("✨ Canción eliminada");
     }
 
     let isMusicPlaying = false;
@@ -2065,6 +2316,8 @@
       
       if (lower.includes("hola") || lower.includes("buenas") || lower.includes("saludos")) {
         reply = "¡Hola! 😊 ¿Cómo estás? Dime, ¿en qué te puedo ayudar hoy con tu cuenta o suscripción?";
+      } else if (lower.includes("garant") || lower.includes("dias") || lower.includes("mes")) {
+        reply = "🛡️ Las cuentas base tienen 25 días de garantía, y si contratas una cuenta de más de 1 mes, la garantía sube según el tiempo de la cuenta.";
       } else if (lower.includes("recargar") || lower.includes("saldo") || lower.includes("pagar")) {
         reply = "💳 Para recargar saldo, ve al menú ☰ arriba a la izquierda, selecciona 'Recargar Saldo', realiza tu transferencia SPEI con tu código único y sube tu captura de pago.";
       } else if (lower.includes("registro") || lower.includes("cuenta") || lower.includes("registrar")) {
@@ -2072,7 +2325,7 @@
       } else if (lower.includes("catalogo") || lower.includes("productos") || lower.includes("precio") || lower.includes("netflix") || lower.includes("disney") || lower.includes("spotify")) {
         reply = "🎬 Tenemos las mejores plataformas y combos VIP con entrega inmediata 24/7. Puedes explorarlas todas directamente aquí en el catálogo principal de la tienda.";
       } else if (lower.includes("falla") || lower.includes("problema") || lower.includes("ayuda") || lower.includes("soporte")) {
-        reply = "⚠️ Si tienes algún inconveniente con una cuenta, ve al menú ☰ y selecciona 'Reportar Falla' para atenderte de inmediato.";
+        reply = "⚠️ El reporte puede tardar de 1 a 2 días en resolverse para darle su repuesto si es posible. Si fue por incumplimiento de las normas, no se le cumplirá ni se le aplicará la garantía.";
       } else {
         reply = `¡Entendido sobre "${txt}"! 💛 Si necesitas comprar una cuenta o recargar saldo, dime y te guío con mucho gusto.`;
       }
