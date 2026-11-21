@@ -568,19 +568,25 @@
     .doll-widget { position: fixed; right: 12px; bottom: 12px; z-index: 350; display: flex; flex-direction: column; align-items: flex-end; pointer-events: none; }
     .wa-bubble-top {
       pointer-events: auto;
-      background: linear-gradient(135deg, #22c55e, #15803d);
-      border: 2px solid #bbf7d0;
+      background: linear-gradient(135deg, #25d366, #128c7e);
+      border: 2px solid #ffffff;
       color: #ffffff;
-      padding: 6px 12px;
+      padding: 7px 13px;
       border-radius: 999px;
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 900;
-      margin-bottom: 5px;
-      box-shadow: 0 6px 16px rgba(34, 197, 94, 0.45);
+      margin-bottom: 6px;
+      box-shadow: 0 6px 18px rgba(37, 211, 102, 0.55);
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .wa-bubble-top svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
     }
     .doll-Speech {
       pointer-events: auto; background: rgba(16, 22, 38, 0.96); border: 2px solid var(--doll-hoodie);
@@ -752,7 +758,14 @@
           ⚠️ El reporte puede tardar de 1 a 2 días en resolverse para darle su repuesto si es posible. Si fue por incumplimiento de las normas, no se le cumplirá ni se le aplicará la garantía.
         </div>
         <div class="field-group"><label>Plataforma</label><input type="text" id="rep-platform" placeholder="Ej. Netflix" /></div>
-        <div class="field-group"><label>Problema</label><textarea id="rep-desc" rows="3" placeholder="Describe..."></textarea></div>
+        <div class="field-group"><label>Correo de la cuenta con falla</label><input type="email" id="rep-email" placeholder="correo@ejemplo.com" /></div>
+        <div class="field-group"><label>Contraseña de la cuenta con falla</label><input type="text" id="rep-pass" placeholder="Contraseña" /></div>
+        <div class="field-group"><label>Perfil / PIN con falla</label><input type="text" id="rep-profile" placeholder="Ej. Perfil 2 / PIN 1234" /></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div class="field-group"><label>Día en que fue comprada</label><input type="date" id="rep-purchase-date" /></div>
+          <div class="field-group"><label>Día en que se reporta</label><input type="date" id="rep-report-date" /></div>
+        </div>
+        <div class="field-group"><label>Problema</label><textarea id="rep-desc" rows="3" placeholder="Describe qué ocurre con la cuenta o perfil..."></textarea></div>
         <div class="field-group">
           <label>Captura</label>
           <label for="rep-capture-input" class="upload-label">📸 Subir captura<img id="rep-capture-preview" class="upload-preview" /></label>
@@ -876,7 +889,7 @@
           </div>
           <div class="field-group"><label>Tienda</label><input type="text" id="cfg-store-name" /></div>
           <div class="field-group"><label>Eslogan</label><input type="text" id="cfg-store-slogan" /></div>
-          <div class="field-group"><label>WhatsApp Admin (ej. 5523676793)</label><input type="text" id="cfg-wa-number" /></div>
+          <div class="field-group"><label>WhatsApp Admin (5523676793)</label><input type="text" id="cfg-wa-number" /></div>
           <div class="field-group"><label>Telegram Bot Token</label><input type="text" id="cfg-tg-token" placeholder="Ej. 123456789:ABCdef..." /></div>
           <div class="field-group"><label>Telegram Chat ID</label><input type="text" id="cfg-tg-chat-id" value="5762852775" /></div>
           <div class="field-group"><label>UltraMsg Instance ID</label><input type="text" id="cfg-wa-api-instance" /></div>
@@ -909,7 +922,7 @@
     <audio id="audio-player" onended="nextSong()"></audio>
   </div>
 
-  <!-- ASISTENTE VIRTUAL CHIMMY + BURBUJA WHATSAPP ARRIBA -->
+  <!-- ASISTENTE VIRTUAL CHIMMY + BURBUJA CON LOGO DE WHATSAPP ARRIBA -->
   <div class="doll-widget" data-app="michelle">
     <div class="assistant-chat" id="assistant-chat">
       <div class="chat-head">
@@ -928,8 +941,11 @@
       </div>
     </div>
 
-    <a id="chimmy-wa-bubble" class="wa-bubble-top" href="https://wa.me/525523676793" target="_blank" rel="noopener noreferrer" title="Ir a WhatsApp">
-      💬 WhatsApp
+    <a id="chimmy-wa-bubble" class="wa-bubble-top" href="https://wa.me/525523676793" target="_blank" rel="noopener noreferrer" title="Contactar por WhatsApp">
+      <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+        <path d="M16.004 3.2c-7.06 0-12.8 5.74-12.8 12.8 0 2.256.59 4.46 1.71 6.404L3.1 29.02l6.786-1.78a12.74 12.74 0 0 0 6.118 1.56h.006c7.058 0 12.798-5.74 12.798-12.8 0-3.42-1.332-6.634-3.75-9.052A12.715 12.715 0 0 0 16.004 3.2zm0 23.434h-.004a10.6 10.6 0 0 1-5.404-1.48l-.388-.23-4.026 1.056 1.074-3.926-.252-.402a10.566 10.566 0 0 1-1.622-5.652c0-5.858 4.766-10.624 10.626-10.624 2.838 0 5.506 1.106 7.512 3.114a10.556 10.556 0 0 1 3.11 7.514c0 5.86-4.766 10.63-10.626 10.63zm5.828-7.958c-.32-.16-1.89-.932-2.182-1.038-.292-.106-.506-.16-.718.16-.214.32-.826 1.038-1.012 1.252-.186.212-.372.24-.692.08-.32-.16-1.35-.498-2.572-1.588-.95-.848-1.592-1.896-1.778-2.216-.186-.32-.02-.492.14-.652.144-.144.32-.372.48-.558.16-.186.212-.32.32-.532.106-.214.054-.4-.026-.56-.08-.16-.718-1.732-.984-2.372-.26-.622-.524-.538-.718-.548l-.612-.01c-.214 0-.56.08-.852.4-.294.32-1.118 1.092-1.118 2.664 0 1.572 1.144 3.09 1.304 3.304.16.212 2.252 3.438 5.456 4.822.762.33 1.356.526 1.82.674.766.244 1.462.21 2.012.128.614-.092 1.89-.772 2.156-1.518.266-.746.266-1.386.186-1.518-.08-.134-.292-.214-.612-.374z"/>
+      </svg>
+      <span>WhatsApp</span>
     </a>
 
     <div class="doll-Speech" id="doll-speech-bubble" onclick="toggleAssistantChat()">¡Hola! ¿Te ayudo? 💛</div>
@@ -1055,6 +1071,7 @@
 
   <script data-app="michelle">
     const REPORT_POLICY_MSG = "El reporte puede tardar de 1 a 2 días en resolverse para darle su repuesto si es posible. Si fue por incumplimiento de las normas, no se le cumplirá ni se le aplicará la garantía.";
+    const ADMIN_DEFAULT_WA = "5523676793";
 
     let toastTimer = null;
     function showPurpleToast(msg) {
@@ -1287,7 +1304,7 @@
       storeName: "Michelle Streaming VIP",
       storeSlogan: "Cuentas Premium y Combos • Entrega Automática 24/7",
       profilePic: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&auto=format&fit=crop&q=80",
-      waNumber: "5523676793",
+      waNumber: ADMIN_DEFAULT_WA,
       waApiInstance: "", waApiToken: "",
       tgToken: "", tgChatId: "5762852775",
       defaultCodeUrl: "https://mis-codigos-vip.com",
@@ -1368,6 +1385,9 @@
       merged.colors = Object.assign({}, DEFAULT_STATE.colors, (raw && raw.colors) || {});
       merged.background = Object.assign({}, DEFAULT_STATE.background, (raw && raw.background) || {});
       merged.doll = Object.assign({}, DEFAULT_STATE.doll, (raw && raw.doll) || {});
+      if (!merged.waNumber || merged.waNumber === "5215500000000") {
+        merged.waNumber = ADMIN_DEFAULT_WA;
+      }
       merged.categories = Array.isArray(merged.categories) ? merged.categories : DEFAULT_STATE.categories;
       merged.products = Array.isArray(merged.products) ? merged.products : [];
       merged.salesHistory = Array.isArray(merged.salesHistory) ? merged.salesHistory : [];
@@ -1534,8 +1554,9 @@
 
       const waBubble = document.getElementById("chimmy-wa-bubble");
       if (waBubble) {
-        const waDigits = normalizePhoneForWA(STATE.waNumber || "5523676793");
+        const waDigits = normalizePhoneForWA(STATE.waNumber || ADMIN_DEFAULT_WA);
         waBubble.href = `https://wa.me/${waDigits}`;
+        waBubble.style.display = "inline-flex";
       }
 
       const bgContainer = document.getElementById("bg-media-container");
@@ -1581,6 +1602,10 @@
       if (me.registered && !document.getElementById("rec-client-name").value) {
         document.getElementById("rec-client-name").value = `${me.name} (${me.phone})`;
       }
+
+      const todayStr = new Date().toISOString().split("T")[0];
+      const repDateInput = document.getElementById("rep-report-date");
+      if (repDateInput && !repDateInput.value) repDateInput.value = todayStr;
 
       document.getElementById("top-logo").src = STATE.profilePic;
       document.getElementById("hero-logo").src = STATE.profilePic;
@@ -1706,7 +1731,7 @@
     async function notifyAdminRechargeOnWhatsApp(req) {
       const instance = (STATE.waApiInstance || "").trim();
       const token = (STATE.waApiToken || "").trim();
-      const adminPhone = normalizePhoneForWA(STATE.waNumber || "5523676793");
+      const adminPhone = normalizePhoneForWA(STATE.waNumber || ADMIN_DEFAULT_WA);
       if (!instance || !adminPhone || !token) return;
       const cleanInst = instance.replace(/^instance/i, "");
       const caption = `💳 *¡NUEVA RECARGA!*\n👤 ${req.clientName}\n💰 $${req.amount} MXN\nRef: ${req.refCode}`;
@@ -1897,15 +1922,27 @@
 
     async function submitIssueReport() {
       const plat = document.getElementById("rep-platform").value.trim();
+      const repEmail = document.getElementById("rep-email").value.trim();
+      const repPass = document.getElementById("rep-pass").value.trim();
+      const repProfile = document.getElementById("rep-profile").value.trim();
+      const purchaseDate = document.getElementById("rep-purchase-date").value.trim() || "No especificada";
+      const reportDate = document.getElementById("rep-report-date").value.trim() || new Date().toISOString().split("T")[0];
       const desc = document.getElementById("rep-desc").value.trim();
-      if (!plat || !desc) return showPurpleToast("⚠️ Llena los campos");
+
+      if (!plat || !desc) return showPurpleToast("⚠️ Llena plataforma y problema");
       await pullStateFromFirebase();
+
       const newRep = {
         id: "rep_" + Date.now(),
         clientId: MY_CLIENT_ID,
         clientName: getMyClient().name,
         type: "falla",
         platform: plat,
+        repEmail,
+        repPass,
+        repProfile,
+        purchaseDate,
+        reportDate,
         desc,
         capture: window.repCaptureData || "",
         policyMsg: REPORT_POLICY_MSG,
@@ -1914,10 +1951,24 @@
       };
       STATE.reports.unshift(newRep);
 
-      sendTelegramNotification(`⚠️ *¡REPORTE DE FALLA!*\n📱 Plataforma: ${plat}\n👤 ${getMyClient().name}\n📝 ${desc}`);
+      sendTelegramNotification(
+        `⚠️ *¡REPORTE DE FALLA!*\n` +
+        `📱 Plataforma: ${plat}\n` +
+        `👤 Cliente: ${getMyClient().name}\n` +
+        `📧 Correo: ${repEmail || "No indicado"}\n` +
+        `🔑 Contraseña: ${repPass || "No indicada"}\n` +
+        `👤 Perfil: ${repProfile || "No indicado"}\n` +
+        `🛒 Día de compra: ${purchaseDate}\n` +
+        `📅 Día de reporte: ${reportDate}\n` +
+        `📝 Problema: ${desc}`
+      );
 
       window.repCaptureData = "";
       document.getElementById("rep-platform").value = "";
+      document.getElementById("rep-email").value = "";
+      document.getElementById("rep-pass").value = "";
+      document.getElementById("rep-profile").value = "";
+      document.getElementById("rep-purchase-date").value = "";
       document.getElementById("rep-desc").value = "";
       const repPrev = document.getElementById("rep-capture-preview");
       if (repPrev) { repPrev.src = ""; repPrev.style.display = "none"; }
@@ -1932,9 +1983,13 @@
       box.innerHTML = myReports.length ? myReports.map(r => {
         const policyText = r.policyMsg || REPORT_POLICY_MSG;
         return `
-          <div style="background:rgba(255,255,255,0.04);padding:10px;border-radius:10px;margin-bottom:8px;font-size:12.5px;">
+          <div style="background:rgba(255,255,255,0.04);padding:10px;border-radius:10px;margin-bottom:8px;font-size:12.5px;line-height:1.4;">
             <div><b>${r.platform}</b> - <span style="color:${r.status === 'Resuelto' ? '#34d399' : '#f59e0b'}">${r.status}</span></div>
-            <div style="color:var(--muted);margin-top:3px;">${r.desc}</div>
+            ${r.repEmail ? `<div style="font-size:11.5px;color:#cbd5e1;">📧 Correo: ${r.repEmail}</div>` : ''}
+            ${r.repPass ? `<div style="font-size:11.5px;color:#cbd5e1;">🔑 Contraseña: ${r.repPass}</div>` : ''}
+            ${r.repProfile ? `<div style="font-size:11.5px;color:#cbd5e1;">👤 Perfil: ${r.repProfile}</div>` : ''}
+            <div style="font-size:11.5px;color:var(--secondary);margin-top:3px;">🛒 Día de compra: ${r.purchaseDate || "No especificado"} • 📅 Día de reporte: ${r.reportDate || r.date}</div>
+            <div style="color:var(--muted);margin-top:4px;">${r.desc}</div>
             ${r.capture ? `<img src="${r.capture}" style="max-height:90px;border-radius:8px;margin-top:6px;" />` : ''}
             <div style="margin-top:6px;padding:8px;background:rgba(245,158,11,0.1);border-radius:8px;color:#fde68a;font-size:11.5px;">
               <b>📌 Aviso del reporte:</b> ${policyText}
@@ -1969,7 +2024,7 @@
 
       document.getElementById("cfg-store-name").value = STATE.storeName || "";
       document.getElementById("cfg-store-slogan").value = STATE.storeSlogan || "";
-      document.getElementById("cfg-wa-number").value = STATE.waNumber || "5523676793";
+      document.getElementById("cfg-wa-number").value = STATE.waNumber || ADMIN_DEFAULT_WA;
       document.getElementById("cfg-tg-token").value = STATE.tgToken || "";
       document.getElementById("cfg-tg-chat-id").value = STATE.tgChatId || "5762852775";
       document.getElementById("cfg-wa-api-instance").value = STATE.waApiInstance || "";
@@ -2004,8 +2059,12 @@
       `).join("");
 
       document.getElementById("adm-reports-list").innerHTML = STATE.reports.length ? STATE.reports.map(r => `
-        <div style="background:rgba(255,255,255,0.05);padding:10px;border-radius:8px;margin-bottom:8px;font-size:12.5px;">
+        <div style="background:rgba(255,255,255,0.05);padding:10px;border-radius:8px;margin-bottom:8px;font-size:12.5px;line-height:1.4;">
           <div><b>${r.platform}</b> - ${r.clientName} (${r.status})</div>
+          ${r.repEmail ? `<div style="font-size:11.5px;color:#cbd5e1;">📧 Correo: ${r.repEmail}</div>` : ''}
+          ${r.repPass ? `<div style="font-size:11.5px;color:#cbd5e1;">🔑 Contraseña: ${r.repPass}</div>` : ''}
+          ${r.repProfile ? `<div style="font-size:11.5px;color:#cbd5e1;">👤 Perfil: ${r.repProfile}</div>` : ''}
+          <div style="font-size:11.5px;color:var(--secondary);margin-top:3px;">🛒 Compra: ${r.purchaseDate || "No especificado"} • 📅 Reporte: ${r.reportDate || r.date}</div>
           <div style="color:var(--muted);margin:4px 0;">${r.desc}</div>
           ${r.capture ? `<img src="${r.capture}" style="max-height:85px;border-radius:8px;margin:4px 0;" />` : ''}
           ${r.resolution ? `<div style="color:#34d399;margin:4px 0;font-size:11.5px;"><b>Resolución:</b> ${r.resolution}</div>` : ''}
@@ -2029,9 +2088,9 @@
       const r = STATE.reports.find(x => x.id === repId);
       document.getElementById("res-report-id").value = repId;
       document.getElementById("res-modal-title").innerText = isEdit ? "✏️ Editar resolución de falla" : "🛠️ Resolver falla";
-      document.getElementById("res-new-email").value = r && r.resEmail ? r.resEmail : "";
-      document.getElementById("res-new-pass").value = r && r.resPass ? r.resPass : "";
-      document.getElementById("res-new-profile").value = r && r.resProfile ? r.resProfile : "";
+      document.getElementById("res-new-email").value = r && r.resEmail ? r.resEmail : (r && r.repEmail ? r.repEmail : "");
+      document.getElementById("res-new-pass").value = r && r.resPass ? r.resPass : (r && r.repPass ? r.repPass : "");
+      document.getElementById("res-new-profile").value = r && r.resProfile ? r.resProfile : (r && r.repProfile ? r.repProfile : "");
       document.getElementById("res-custom-note").value = r && r.resNote ? r.resNote : "";
       openModal("modal-resolve-report");
     }
@@ -2235,7 +2294,7 @@
     function adminSaveDesign() {
       STATE.storeName = document.getElementById("cfg-store-name").value.trim() || STATE.storeName;
       STATE.storeSlogan = document.getElementById("cfg-store-slogan").value.trim() || STATE.storeSlogan;
-      STATE.waNumber = document.getElementById("cfg-wa-number").value.trim() || "5523676793";
+      STATE.waNumber = document.getElementById("cfg-wa-number").value.trim() || ADMIN_DEFAULT_WA;
       STATE.tgToken = document.getElementById("cfg-tg-token").value.trim();
       STATE.tgChatId = document.getElementById("cfg-tg-chat-id").value.trim() || "5762852775";
       STATE.waApiInstance = document.getElementById("cfg-wa-api-instance").value.trim();
